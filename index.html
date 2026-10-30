@@ -448,11 +448,18 @@ document.getElementById('loginForm').addEventListener('submit', async (e)=>{
 });
 
 (async function boot(){
-  const {data:sessionData}=await sb.auth.getSession();
-  if(sessionData?.session?.user){
-    currentUser=sessionData.session.user;
-    await initApp();
-  }else{
+  const timeout=new Promise((_,reject)=>setTimeout(()=>reject(new Error('Tempo esgotado ao conectar (timeout de 8s)')),8000));
+  try{
+    const result=await Promise.race([sb.auth.getSession(),timeout]);
+    const sessionData=result.data;
+    if(sessionData?.session?.user){
+      currentUser=sessionData.session.user;
+      await initApp();
+    }else{
+      showScreen('login');
+    }
+  }catch(err){
+    alert('ERRO NA INICIALIZAÇÃO: '+(err.message||err));
     showScreen('login');
   }
 })();
