@@ -5,27 +5,549 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#171717">
 <title>Método Vini Seta — Gestor</title>
+
 <style>
-:root{--bg:#101010;--panel:#1b1b1b;--panel2:#242424;--text:#f5f5f5;--muted:#a9a9a9;--red:#b91f2b;--red2:#e33440;--line:#343434;--green:#49c58a;--yellow:#f0bd4e}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{max-width:1100px;margin:auto;padding:16px 14px 88px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:11px}.logo{width:45px;height:45px;border-radius:12px;background:var(--red);display:grid;place-items:center;font-weight:900;letter-spacing:-1px}.brand h1{font-size:17px;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}.pill{border:1px solid #493034;color:#ffb4b9;background:#2a1719;border-radius:999px;padding:6px 10px;font-size:11px}.view{display:none}.view.active{display:block}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 0 12px}.section-head h2{margin:0;font-size:21px}.section-head p{margin:3px 0 0;color:var(--muted);font-size:13px}.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:700;background:var(--red);color:white}.btn:hover{background:var(--red2)}.btn.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text)}.btn.small{padding:7px 9px;font-size:12px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.card,.box{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:15px}.card .label{color:var(--muted);font-size:12px}.card .value{font-size:26px;font-weight:800;margin:7px 0 2px;letter-spacing:-.5px}.card .hint{color:var(--muted);font-size:11px}.redline{height:3px;background:var(--red);border-radius:9px;margin:-15px -15px 13px}.grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin-top:13px}.list{display:grid;gap:9px}.item{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;background:var(--panel2);border-radius:11px;padding:12px}.item strong{display:block;font-size:14px}.sub{font-size:12px;color:var(--muted);margin-top:3px}.tag{font-size:11px;padding:4px 7px;border-radius:7px;background:#333;color:#ddd;white-space:nowrap}.tag.ok{background:#163527;color:#7be0ad}.tag.warn{background:#382e18;color:#f0ce73}.tag.red{background:#3b1b1f;color:#ff9da5}.empty{padding:25px 12px;text-align:center;color:var(--muted);font-size:13px;border:1px dashed var(--line);border-radius:12px}.nav{position:fixed;bottom:0;left:0;right:0;background:#171717f5;border-top:1px solid var(--line);display:flex;justify-content:center;gap:4px;padding:8px 5px calc(8px + env(safe-area-inset-bottom));z-index:5;backdrop-filter:blur(12px)}.nav button{background:transparent;border:0;color:var(--muted);padding:8px 10px;border-radius:10px;font-size:11px;min-width:55px}.nav button span{display:block;font-size:18px;margin-bottom:2px}.nav button.active{background:#3b1a1e;color:#fff}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:var(--muted)}input,select,textarea{width:100%;border:1px solid #414141;border-radius:9px;background:#111;color:var(--text);padding:11px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--red2)}textarea{min-height:75px;resize:vertical}.form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:15px;flex-wrap:wrap}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.toolbar input{flex:1;min-width:150px}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{text-align:left;padding:11px 8px;border-bottom:1px solid var(--line);white-space:nowrap}.table th{color:var(--muted);font-weight:600}.money{font-variant-numeric:tabular-nums}.muted{color:var(--muted)}.notice{border:1px solid #55452a;background:#2b2417;color:#f4d48a;padding:12px;border-radius:11px;font-size:12px;margin-top:16px}.monthbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}.monthbar strong{font-size:16px}.split{display:flex;gap:8px;flex-wrap:wrap}.split>*{flex:1}.hide{display:none!important}.modal{position:fixed;inset:0;background:#000b;display:none;align-items:flex-end;justify-content:center;z-index:10;padding:12px}.modal.open{display:flex}.modalbox{width:min(650px,100%);max-height:92vh;overflow:auto;background:#1b1b1b;border:1px solid #444;border-radius:18px;padding:17px}.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.modalhead h3{margin:0;font-size:19px}.close{background:#333;color:white;border:0;border-radius:9px;padding:7px 10px}.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.kpi{background:var(--panel2);padding:12px;border-radius:11px}.kpi span{display:block;font-size:12px;color:var(--muted)}.kpi strong{font-size:20px;display:block;margin-top:4px}.footer-note{text-align:center;color:#777;font-size:11px;margin-top:24px}
+:root{
+  --bg:#101010;
+  --panel:#1b1b1b;
+  --panel2:#242424;
+  --text:#f5f5f5;
+  --muted:#a9a9a9;
+  --red:#b91f2b;
+  --red2:#e33440;
+  --line:#343434;
+  --green:#49c58a;
+  --yellow:#f0bd4e;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
+.app{
+  max-width:1100px;
+  margin:auto;
+  padding:16px 14px 88px;
+}
+
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.logo{
+  width:45px;
+  height:45px;
+  border-radius:12px;
+  background:var(--red);
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+
+.brand h1{
+  font-size:17px;
+  margin:0;
+}
+
+.brand p{
+  margin:2px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.pill{
+  border:1px solid #493034;
+  color:#ffb4b9;
+  background:#2a1719;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:11px;
+}
+
+.view{display:none}
+.view.active{display:block}
+
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:22px 0 12px;
+}
+
+.section-head h2{
+  margin:0;
+  font-size:21px;
+}
+
+.section-head p{
+  margin:3px 0 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.btn{
+  border:0;
+  border-radius:10px;
+  padding:10px 13px;
+  font-weight:700;
+  background:var(--red);
+  color:white;
+}
+
+.btn:hover{background:var(--red2)}
+
+.btn.secondary{
+  background:var(--panel2);
+  border:1px solid var(--line);
+  color:var(--text);
+}
+
+.btn.small{
+  padding:7px 9px;
+  font-size:12px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+
+.card,.box{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:15px;
+}
+
+.card .label{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.card .value{
+  font-size:26px;
+  font-weight:800;
+  margin:7px 0 2px;
+  letter-spacing:-.5px;
+}
+
+.card .hint{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.redline{
+  height:3px;
+  background:var(--red);
+  border-radius:9px;
+  margin:-15px -15px 13px;
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:12px;
+  margin-top:13px;
+}
+
+.list{
+  display:grid;
+  gap:9px;
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  background:var(--panel2);
+  border-radius:11px;
+  padding:12px;
+}
+
+.item strong{
+  display:block;
+  font-size:14px;
+}
+
+.sub{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+.tag{
+  display:inline-block;
+  margin-top:6px;
+  font-size:11px;
+  padding:4px 7px;
+  border-radius:7px;
+  background:#333;
+  color:#ddd;
+  white-space:nowrap;
+}
+
+.tag.ok{
+  background:#163527;
+  color:#7be0ad;
+}
+
+.tag.warn{
+  background:#382e18;
+  color:#f0ce73;
+}
+
+.tag.red{
+  background:#3b1b1f;
+  color:#ff9da5;
+}
+
+.empty{
+  padding:25px 12px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  border:1px dashed var(--line);
+  border-radius:12px;
+}
+
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#171717f5;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:center;
+  gap:4px;
+  padding:8px 5px calc(8px + env(safe-area-inset-bottom));
+  z-index:5;
+  backdrop-filter:blur(12px);
+}
+
+.nav button{
+  background:transparent;
+  border:0;
+  color:var(--muted);
+  padding:8px 10px;
+  border-radius:10px;
+  font-size:11px;
+  min-width:55px;
+}
+
+.nav button span{
+  display:block;
+  font-size:18px;
+  margin-bottom:2px;
+}
+
+.nav button.active{
+  background:#3b1a1e;
+  color:#fff;
+}
+
+.formgrid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.field.full{grid-column:1/-1}
+
+.field label{
+  font-size:12px;
+  color:var(--muted);
+}
+
+input,select,textarea{
+  width:100%;
+  border:1px solid #414141;
+  border-radius:9px;
+  background:#111;
+  color:var(--text);
+  padding:11px;
+  outline:none;
+}
+
+input:focus,select:focus,textarea:focus{
+  border-color:var(--red2);
+}
+
+textarea{
+  min-height:75px;
+  resize:vertical;
+}
+
+.form-actions{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  margin-top:15px;
+  flex-wrap:wrap;
+}
+
+.toolbar{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+
+.toolbar input{
+  flex:1;
+  min-width:150px;
+}
+
+.notice{
+  border:1px solid #55452a;
+  background:#2b2417;
+  color:#f4d48a;
+  padding:12px;
+  border-radius:11px;
+  font-size:12px;
+  margin-top:16px;
+}
+
+.monthbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.monthbar strong{
+  font-size:16px;
+}
+
+.split{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.split>*{flex:1}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:#000b;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  z-index:10;
+  padding:12px;
+}
+
+.modal.open{display:flex}
+
+.modalbox{
+  width:min(650px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:#1b1b1b;
+  border:1px solid #444;
+  border-radius:18px;
+  padding:17px;
+}
+
+.modalhead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:14px;
+}
+
+.modalhead h3{
+  margin:0;
+  font-size:19px;
+}
+
+.close{
+  background:#333;
+  color:white;
+  border:0;
+  border-radius:9px;
+  padding:7px 10px;
+}
+
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.kpi{
+  background:var(--panel2);
+  padding:12px;
+  border-radius:11px;
+}
+
+.kpi span{
+  display:block;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.kpi strong{
+  font-size:20px;
+  display:block;
+  margin-top:4px;
+}
+
+.footer-note{
+  text-align:center;
+  color:#777;
+  font-size:11px;
+  margin-top:24px;
+}
+
 .screen{display:none}
 .screen.active{display:block}
-#screen-loading.active,#screen-login.active{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
-.authcard{width:min(380px,100%);background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px 22px}
-.authcard .logo{width:54px;height:54px;border-radius:14px;background:var(--red);display:grid;place-items:center;font-weight:900;font-size:19px;margin:0 auto 14px}
-.authcard h2{text-align:center;margin:0 0 4px;font-size:19px}
-.authcard p.sub2{text-align:center;color:var(--muted);font-size:12.5px;margin:0 0 20px}
+
+#screen-loading.active,
+#screen-login.active{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  padding:20px;
+}
+
+.authcard{
+  width:min(380px,100%);
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:28px 22px;
+}
+
+.authcard .logo{
+  width:54px;
+  height:54px;
+  border-radius:14px;
+  background:var(--red);
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  font-size:19px;
+  margin:0 auto 14px;
+}
+
+.authcard h2{
+  text-align:center;
+  margin:0 0 4px;
+  font-size:19px;
+}
+
+.authcard .sub2{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin:0 0 20px;
+}
+
 .authcard .field{margin-bottom:12px}
-.authcard .errormsg{color:#ff9da5;font-size:12.5px;min-height:16px;margin:4px 0 6px;text-align:center}
-.loadingbox{text-align:center;color:var(--muted)}
-.spinner{width:34px;height:34px;border:3px solid #333;border-top-color:var(--red2);border-radius:50%;margin:0 auto 14px;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.headerActions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-#syncStatus{font-size:11px;white-space:nowrap}
-@media(min-width:700px){.app{padding:24px 24px 40px}.nav{position:sticky;top:0;bottom:auto;border:1px solid var(--line);border-radius:14px;margin:0 auto 20px;max-width:760px}.modal{align-items:center}.cards{gap:14px}}
-@media(max-width:440px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.cards .card:last-child{grid-column:1/-1}.grid2{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.brand h1{font-size:15px}.pill{display:none}.nav button{min-width:0;flex:1;padding:7px 2px}.nav button span{font-size:17px}.card .value{font-size:23px}}
+
+.authcard .errormsg{
+  color:#ff9da5;
+  font-size:12.5px;
+  min-height:16px;
+  margin:4px 0 6px;
+  text-align:center;
+}
+
+.loadingbox{
+  text-align:center;
+  color:var(--muted);
+}
+
+.spinner{
+  width:34px;
+  height:34px;
+  border:3px solid #333;
+  border-top-color:var(--red2);
+  border-radius:50%;
+  margin:0 auto 14px;
+  animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.headerActions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+#syncStatus{
+  font-size:11px;
+  white-space:nowrap;
+}
+
+@media(min-width:700px){
+  .app{padding:24px 24px 40px}
+
+  .nav{
+    position:sticky;
+    top:0;
+    bottom:auto;
+    border:1px solid var(--line);
+    border-radius:14px;
+    margin:0 auto 20px;
+    max-width:760px;
+  }
+
+  .modal{align-items:center}
+  .cards{gap:14px}
+}
+
+@media(max-width:440px){
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cards .card:last-child{grid-column:1/-1}
+  .grid2{grid-template-columns:1fr}
+  .formgrid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .brand h1{font-size:15px}
+  .pill{display:none}
+  .nav button{min-width:0;flex:1;padding:7px 2px}
+  .nav button span{font-size:17px}
+  .card .value{font-size:23px}
+}
 </style>
 </head>
+
 <body>
 
 <div id="screen-loading" class="screen active">
@@ -38,448 +560,1721 @@
 <div id="screen-login" class="screen">
   <div class="authcard">
     <div class="logo">VS</div>
+
     <h2>Método Vini Seta</h2>
     <p class="sub2">Acesso restrito ao administrador</p>
+
     <form id="loginForm">
-      <div class="field"><label>E-mail</label><input id="loginEmail" type="email" required placeholder="seuemail@exemplo.com" autocomplete="username"></div>
-      <div class="field"><label>Senha</label><input id="loginPassword" type="password" required placeholder="Sua senha" autocomplete="current-password"></div>
+      <div class="field">
+        <label>E-mail</label>
+        <input id="loginEmail" type="email" required placeholder="seuemail@exemplo.com" autocomplete="username">
+      </div>
+
+      <div class="field">
+        <label>Senha</label>
+        <input id="loginPassword" type="password" required placeholder="Sua senha" autocomplete="current-password">
+      </div>
+
       <div class="errormsg" id="loginError"></div>
-      <button class="btn" id="loginBtn" style="width:100%" type="submit">Entrar</button>
+
+      <button class="btn" id="loginBtn" style="width:100%" type="submit">
+        Entrar
+      </button>
     </form>
   </div>
 </div>
 
 <div id="screen-app" class="screen">
-<div class="app">
-<header class="top"><div class="brand"><div class="logo">VS</div><div><h1>MÉTODO VINI SETA</h1><p>Gestor pessoal e profissional</p></div></div>
-<div class="headerActions"><span id="syncStatus" class="pill">● Conectando...</span><button class="btn secondary small" onclick="logout()">Sair</button></div>
-</header>
-<nav class="nav" aria-label="Navegação">
-<button data-view="inicio" class="active"><span>⌂</span>Início</button>
-<button data-view="agenda"><span>▦</span>Agenda</button>
-<button data-view="alunos"><span>♙</span>Alunos</button>
-<button data-view="profissional"><span>R$</span>Profissional</button>
-<button data-view="pessoal"><span>▤</span>Pessoal</button>
-<button data-view="relatorios"><span>◷</span>Resumo</button>
-</nav>
-<main>
-<section id="view-inicio" class="view active">
-<div class="section-head"><div><h2>Visão geral</h2><p id="todayLabel"></p></div><button class="btn" onclick="openModal('appointment')">＋ Atendimento</button></div>
-<div class="cards">
-<div class="card"><div class="redline"></div><div class="label">Alunos ativos</div><div class="value" id="dashStudents">0</div><div class="hint">cadastros ativos</div></div>
-<div class="card"><div class="redline"></div><div class="label">Atendimentos hoje</div><div class="value" id="dashToday">0</div><div class="hint">na agenda</div></div>
-<div class="card"><div class="redline"></div><div class="label">Pagamentos pendentes</div><div class="value" id="dashPending">R$ 0</div><div class="hint">mensalidades deste mês</div></div>
-</div>
-<div class="grid2">
-<div class="box"><div class="section-head" style="margin-top:0"><div><h2 style="font-size:17px">Agenda de hoje</h2><p>Seus próximos atendimentos</p></div><button class="btn secondary small" onclick="showView('agenda')">Ver agenda</button></div><div id="todayList" class="list"></div></div>
-<div class="box"><div class="section-head" style="margin-top:0"><div><h2 style="font-size:17px">Contas a receber</h2><p>Mensalidades em aberto</p></div><button class="btn secondary small" onclick="showView('profissional')">Ver financeiro</button></div><div id="pendingList" class="list"></div></div>
-</div>
-<div class="notice">Seus dados agora ficam salvos na nuvem (Supabase) e sincronizam entre seus aparelhos. Mesmo assim, use <b>Exportar backup</b> de vez em quando, como segurança extra.</div>
-</section>
-<section id="view-agenda" class="view">
-<div class="section-head"><div><h2>Agenda</h2><p>Atendimentos, avaliações e compromissos</p></div><button class="btn" onclick="openModal('appointment')">＋ Novo</button></div>
-<div class="toolbar"><input type="date" id="agendaDate" aria-label="Data da agenda"><select id="agendaFilter"><option value="all">Todos os tipos</option><option>Treino presencial</option><option>Avaliação física</option><option>Aula avulsa</option><option>Compromisso</option><option>Consultoria online</option></select></div>
-<div id="agendaList" class="list"></div>
-</section>
-<section id="view-alunos" class="view">
-<div class="section-head"><div><h2>Alunos</h2><p>Cadastro, plano e mensalidade</p></div><button class="btn" onclick="openModal('student')">＋ Aluno</button></div>
-<div class="toolbar"><input id="studentSearch" placeholder="Buscar aluno..." aria-label="Buscar aluno"><select id="studentStatus"><option value="ativos">Ativos</option><option value="todos">Todos</option><option value="inativos">Inativos/pausados</option></select></div>
-<div id="studentsList" class="list"></div>
-</section>
-<section id="view-profissional" class="view">
-<div class="section-head"><div><h2>Financeiro profissional</h2><p>Receitas, despesas e mensalidades</p></div><button class="btn" onclick="openModal('transaction','profissional')">＋ Lançamento</button></div>
-<div class="monthbar"><button class="btn secondary small" onclick="shiftMonth('pro',-1)">‹</button><strong id="proMonth"></strong><button class="btn secondary small" onclick="shiftMonth('pro',1)">›</button></div>
-<div class="cards">
-<div class="card"><div class="label">Receitas recebidas</div><div class="value" id="proIncome">R$ 0</div></div>
-<div class="card"><div class="label">Despesas</div><div class="value" id="proExpense">R$ 0</div></div>
-<div class="card"><div class="label">Resultado do mês</div><div class="value" id="proNet">R$ 0</div></div>
-</div>
-<div class="section-head"><div><h2 style="font-size:17px">Mensalidades</h2><p>Marque o pagamento ou faça um ajuste para este mês</p></div><button class="btn secondary small" onclick="generateDues()">Gerar cobranças</button></div>
-<div id="duesList" class="list"></div>
-<div class="section-head"><div><h2 style="font-size:17px">Lançamentos</h2></div></div><div id="proTransactions" class="list"></div>
-</section>
-<section id="view-pessoal" class="view">
-<div class="section-head"><div><h2>Finanças pessoais</h2><p>Contas, renda e despesas pessoais</p></div><button class="btn" onclick="openModal('transaction','pessoal')">＋ Lançamento</button></div>
-<div class="monthbar"><button class="btn secondary small" onclick="shiftMonth('per',-1)">‹</button><strong id="perMonth"></strong><button class="btn secondary small" onclick="shiftMonth('per',1)">›</button></div>
-<div class="cards"><div class="card"><div class="label">Entradas</div><div class="value" id="perIncome">R$ 0</div></div><div class="card"><div class="label">Saídas</div><div class="value" id="perExpense">R$ 0</div></div><div class="card"><div class="label">Saldo do mês</div><div class="value" id="perNet">R$ 0</div></div></div>
-<div class="section-head"><div><h2 style="font-size:17px">Lançamentos pessoais</h2></div></div><div id="perTransactions" class="list"></div>
-</section>
-<section id="view-relatorios" class="view">
-<div class="section-head"><div><h2>Resumo financeiro</h2><p>Visão consolidada do mês selecionado</p></div></div>
-<div class="monthbar"><button class="btn secondary small" onclick="shiftMonth('rep',-1)">‹</button><strong id="repMonth"></strong><button class="btn secondary small" onclick="shiftMonth('rep',1)">›</button></div>
-<div class="box"><h3 style="margin-top:0">Profissional</h3><div class="kpis"><div class="kpi"><span>Receitas recebidas</span><strong id="repProIn">R$ 0</strong></div><div class="kpi"><span>Despesas</span><strong id="repProOut">R$ 0</strong></div><div class="kpi"><span>Resultado</span><strong id="repProNet">R$ 0</strong></div><div class="kpi"><span>Em aberto (mensalidades)</span><strong id="repOpen">R$ 0</strong></div></div><h3>Finanças pessoais</h3><div class="kpis"><div class="kpi"><span>Entradas</span><strong id="repPerIn">R$ 0</strong></div><div class="kpi"><span>Saídas</span><strong id="repPerOut">R$ 0</strong></div><div class="kpi"><span>Saldo pessoal</span><strong id="repPerNet">R$ 0</strong></div><div class="kpi"><span>Saldo consolidado*</span><strong id="repTotal">R$ 0</strong></div></div><p class="sub">*Resultado profissional + saldo pessoal. Transferências entre contas não devem ser lançadas como receita/despesa para evitar duplicidade.</p></div>
-<div class="section-head"><div><h2 style="font-size:17px">Dados e segurança</h2><p>Seus dados estão na nuvem, mas o backup manual continua sendo uma segurança extra.</p></div></div>
-<div class="box"><div class="split"><button class="btn" onclick="exportBackup()">Exportar backup</button><label class="btn secondary" style="text-align:center;cursor:pointer">Importar backup<input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importBackup(event)"></label></div><p class="sub">O backup inclui alunos, agenda, cobranças e lançamentos financeiros.</p><button class="btn secondary" onclick="seedDemo()">Adicionar dados de exemplo</button> <button class="btn secondary" onclick="clearAll()">Apagar todos os dados</button></div>
-<div class="notice">Privacidade: este sistema é de uso pessoal e exige login para acesso. Não compartilhe o arquivo de backup, pois ele pode conter informações de alunos e suas finanças.</div>
-</section>
-</main>
-<div class="footer-note">Método Vini Seta · Gestor · Feito para uso interno</div>
-</div>
-<div class="modal" id="modal"><div class="modalbox"><div class="modalhead"><h3 id="modalTitle">Novo registro</h3><button class="close" onclick="closeModal()">Fechar ✕</button></div><div id="modalBody"></div></div></div>
+
+  <div class="app">
+
+    <header class="top">
+      <div class="brand">
+        <div class="logo">VS</div>
+        <div>
+          <h1>MÉTODO VINI SETA</h1>
+          <p>Gestor pessoal e profissional</p>
+        </div>
+      </div>
+
+      <div class="headerActions">
+        <span id="syncStatus" class="pill">● Conectando...</span>
+        <button class="btn secondary small" onclick="logout()">Sair</button>
+      </div>
+    </header>
+
+    <nav class="nav" aria-label="Navegação">
+      <button data-view="inicio" class="active"><span>⌂</span>Início</button>
+      <button data-view="agenda"><span>▦</span>Agenda</button>
+      <button data-view="alunos"><span>♙</span>Alunos</button>
+      <button data-view="profissional"><span>R$</span>Profissional</button>
+      <button data-view="pessoal"><span>▤</span>Pessoal</button>
+      <button data-view="relatorios"><span>◷</span>Resumo</button>
+    </nav>
+
+    <main>
+
+      <section id="view-inicio" class="view active">
+
+        <div class="section-head">
+          <div>
+            <h2>Visão geral</h2>
+            <p id="todayLabel"></p>
+          </div>
+
+          <button class="btn" onclick="openModal('appointment')">
+            ＋ Atendimento
+          </button>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="redline"></div>
+            <div class="label">Alunos ativos</div>
+            <div class="value" id="dashStudents">0</div>
+            <div class="hint">cadastros ativos</div>
+          </div>
+
+          <div class="card">
+            <div class="redline"></div>
+            <div class="label">Atendimentos hoje</div>
+            <div class="value" id="dashToday">0</div>
+            <div class="hint">na agenda</div>
+          </div>
+
+          <div class="card">
+            <div class="redline"></div>
+            <div class="label">Pagamentos pendentes</div>
+            <div class="value" id="dashPending">R$ 0</div>
+            <div class="hint">mensalidades deste mês</div>
+          </div>
+        </div>
+
+        <div class="grid2">
+
+          <div class="box">
+            <div class="section-head" style="margin-top:0">
+              <div>
+                <h2 style="font-size:17px">Agenda de hoje</h2>
+                <p>Seus próximos atendimentos</p>
+              </div>
+
+              <button class="btn secondary small" onclick="showView('agenda')">
+                Ver agenda
+              </button>
+            </div>
+
+            <div id="todayList" class="list"></div>
+          </div>
+
+          <div class="box">
+            <div class="section-head" style="margin-top:0">
+              <div>
+                <h2 style="font-size:17px">Contas a receber</h2>
+                <p>Mensalidades em aberto</p>
+              </div>
+
+              <button class="btn secondary small" onclick="showView('profissional')">
+                Ver financeiro
+              </button>
+            </div>
+
+            <div id="pendingList" class="list"></div>
+          </div>
+        </div>
+
+        <div class="notice">
+          Seus dados ficam salvos na nuvem quando houver conexão. Em caso de falha, o Gestor abre usando os dados guardados neste aparelho.
+        </div>
+      </section>
+
+      <section id="view-agenda" class="view">
+
+        <div class="section-head">
+          <div>
+            <h2>Agenda</h2>
+            <p>Atendimentos, avaliações e compromissos</p>
+          </div>
+
+          <button class="btn" onclick="openModal('appointment')">
+            ＋ Novo
+          </button>
+        </div>
+
+        <div class="toolbar">
+          <input type="date" id="agendaDate" aria-label="Data da agenda">
+
+          <select id="agendaFilter">
+            <option value="all">Todos os tipos</option>
+            <option>Treino presencial</option>
+            <option>Avaliação física</option>
+            <option>Aula avulsa</option>
+            <option>Compromisso</option>
+            <option>Consultoria online</option>
+          </select>
+        </div>
+
+        <div id="agendaList" class="list"></div>
+      </section>
+
+      <section id="view-alunos" class="view">
+
+        <div class="section-head">
+          <div>
+            <h2>Alunos</h2>
+            <p>Cadastro, plano e mensalidade</p>
+          </div>
+
+          <button class="btn" onclick="openModal('student')">
+            ＋ Aluno
+          </button>
+        </div>
+
+        <div class="toolbar">
+          <input id="studentSearch" placeholder="Buscar aluno..." aria-label="Buscar aluno">
+
+          <select id="studentStatus">
+            <option value="ativos">Ativos</option>
+            <option value="todos">Todos</option>
+            <option value="inativos">Inativos/pausados</option>
+          </select>
+        </div>
+
+        <div id="studentsList" class="list"></div>
+      </section>
+
+      <section id="view-profissional" class="view">
+
+        <div class="section-head">
+          <div>
+            <h2>Financeiro profissional</h2>
+            <p>Receitas, despesas e mensalidades</p>
+          </div>
+
+          <button class="btn" onclick="openModal('transaction','profissional')">
+            ＋ Lançamento
+          </button>
+        </div>
+
+        <div class="monthbar">
+          <button class="btn secondary small" onclick="shiftMonth('pro',-1)">‹</button>
+          <strong id="proMonth"></strong>
+          <button class="btn secondary small" onclick="shiftMonth('pro',1)">›</button>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="label">Receitas recebidas</div>
+            <div class="value" id="proIncome">R$ 0</div>
+          </div>
+
+          <div class="card">
+            <div class="label">Despesas</div>
+            <div class="value" id="proExpense">R$ 0</div>
+          </div>
+
+          <div class="card">
+            <div class="label">Resultado do mês</div>
+            <div class="value" id="proNet">R$ 0</div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div>
+            <h2 style="font-size:17px">Mensalidades</h2>
+            <p>Marque o pagamento ou gere cobranças</p>
+          </div>
+
+          <button class="btn secondary small" onclick="generateDues()">
+            Gerar cobranças
+          </button>
+        </div>
+
+        <div id="duesList" class="list"></div>
+
+        <div class="section-head">
+          <div>
+            <h2 style="font-size:17px">Lançamentos</h2>
+          </div>
+        </div>
+
+        <div id="proTransactions" class="list"></div>
+      </section>
+
+      <section id="view-pessoal" class="view">
+
+        <div class="section-head">
+          <div>
+            <h2>Finanças pessoais</h2>
+            <p>Contas, renda e despesas pessoais</p>
+          </div>
+
+          <button class="btn" onclick="openModal('transaction','pessoal')">
+            ＋ Lançamento
+          </button>
+        </div>
+
+        <div class="monthbar">
+          <button class="btn secondary small" onclick="shiftMonth('per',-1)">‹</button>
+          <strong id="perMonth"></strong>
+          <button class="btn secondary small" onclick="shiftMonth('per',1)">›</button>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="label">Entradas</div>
+            <div class="value" id="perIncome">R$ 0</div>
+          </div>
+
+          <div class="card">
+            <div class="label">Saídas</div>
+            <div class="value" id="perExpense">R$ 0</div>
+          </div>
+
+          <div class="card">
+            <div class="label">Saldo do mês</div>
+            <div class="value" id="perNet">R$ 0</div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div>
+            <h2 style="font-size:17px">Lançamentos pessoais</h2>
+          </div>
+        </div>
+
+        <div id="perTransactions" class="list"></div>
+      </section>
+
+      <section id="view-relatorios" class="view">
+
+        <div class="section-head">
+          <div>
+            <h2>Resumo financeiro</h2>
+            <p>Visão consolidada do mês selecionado</p>
+          </div>
+        </div>
+
+        <div class="monthbar">
+          <button class="btn secondary small" onclick="shiftMonth('rep',-1)">‹</button>
+          <strong id="repMonth"></strong>
+          <button class="btn secondary small" onclick="shiftMonth('rep',1)">›</button>
+        </div>
+
+        <div class="box">
+          <h3 style="margin-top:0">Profissional</h3>
+
+          <div class="kpis">
+            <div class="kpi">
+              <span>Receitas recebidas</span>
+              <strong id="repProIn">R$ 0</strong>
+            </div>
+
+            <div class="kpi">
+              <span>Despesas</span>
+              <strong id="repProOut">R$ 0</strong>
+            </div>
+
+            <div class="kpi">
+              <span>Resultado</span>
+              <strong id="repProNet">R$ 0</strong>
+            </div>
+
+            <div class="kpi">
+              <span>Em aberto</span>
+              <strong id="repOpen">R$ 0</strong>
+            </div>
+          </div>
+
+          <h3>Finanças pessoais</h3>
+
+          <div class="kpis">
+            <div class="kpi">
+              <span>Entradas</span>
+              <strong id="repPerIn">R$ 0</strong>
+            </div>
+
+            <div class="kpi">
+              <span>Saídas</span>
+              <strong id="repPerOut">R$ 0</strong>
+            </div>
+
+            <div class="kpi">
+              <span>Saldo pessoal</span>
+              <strong id="repPerNet">R$ 0</strong>
+            </div>
+
+            <div class="kpi">
+              <span>Saldo consolidado</span>
+              <strong id="repTotal">R$ 0</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div>
+            <h2 style="font-size:17px">Dados e segurança</h2>
+            <p>Backup manual dos seus dados.</p>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="split">
+            <button class="btn" onclick="exportBackup()">Exportar backup</button>
+
+            <label class="btn secondary" style="text-align:center;cursor:pointer">
+              Importar backup
+              <input
+                type="file"
+                id="importFile"
+                accept="application/json,.json"
+                style="display:none"
+                onchange="importBackup(event)"
+              >
+            </label>
+          </div>
+
+          <p class="sub">
+            O backup inclui alunos, agenda, cobranças e lançamentos financeiros.
+          </p>
+
+          <button class="btn secondary" onclick="seedDemo()">
+            Adicionar dados de exemplo
+          </button>
+
+          <button class="btn secondary" onclick="clearAll()">
+            Apagar todos os dados
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <div class="footer-note">
+      Método Vini Seta · Gestor · Feito para uso interno
+    </div>
+
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modalbox">
+      <div class="modalhead">
+        <h3 id="modalTitle">Novo registro</h3>
+        <button class="close" onclick="closeModal()">Fechar ✕</button>
+      </div>
+
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-window.addEventListener('error', function(e){
-  alert('ERRO DE SCRIPT DETECTADO: '+e.message+' (linha: '+(e.lineno||'?')+')');
-});
-function handleScriptLoadError(){
-  alert('FALHA AO CARREGAR A BIBLIOTECA DO SUPABASE. Verifique sua conexão com a internet e tente recarregar a página.');
+function handleScriptLoadError() {
+  console.error('Falha ao carregar a biblioteca Supabase.');
+
   document.getElementById('screen-loading').classList.remove('active');
   document.getElementById('screen-login').classList.add('active');
+
+  const errorEl = document.getElementById('loginError');
+
+  if (errorEl) {
+    errorEl.textContent =
+      'Não foi possível carregar a conexão com o servidor. Verifique sua internet e recarregue a página.';
+  }
 }
-setTimeout(function(){
-  var loading=document.getElementById('screen-loading');
-  if(loading && loading.classList.contains('active')){
-    alert('O APP DEMOROU DEMAIS PARA INICIAR (mais de 10 segundos).');
-    loading.classList.remove('active');
+
+window.addEventListener('error', function(event) {
+  console.error('Erro de script:', event.message, 'Linha:', event.lineno);
+});
+
+window.addEventListener('unhandledrejection', function(event) {
+  console.error('Erro assíncrono não tratado:', event.reason);
+
+  const loading = document.getElementById('screen-loading');
+
+  if (loading && loading.classList.contains('active')) {
+    document.getElementById('screen-loading').classList.remove('active');
     document.getElementById('screen-login').classList.add('active');
+
+    const errorEl = document.getElementById('loginError');
+
+    if (errorEl) {
+      errorEl.textContent =
+        'Falha de conexão ao iniciar. Verifique sua internet e tente novamente.';
+    }
   }
-},10000);
+});
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="handleScriptLoadError()"></script>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  onerror="handleScriptLoadError()">
+</script>
+
 <script>
+/* ============================================================
+   CONFIGURAÇÃO SUPABASE
+============================================================ */
+
 const SUPABASE_URL = 'https://joeswmohdcazikssvhkr.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvZXN3bW9oZGNhemlrc3N2aGtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNTExNDYsImV4cCI6MjEwODkyNzE0Nn0.ixrukIdRG4RhC_RTrO9dqrH4uywhRw_hCOeNZqpR5Cg';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const LOCAL_KEY='vini_seta_gestor_cache_v1';
-const now=new Date();
-const iso=d=>{const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`};
-const monthKey=d=>String(d).slice(0,7);
-const money=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const SUPABASE_ANON_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvZXN3bW9oZGNhemlrc3N2aGtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNTExNDYsImV4cCI6MjEwODkyNzE0Nn0.ixrukIdRG4RhC_RTrO9dqrH4uywhRw_hCOeNZqpR5Cg';
 
-function blank(){return {students:[],appointments:[],dues:[],transactions:[]}}
+let sb = null;
 
-let data=blank();
-let currentUser=null;
-let saveTimer=null;
-let proMonthDate=new Date(now.getFullYear(),now.getMonth(),1),perMonthDate=new Date(now.getFullYear(),now.getMonth(),1),repMonthDate=new Date(now.getFullYear(),now.getMonth(),1);
-
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
-function fmtDate(s){if(!s)return 'Sem data';let [y,m,d]=s.split('-');return `${d}/${m}/${y}`}
-function monthName(d){return d.toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}
-
-function persistLocalCache(){try{localStorage.setItem(LOCAL_KEY,JSON.stringify(data))}catch(e){}}
-function readLocalCache(){try{return JSON.parse(localStorage.getItem(LOCAL_KEY)||'null')}catch(e){return null}}
-
-function setSyncStatus(state){
-  const el=document.getElementById('syncStatus');if(!el)return;
-  if(state==='saving'){el.textContent='● Salvando...';el.style.color='#f0ce73'}
-  else if(state==='saved'){el.textContent='● Sincronizado';el.style.color='#7be0ad'}
-  else if(state==='offline'){el.textContent='● Sem conexão (salvo localmente)';el.style.color='#ff9da5'}
-  else{el.textContent='● Conectando...';el.style.color='#a9a9a9'}
+if (window.supabase && typeof window.supabase.createClient === 'function') {
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} else {
+  console.error('Biblioteca do Supabase não foi carregada.');
 }
 
-async function loadCloudData(){
-  try{
-    const {data:rows,error}=await sb.from('app_state').select('data').eq('user_id',currentUser.id).maybeSingle();
-    if(error){
-      alert('ERRO AO CARREGAR DADOS: '+error.message+' | código: '+(error.code||'sem código'));
-      const cache=readLocalCache();data=cache?{...blank(),...cache}:blank();setSyncStatus('offline');return;
-    }
-    if(rows&&rows.data){data={...blank(),...rows.data};persistLocalCache();setSyncStatus('saved')}
-    else{
-      const cache=readLocalCache();data=cache?{...blank(),...cache}:blank();
-      const up=await sb.from('app_state').upsert({user_id:currentUser.id,data,updated_at:new Date().toISOString()});
-      if(up.error)alert('ERRO AO CRIAR REGISTRO INICIAL: '+up.error.message);
-      setSyncStatus('saved')
-    }
-  }catch(err){
-    alert('FALHA DE CONEXÃO: '+(err.message||err));
-    const cache=readLocalCache();data=cache?{...blank(),...cache}:blank();setSyncStatus('offline');
-  }
-}
+/* ============================================================
+   FUNÇÕES BÁSICAS
+============================================================ */
 
-function save(){
-  persistLocalCache();renderAll();setSyncStatus('saving');
-  clearTimeout(saveTimer);saveTimer=setTimeout(syncToCloud,700);
-}
+const LOCAL_KEY = 'vini_seta_gestor_cache_v1';
 
-async function syncToCloud(){
-  if(!currentUser)return;
-  const {error}=await sb.from('app_state').upsert({user_id:currentUser.id,data,updated_at:new Date().toISOString()});
-  if(error){console.error('Erro ao salvar na nuvem:',error);setSyncStatus('offline')}else{setSyncStatus('saved')}
-}function opts(values,selected){return values.map(v=>`<option ${String(v)===String(selected)?'selected':''} value="${esc(v)}">${esc(v)}</option>`).join('')}
+const now = new Date();
 
-function studentName(id){return data.students.find(s=>s.id===id)?.name||'Aluno removido'}
+const iso = d => {
+  const x = new Date(d);
 
-function openModal(type,scope='',id=''){
-  const modal=document.getElementById('modal'),body=document.getElementById('modalBody');
-  modal.classList.add('open');modal.dataset.type=type;modal.dataset.id=id;modal.dataset.scope=scope;
+  return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
+};
 
-  if(type==='student'){
-    let s=data.students.find(x=>x.id===id)||{};
-    document.getElementById('modalTitle').textContent=id?'Editar aluno':'Cadastrar aluno';
-    body.innerHTML=`<form id="recordForm"><div class="formgrid">
-    <div class="field full"><label>Nome completo *</label><input name="name" required value="${esc(s.name||'')}" placeholder="Nome do aluno"></div>
-    <div class="field"><label>Telefone / WhatsApp</label><input name="phone" value="${esc(s.phone||'')}" placeholder="(51) 99999-9999"></div>
-    <div class="field"><label>E-mail</label><input name="email" type="email" value="${esc(s.email||'')}"></div>
-    <div class="field"><label>Modalidade</label><select name="modality">${opts(['Presencial','Consultoria online','Híbrido','Aula avulsa'],s.modality||'Presencial')}</select></div>
-    <div class="field"><label>Frequência por semana</label><select name="frequency">${opts(['1','2','3','4','5','6','7'],s.frequency||'3')}</select></div>
-    <div class="field"><label>Mensalidade (R$)</label><input name="price" type="number" min="0" step=".01" value="${s.price??''}" placeholder="0,00"></div>
-    <div class="field"><label>Dia de vencimento</label><select name="dueDay">${Array.from({length:28},(_,i)=>`<option value="${i+1}" ${(s.dueDay||10)==i+1?'selected':''}>Dia ${i+1}</option>`).join('')}</select></div>
-    <div class="field"><label>Início do plano</label><input name="startDate" type="date" value="${s.startDate||iso(now)}"></div>
-    <div class="field"><label>Status</label><select name="status">${opts(['Ativo','Pausado','Inativo'],s.status||'Ativo')}</select></div>
-    <div class="field full"><label>Dias e horários habituais</label><input name="schedule" value="${esc(s.schedule||'')}" placeholder="Ex.: seg/qua/sex — 8h"></div>
-    <div class="field full"><label>Observações</label><textarea name="notes" placeholder="Informações importantes">${esc(s.notes||'')}</textarea></div></div>
-    <div class="form-actions"><button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button><button class="btn">Salvar aluno</button></div></form>`;
-    document.getElementById('recordForm').onsubmit=e=>{e.preventDefault();let f=Object.fromEntries(new FormData(e.target));f.price=Number(f.price||0);f.frequency=Number(f.frequency);if(id){Object.assign(s,f)}else data.students.push({id:uid(),...f,createdAt:iso(now)});save();closeModal();};
+const monthKey = d => String(d).slice(0, 7);
 
-  }else if(type==='appointment'){
-    let a=data.appointments.find(x=>x.id===id)||{};
-    document.getElementById('modalTitle').textContent=id?'Editar atendimento':'Novo atendimento';
-    body.innerHTML=`<form id="recordForm"><div class="formgrid">
-    <div class="field full"><label>Descrição / aluno *</label><input name="title" required value="${esc(a.title||'')}" placeholder="Ex.: Treino — Maria"></div>
-    <div class="field"><label>Tipo</label><select name="type">${opts(['Treino presencial','Avaliação física','Aula avulsa','Compromisso','Consultoria online'],a.type||'Treino presencial')}</select></div>
-    <div class="field"><label>Aluno (opcional)</label><select name="studentId"><option value="">Sem aluno vinculado</option>${data.students.map(s=>`<option value="${s.id}" ${a.studentId===s.id?'selected':''}>${esc(s.name)}</option>`).join('')}</select></div>
-    <div class="field"><label>Data *</label><input name="date" type="date" required value="${a.date||iso(now)}"></div>
-    <div class="field"><label>Horário</label><input name="time" type="time" value="${a.time||'08:00'}"></div>
-    <div class="field"><label>Duração (min)</label><input name="duration" type="number" min="1" value="${a.duration||60}"></div>
-    <div class="field"><label>Status</label><select name="status">${opts(['Agendado','Concluído','Cancelado','Remarcado'],a.status||'Agendado')}</select></div>
-    <div class="field full"><label>Observações</label><textarea name="notes">${esc(a.notes||'')}</textarea></div></div>
-    <div class="form-actions"><button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button><button class="btn">Salvar atendimento</button></div></form>`;
-    document.getElementById('recordForm').onsubmit=e=>{e.preventDefault();let f=Object.fromEntries(new FormData(e.target));f.duration=Number(f.duration||60);if(id)Object.assign(a,f);else data.appointments.push({id:uid(),...f});save();closeModal();};
-
-  }else if(type==='transaction'){
-    document.getElementById('modalTitle').textContent='Novo lançamento';let defaultScope=scope||'profissional';
-    body.innerHTML=`<form id="recordForm"><div class="formgrid">
-    <div class="field"><label>Área</label><select name="scope">${opts(['profissional','pessoal'],defaultScope)}</select></div>
-    <div class="field"><label>Movimento</label><select name="kind">${opts(['Entrada','Saída'],'Saída')}</select></div>
-    <div class="field full"><label>Descrição *</label><input name="description" required placeholder="Ex.: Mensalidade, mercado, aplicativo"></div>
-    <div class="field"><label>Categoria</label><select name="category">${opts(['Mensalidade','Aula avulsa','Avaliação','Consultoria','Outros recebimentos','Moradia','Alimentação','Transporte','Saúde','Assinaturas','Equipamentos','Marketing','Impostos','Outros'],'Outros')}</select></div>
-    <div class="field"><label>Valor (R$) *</label><input name="amount" required type="number" min=".01" step=".01" placeholder="0,00"></div>
-    <div class="field"><label>Data</label><input name="date" type="date" value="${iso(now)}"></div>
-    <div class="field"><label>Situação</label><select name="status">${opts(['Pago','Pendente'],'Pago')}</select></div>
-    <div class="field full"><label>Observações</label><textarea name="notes"></textarea></div></div>
-    <div class="form-actions"><button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button><button class="btn">Salvar lançamento</button></div></form>`;
-    document.getElementById('recordForm').onsubmit=e=>{e.preventDefault();let f=Object.fromEntries(new FormData(e.target));f.amount=Number(f.amount);data.transactions.push({id:uid(),...f});save();closeModal();};
-
-  }else if(type==='reschedule'){
-    let a=data.appointments.find(x=>x.id===id);if(!a){closeModal();return}
-    document.getElementById('modalTitle').textContent='Remarcar atendimento';
-    body.innerHTML=`<p class="muted">Altere a data e/ou o horário. O restante dos dados do atendimento será mantido.</p><form id="recordForm"><div class="formgrid"><div class="field full"><label>Atendimento</label><input value="${esc(a.title)}" disabled></div><div class="field"><label>Nova data *</label><input name="date" type="date" required value="${a.date||iso(now)}"></div><div class="field"><label>Novo horário *</label><input name="time" type="time" required value="${a.time||'08:00'}"></div><div class="field full"><label>Observação da remarcação (opcional)</label><input name="rescheduleNote" placeholder="Ex.: combinado pelo WhatsApp"></div></div><div class="form-actions"><button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button><button class="btn">Confirmar remarcação</button></div></form>`;
-    document.getElementById('recordForm').onsubmit=e=>{e.preventDefault();let f=Object.fromEntries(new FormData(e.target));let oldDate=a.date,oldTime=a.time;a.date=f.date;a.time=f.time;a.status='Remarcado';if(f.rescheduleNote)a.notes=(a.notes?a.notes+' | ':'')+'Remarcação de '+fmtDate(oldDate)+' às '+(oldTime||'horário não informado')+': '+f.rescheduleNote;save();closeModal();alert('Atendimento remarcado para '+fmtDate(a.date)+' às '+a.time+'.');};
-
-  }else if(type==='dueAdjust'){
-    let d=data.dues.find(x=>x.id===id);
-    document.getElementById('modalTitle').textContent='Ajustar cobrança do mês';
-    body.innerHTML=`<form id="recordForm"><p class="muted">Ajuste apenas esta cobrança; o valor padrão do aluno não será alterado.</p><div class="formgrid"><div class="field full"><label>Aluno</label><input value="${esc(studentName(d.studentId))}" disabled></div><div class="field"><label>Valor deste mês (R$)</label><input name="amount" type="number" min="0" step=".01" value="${d.amount}"></div><div class="field"><label>Vencimento</label><input name="dueDate" type="date" value="${d.dueDate}"></div><div class="field full"><label>Motivo do ajuste</label><input name="reason" value="${esc(d.reason||'')}" placeholder="Ex.: desconto combinado neste mês"></div></div><div class="form-actions"><button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button><button class="btn">Salvar ajuste</button></div></form>`;
-    document.getElementById('recordForm').onsubmit=e=>{e.preventDefault();let f=Object.fromEntries(new FormData(e.target));d.amount=Number(f.amount||0);d.dueDate=f.dueDate;d.reason=f.reason;
-      const linkedTx=data.transactions.find(t=>t.linkedDue===id);if(linkedTx)linkedTx.amount=d.amount;
-      save();closeModal();};
-  }
-}
-
-function closeModal(){document.getElementById('modal').classList.remove('open')}
-document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
-
-function removeItem(type,id){
-  if(!confirm('Tem certeza que deseja excluir este registro?'))return;
-  if(type==='student'){data.students=data.students.filter(x=>x.id!==id)}
-  if(type==='appointment'){data.appointments=data.appointments.filter(x=>x.id!==id)}
-  if(type==='transaction'){data.transactions=data.transactions.filter(x=>x.id!==id)}
-  if(type==='due'){data.dues=data.dues.filter(x=>x.id!==id)}
-  save()
-}
-
-function renderAll(){renderDashboard();renderAgenda();renderStudents();renderPro();renderPersonal();renderReports()}
-
-function renderDashboard(){
-  let today=iso(now);
-  document.getElementById('dashStudents').textContent=data.students.filter(s=>s.status==='Ativo').length;
-  document.getElementById('dashToday').textContent=data.appointments.filter(a=>a.date===today&&a.status!=='Cancelado').length;
-  let m=monthKey(today),pending=data.dues.filter(d=>d.month===m&&d.status!=='Pago').reduce((s,d)=>s+d.amount,0);
-  document.getElementById('dashPending').textContent=money(pending);
-  let ap=data.appointments.filter(a=>a.date===today&&a.status!=='Cancelado').sort((a,b)=>(a.time||'').localeCompare(b.time||''));
-  document.getElementById('todayList').innerHTML=ap.length?ap.map(a=>`<div class="item"><div><strong>${esc(a.time||'--:--')} · ${esc(a.title)}</strong><div class="sub">${esc(a.type)} · ${esc(a.status)}</div></div><button class="btn secondary small" onclick="openModal('appointment','','${a.id}')">Editar</button></div>`).join(''):'<div class="empty">Nenhum atendimento agendado para hoje.</div>';
-  let pd=data.dues.filter(d=>d.month===m&&d.status!=='Pago').slice(0,5);
-  document.getElementById('pendingList').innerHTML=pd.length?pd.map(d=>`<div class="item"><div><strong>${esc(studentName(d.studentId))}</strong><div class="sub">Vence ${fmtDate(d.dueDate)}</div></div><b class="money">${money(d.amount)}</b></div>`).join(''):'<div class="empty">Nenhuma cobrança pendente neste mês.</div>'
-}
-
-function renderAgenda(){
-  let date=document.getElementById('agendaDate').value||iso(now),filter=document.getElementById('agendaFilter').value;
-  let arr=data.appointments.filter(a=>a.date===date&&(filter==='all'||a.type===filter)).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
-  document.getElementById('agendaList').innerHTML=arr.length?arr.map(a=>`<div class="item"><div><strong>${esc(a.time||'--:--')} · ${esc(a.title)}</strong><div class="sub">${esc(a.type)} · ${a.duration||60} min ${a.studentId?'· '+esc(studentName(a.studentId)):''}</div><div class="sub">${esc(a.notes||'')}</div><span class="tag ${a.status==='Concluído'?'ok':a.status==='Cancelado'?'red':'warn'}">${esc(a.status)}</span></div><div class="split" style="flex-direction:column;min-width:74px"><button class="btn secondary small" onclick="openModal('appointment','','${a.id}')">Editar</button><button class="btn small" onclick="openModal('reschedule','','${a.id}')">Remarcar</button></div></div>`).join(''):'<div class="empty">Nada encontrado nessa data. Toque em “Novo” para adicionar um compromisso.</div>'
-}
-
-function renderStudents(){
-  let q=(document.getElementById('studentSearch')?.value||'').toLowerCase(),status=document.getElementById('studentStatus')?.value||'ativos';
-  let arr=data.students.filter(s=>s.name.toLowerCase().includes(q)||String(s.phone||'').includes(q)).filter(s=>status==='todos'||(status==='ativos'?s.status==='Ativo':s.status!=='Ativo'));
-  document.getElementById('studentsList').innerHTML=arr.length?arr.map(s=>`<div class="item"><div style="min-width:0"><strong>${esc(s.name)}</strong><div class="sub">${esc(s.modality)} · ${s.frequency||0}x/semana</div><div class="sub">${esc(s.schedule||'Horário não informado')}</div><div class="sub">${s.phone?esc(s.phone)+' · ':''}${money(s.price)} / mês · vence dia ${s.dueDay||10}</div><span class="tag ${s.status==='Ativo'?'ok':'warn'}">${esc(s.status)}</span></div><div class="split" style="flex-direction:column;min-width:76px"><button class="btn secondary small" onclick="openModal('student','','${s.id}')">Editar</button><button class="btn secondary small" onclick="studentDue('${s.id}')">Cobrança</button></div></div>`).join(''):'<div class="empty">Nenhum aluno encontrado. Cadastre seu primeiro aluno.</div>'
-}
-
-function studentDue(id){
-  let s=data.students.find(x=>x.id===id);if(!s)return;
-  let m=monthKey(iso(now));let exists=data.dues.find(d=>d.studentId===id&&d.month===m);
-  if(exists){alert('Já existe uma cobrança deste aluno para '+m+'. Ela está na seção Financeiro profissional.');showView('profissional');return}
-  data.dues.push({id:uid(),studentId:id,month:m,amount:Number(s.price||0),dueDate:`${m}-${String(s.dueDay||10).padStart(2,'0')}`,status:'Pendente',reason:''});
-  save();alert('Cobrança criada para '+s.name+'.');
-}
-
-function generateDues(){
-  let m=monthKey(iso(proMonthDate)),created=0;
-  data.students.filter(s=>s.status==='Ativo'&&Number(s.price)>0).forEach(s=>{
-    if(!data.dues.some(d=>d.studentId===s.id&&d.month===m)){
-      let day=String(s.dueDay||10).padStart(2,'0');
-      let last=new Date(Number(m.slice(0,4)),Number(m.slice(5,7)),0).getDate();
-      data.dues.push({id:uid(),studentId:s.id,month:m,amount:Number(s.price),dueDate:`${m}-${String(Math.min(Number(day),last)).padStart(2,'0')}`,status:'Pendente',reason:''});
-      created++
-    }
+const money = n =>
+  Number(n || 0).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
   });
-  save();alert(created?`${created} cobrança(s) criada(s) para ${m}.`:'Não havia novas cobranças para criar neste mês.')
-}
 
-function markDue(id){
-  let d=data.dues.find(x=>x.id===id);if(!d)return;
-  if(d.status==='Pago'){d.status='Pendente';data.transactions=data.transactions.filter(t=>t.linkedDue!==id)}
-  else{d.status='Pago';data.transactions.push({id:uid(),scope:'profissional',kind:'Entrada',description:'Mensalidade — '+studentName(d.studentId),category:'Mensalidade',amount:d.amount,date:iso(now),status:'Pago',linkedDue:id})}
-  save()
-}
+const esc = s =>
+  String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[c]));
 
-function renderPro(){
-  document.getElementById('proMonth').textContent=monthName(proMonthDate);
-  let m=monthKey(proMonthDate),tx=data.transactions.filter(t=>t.scope==='profissional'&&monthKey(t.date)===m);
-  let inc=tx.filter(t=>t.kind==='Entrada'&&t.status==='Pago').reduce((a,t)=>a+t.amount,0),out=tx.filter(t=>t.kind==='Saída'&&t.status==='Pago').reduce((a,t)=>a+t.amount,0);
-  document.getElementById('proIncome').textContent=money(inc);document.getElementById('proExpense').textContent=money(out);document.getElementById('proNet').textContent=money(inc-out);
-  let dues=data.dues.filter(d=>d.month===m).sort((a,b)=>a.dueDate.localeCompare(b.dueDate));
-  document.getElementById('duesList').innerHTML=dues.length?dues.map(d=>`<div class="item"><div><strong>${esc(studentName(d.studentId))}</strong><div class="sub">Vencimento ${fmtDate(d.dueDate)} · ${money(d.amount)}</div>${d.reason?`<div class="sub">Ajuste: ${esc(d.reason)}</div>`:''}<span class="tag ${d.status==='Pago'?'ok':'warn'}">${d.status}</span></div><div class="split" style="flex-direction:column"><button class="btn small" onclick="markDue('${d.id}')">${d.status==='Pago'?'Reabrir':'Marcar pago'}</button><button class="btn secondary small" onclick="openModal('dueAdjust','','${d.id}')">Ajustar</button></div></div>`).join(''):'<div class="empty">Nenhuma cobrança neste mês. Use “Gerar cobranças” para criar mensalidades dos alunos ativos.</div>';
-  document.getElementById('proTransactions').innerHTML=renderTxList(tx)
-}
-
-function renderPersonal(){
-  document.getElementById('perMonth').textContent=monthName(perMonthDate);
-  let tx=data.transactions.filter(t=>t.scope==='pessoal'&&monthKey(t.date)===monthKey(perMonthDate));
-  let inc=tx.filter(t=>t.kind==='Entrada'&&t.status==='Pago').reduce((a,t)=>a+t.amount,0),out=tx.filter(t=>t.kind==='Saída'&&t.status==='Pago').reduce((a,t)=>a+t.amount,0);
-  document.getElementById('perIncome').textContent=money(inc);document.getElementById('perExpense').textContent=money(out);document.getElementById('perNet').textContent=money(inc-out);
-  document.getElementById('perTransactions').innerHTML=tx.length?renderTxList(tx):'<div class="empty">Nenhum lançamento pessoal neste mês.</div>'
-}
-
-function renderTxList(tx){
-  return tx.length?tx.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(t=>`<div class="item"><div><strong>${esc(t.description)}</strong><div class="sub">${fmtDate(t.date)} · ${esc(t.category)} · ${esc(t.status)}</div>${t.notes?`<div class="sub">${esc(t.notes)}</div>`:''}</div><div style="text-align:right"><b class="money" style="color:${t.kind==='Entrada'?'var(--green)':'#ff9da5'}">${t.kind==='Entrada'?'+':'−'} ${money(t.amount)}</b><div style="margin-top:6px"><button class="btn secondary small" onclick="removeItem('transaction','${t.id}')">Excluir</button></div></div></div>`).join(''):'<div class="empty">Nenhum lançamento neste mês.</div>'
-}
-
-function renderReports(){
-  document.getElementById('repMonth').textContent=monthName(repMonthDate);
-  let m=monthKey(repMonthDate),pro=data.transactions.filter(t=>t.scope==='profissional'&&monthKey(t.date)===m&&t.status==='Pago'),per=data.transactions.filter(t=>t.scope==='pessoal'&&monthKey(t.date)===m&&t.status==='Pago');
-  let pi=pro.filter(t=>t.kind==='Entrada').reduce((s,t)=>s+t.amount,0),po=pro.filter(t=>t.kind==='Saída').reduce((s,t)=>s+t.amount,0),ei=per.filter(t=>t.kind==='Entrada').reduce((s,t)=>s+t.amount,0),eo=per.filter(t=>t.kind==='Saída').reduce((s,t)=>s+t.amount,0),open=data.dues.filter(d=>d.month===m&&d.status!=='Pago').reduce((s,d)=>s+d.amount,0);
-  [['repProIn',pi],['repProOut',po],['repProNet',pi-po],['repOpen',open],['repPerIn',ei],['repPerOut',eo],['repPerNet',ei-eo],['repTotal',pi-po+ei-eo]].forEach(([id,n])=>document.getElementById(id).textContent=money(n))
-}
-
-function shiftMonth(which,delta){
-  let d=which==='pro'?proMonthDate:which==='per'?perMonthDate:repMonthDate;
-  d.setMonth(d.getMonth()+delta);
-  if(which==='pro')proMonthDate=d;if(which==='per')perMonthDate=d;if(which==='rep')repMonthDate=d;
-  renderAll()
-}
-
-function exportBackup(){
-  let blob=new Blob([JSON.stringify({app:'Metodo Vini Seta Gestor',version:1,exportedAt:new Date().toISOString(),data},null,2)],{type:'application/json'});
-  let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='backup-vini-seta-'+iso(now)+'.json';a.click();URL.revokeObjectURL(a.href)
-}
-
-function importBackup(e){
-  let file=e.target.files[0];if(!file)return;
-  let r=new FileReader();
-  r.onload=()=>{
-    try{
-      let b=JSON.parse(r.result),d=b.data||b;
-      if(!d.students||!d.appointments||!d.transactions||!d.dues)throw new Error('Arquivo incompatível');
-      if(confirm('Importar este backup substituirá os dados atuais. Continuar?')){data=d;save();syncToCloud();alert('Backup importado com sucesso.')}
-    }catch(err){alert('Não foi possível importar. Verifique se selecionou um backup válido do Gestor Vini Seta.')}
-    e.target.value=''
+function blank() {
+  return {
+    students: [],
+    appointments: [],
+    dues: [],
+    transactions: []
   };
-  r.readAsText(file)
 }
 
-function clearAll(){
-  if(confirm('Isso apagará todos os alunos, atendimentos, cobranças e lançamentos. Exporte um backup antes. Tem certeza?')){data=blank();save()}
+let data = blank();
+let currentUser = null;
+let saveTimer = null;
+
+let proMonthDate = new Date(now.getFullYear(), now.getMonth(), 1);
+let perMonthDate = new Date(now.getFullYear(), now.getMonth(), 1);
+let repMonthDate = new Date(now.getFullYear(), now.getMonth(), 1);
+
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 }
 
-function seedDemo(){
-  if(data.students.length||data.appointments.length||data.transactions.length){if(!confirm('Já existem dados. Adicionar exemplos mesmo assim?'))return}
-  let s={id:uid(),name:'Aluno exemplo',phone:'',email:'',modality:'Presencial',frequency:3,price:480,dueDay:10,startDate:iso(now),status:'Ativo',schedule:'Seg/Qua/Sex — 8h',notes:'Apague este cadastro quando terminar de testar'};
-  data.students.push(s);
-  data.appointments.push({id:uid(),title:'Treino — Aluno exemplo',studentId:s.id,type:'Treino presencial',date:iso(now),time:'08:00',duration:60,status:'Agendado',notes:'Atendimento de demonstração'});
-  save();alert('Exemplo adicionado. Você pode editar ou excluir os registros de teste.')
+function fmtDate(s) {
+  if (!s) return 'Sem data';
+
+  const [y, m, d] = s.split('-');
+
+  return `${d}/${m}/${y}`;
 }
 
-function showView(name){
-  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));
-  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));
-  if(name==='agenda')renderAgenda();
-  if(name==='alunos')renderStudents();
-  if(name==='profissional')renderPro();
-  if(name==='pessoal')renderPersonal();
-  if(name==='relatorios')renderReports();
-  window.scrollTo({top:0,behavior:'smooth'})
+function monthName(d) {
+  return d.toLocaleDateString('pt-BR', {
+    month:'long',
+    year:'numeric'
+  });
 }
 
-function showScreen(name){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='screen-'+name));
+function persistLocalCache() {
+  try {
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn('Não foi possível salvar no cache local.', e);
+  }
 }
 
-async function logout(){
-  await sb.auth.signOut();
-  currentUser=null;data=blank();
+function readLocalCache() {
+  try {
+    return JSON.parse(localStorage.getItem(LOCAL_KEY) || 'null');
+  } catch (e) {
+    return null;
+  }
+}
+
+/* ============================================================
+   TIMEOUT DE CONEXÃO
+============================================================ */
+
+function withTimeout(promise, ms = 8000, message = 'Tempo de conexão esgotado.') {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(message)), ms);
+    })
+  ]);
+}
+
+function setSyncStatus(state) {
+  const el = document.getElementById('syncStatus');
+
+  if (!el) return;
+
+  if (state === 'saving') {
+    el.textContent = '● Salvando...';
+    el.style.color = '#f0ce73';
+  } else if (state === 'saved') {
+    el.textContent = '● Sincronizado';
+    el.style.color = '#7be0ad';
+  } else if (state === 'offline') {
+    el.textContent = '● Sem conexão (salvo localmente)';
+    el.style.color = '#ff9da5';
+  } else {
+    el.textContent = '● Conectando...';
+    el.style.color = '#a9a9a9';
+  }
+}
+
+/* ============================================================
+   NUVEM / SUPABASE — CORRIGIDO PARA NÃO TRAVAR A TELA
+============================================================ */
+
+async function loadCloudData() {
+  const cache = readLocalCache();
+
+  try {
+    if (!sb) {
+      throw new Error('Supabase não carregado.');
+    }
+
+    if (!currentUser || !currentUser.id) {
+      throw new Error('Usuário não identificado.');
+    }
+
+    const result = await withTimeout(
+      sb
+        .from('app_state')
+        .select('data')
+        .eq('user_id', currentUser.id)
+        .maybeSingle(),
+      8000,
+      'Tempo esgotado ao carregar os dados da nuvem.'
+    );
+
+    if (result.error) {
+      throw result.error;
+    }
+
+    if (result.data && result.data.data) {
+      data = { ...blank(), ...result.data.data };
+      persistLocalCache();
+      setSyncStatus('saved');
+      return;
+    }
+
+    data = cache ? { ...blank(), ...cache } : blank();
+
+    const createResult = await withTimeout(
+      sb
+        .from('app_state')
+        .upsert({
+          user_id: currentUser.id,
+          data,
+          updated_at: new Date().toISOString()
+        }),
+      8000,
+      'Tempo esgotado ao criar os dados iniciais.'
+    );
+
+    if (createResult.error) {
+      throw createResult.error;
+    }
+
+    setSyncStatus('saved');
+
+  } catch (err) {
+    console.error('Falha ao carregar dados da nuvem:', err);
+
+    data = cache ? { ...blank(), ...cache } : blank();
+
+    setSyncStatus('offline');
+  }
+}
+
+function save() {
+  persistLocalCache();
+  renderAll();
+  setSyncStatus('saving');
+
+  clearTimeout(saveTimer);
+
+  saveTimer = setTimeout(syncToCloud, 700);
+}
+
+async function syncToCloud() {
+  if (!currentUser || !sb) {
+    setSyncStatus('offline');
+    return;
+  }
+
+  try {
+    const result = await withTimeout(
+      sb
+        .from('app_state')
+        .upsert({
+          user_id: currentUser.id,
+          data,
+          updated_at: new Date().toISOString()
+        }),
+      8000,
+      'Tempo esgotado ao salvar na nuvem.'
+    );
+
+    if (result.error) {
+      throw result.error;
+    }
+
+    setSyncStatus('saved');
+
+  } catch (err) {
+    console.error('Erro ao salvar na nuvem:', err);
+    setSyncStatus('offline');
+  }
+}
+
+/* ============================================================
+   FUNÇÕES DE INTERFACE
+============================================================ */
+
+function opts(values, selected) {
+  return values.map(v =>
+    `<option ${String(v) === String(selected) ? 'selected' : ''} value="${esc(v)}">${esc(v)}</option>`
+  ).join('');
+}
+
+function studentName(id) {
+  return data.students.find(s => s.id === id)?.name || 'Aluno removido';
+}
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.toggle('active', s.id === 'screen-' + name);
+  });
+}
+
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => {
+    v.classList.toggle('active', v.id === 'view-' + name);
+  });
+
+  document.querySelectorAll('.nav button').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === name);
+  });
+
+  if (name === 'agenda') renderAgenda();
+  if (name === 'alunos') renderStudents();
+  if (name === 'profissional') renderPro();
+  if (name === 'pessoal') renderPersonal();
+  if (name === 'relatorios') renderReports();
+
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target.id === 'modal') closeModal();
+});
+
+/* ============================================================
+   MODAIS
+============================================================ */
+
+function openModal(type, scope = '', id = '') {
+  const modal = document.getElementById('modal');
+  const body = document.getElementById('modalBody');
+
+  modal.classList.add('open');
+  modal.dataset.type = type;
+  modal.dataset.id = id;
+  modal.dataset.scope = scope;
+
+  if (type === 'student') {
+    let s = data.students.find(x => x.id === id) || {};
+
+    document.getElementById('modalTitle').textContent =
+      id ? 'Editar aluno' : 'Cadastrar aluno';
+
+    body.innerHTML = `
+      <form id="recordForm">
+        <div class="formgrid">
+
+          <div class="field full">
+            <label>Nome completo *</label>
+            <input name="name" required value="${esc(s.name || '')}" placeholder="Nome do aluno">
+          </div>
+
+          <div class="field">
+            <label>Telefone / WhatsApp</label>
+            <input name="phone" value="${esc(s.phone || '')}">
+          </div>
+
+          <div class="field">
+            <label>E-mail</label>
+            <input name="email" type="email" value="${esc(s.email || '')}">
+          </div>
+
+          <div class="field">
+            <label>Modalidade</label>
+            <select name="modality">
+              ${opts(['Presencial','Consultoria online','Híbrido','Aula avulsa'], s.modality || 'Presencial')}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Frequência por semana</label>
+            <select name="frequency">
+              ${opts(['1','2','3','4','5','6','7'], s.frequency || '3')}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Mensalidade (R$)</label>
+            <input name="price" type="number" min="0" step=".01" value="${s.price ?? ''}">
+          </div>
+
+          <div class="field">
+            <label>Dia de vencimento</label>
+            <select name="dueDay">
+              ${Array.from({length:28}, (_, i) =>
+                `<option value="${i + 1}" ${(s.dueDay || 10) == i + 1 ? 'selected' : ''}>Dia ${i + 1}</option>`
+              ).join('')}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Início do plano</label>
+            <input name="startDate" type="date" value="${s.startDate || iso(now)}">
+          </div>
+
+          <div class="field">
+            <label>Status</label>
+            <select name="status">
+              ${opts(['Ativo','Pausado','Inativo'], s.status || 'Ativo')}
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Dias e horários habituais</label>
+            <input name="schedule" value="${esc(s.schedule || '')}" placeholder="Ex.: seg/qua/sex — 8h">
+          </div>
+
+          <div class="field full">
+            <label>Observações</label>
+            <textarea name="notes">${esc(s.notes || '')}</textarea>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button>
+          <button class="btn">Salvar aluno</button>
+        </div>
+      </form>
+    `;
+
+    document.getElementById('recordForm').onsubmit = e => {
+      e.preventDefault();
+
+      let f = Object.fromEntries(new FormData(e.target));
+
+      f.price = Number(f.price || 0);
+      f.frequency = Number(f.frequency);
+
+      if (id) {
+        Object.assign(s, f);
+      } else {
+        data.students.push({
+          id:uid(),
+          ...f,
+          createdAt:iso(now)
+        });
+      }
+
+      save();
+      closeModal();
+    };
+  }
+
+  if (type === 'appointment') {
+    let a = data.appointments.find(x => x.id === id) || {};
+
+    document.getElementById('modalTitle').textContent =
+      id ? 'Editar atendimento' : 'Novo atendimento';
+
+    body.innerHTML = `
+      <form id="recordForm">
+        <div class="formgrid">
+
+          <div class="field full">
+            <label>Descrição / aluno *</label>
+            <input name="title" required value="${esc(a.title || '')}" placeholder="Ex.: Treino — Maria">
+          </div>
+
+          <div class="field">
+            <label>Tipo</label>
+            <select name="type">
+              ${opts(
+                ['Treino presencial','Avaliação física','Aula avulsa','Compromisso','Consultoria online'],
+                a.type || 'Treino presencial'
+              )}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Aluno (opcional)</label>
+            <select name="studentId">
+              <option value="">Sem aluno vinculado</option>
+              ${data.students.map(s =>
+                `<option value="${s.id}" ${a.studentId === s.id ? 'selected' : ''}>${esc(s.name)}</option>`
+              ).join('')}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Data *</label>
+            <input name="date" type="date" required value="${a.date || iso(now)}">
+          </div>
+
+          <div class="field">
+            <label>Horário</label>
+            <input name="time" type="time" value="${a.time || '08:00'}">
+          </div>
+
+          <div class="field">
+            <label>Duração (min)</label>
+            <input name="duration" type="number" min="1" value="${a.duration || 60}">
+          </div>
+
+          <div class="field">
+            <label>Status</label>
+            <select name="status">
+              ${opts(['Agendado','Concluído','Cancelado','Remarcado'], a.status || 'Agendado')}
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Observações</label>
+            <textarea name="notes">${esc(a.notes || '')}</textarea>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button>
+          <button class="btn">Salvar atendimento</button>
+        </div>
+      </form>
+    `;
+
+    document.getElementById('recordForm').onsubmit = e => {
+      e.preventDefault();
+
+      let f = Object.fromEntries(new FormData(e.target));
+      f.duration = Number(f.duration || 60);
+
+      if (id) {
+        Object.assign(a, f);
+      } else {
+        data.appointments.push({
+          id:uid(),
+          ...f
+        });
+      }
+
+      save();
+      closeModal();
+    };
+  }
+
+  if (type === 'transaction') {
+    document.getElementById('modalTitle').textContent = 'Novo lançamento';
+
+    const defaultScope = scope || 'profissional';
+
+    body.innerHTML = `
+      <form id="recordForm">
+        <div class="formgrid">
+
+          <div class="field">
+            <label>Área</label>
+            <select name="scope">
+              ${opts(['profissional','pessoal'], defaultScope)}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Movimento</label>
+            <select name="kind">
+              ${opts(['Entrada','Saída'], 'Saída')}
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Descrição *</label>
+            <input name="description" required placeholder="Ex.: Mensalidade, mercado, aplicativo">
+          </div>
+
+          <div class="field">
+            <label>Categoria</label>
+            <select name="category">
+              ${opts(
+                [
+                  'Mensalidade','Aula avulsa','Avaliação','Consultoria','Outros recebimentos',
+                  'Moradia','Alimentação','Transporte','Saúde','Assinaturas',
+                  'Equipamentos','Marketing','Impostos','Outros'
+                ],
+                'Outros'
+              )}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Valor (R$) *</label>
+            <input name="amount" required type="number" min=".01" step=".01">
+          </div>
+
+          <div class="field">
+            <label>Data</label>
+            <input name="date" type="date" value="${iso(now)}">
+          </div>
+
+          <div class="field">
+            <label>Situação</label>
+            <select name="status">
+              ${opts(['Pago','Pendente'], 'Pago')}
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Observações</label>
+            <textarea name="notes"></textarea>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button>
+          <button class="btn">Salvar lançamento</button>
+        </div>
+      </form>
+    `;
+
+    document.getElementById('recordForm').onsubmit = e => {
+      e.preventDefault();
+
+      let f = Object.fromEntries(new FormData(e.target));
+      f.amount = Number(f.amount);
+
+      data.transactions.push({
+        id:uid(),
+        ...f
+      });
+
+      save();
+      closeModal();
+    };
+  }
+}
+
+/* ============================================================
+   RENDERIZAÇÃO
+============================================================ */
+
+function renderAll() {
+  renderDashboard();
+  renderAgenda();
+  renderStudents();
+  renderPro();
+  renderPersonal();
+  renderReports();
+}
+
+function renderDashboard() {
+  const today = iso(now);
+
+  document.getElementById('dashStudents').textContent =
+    data.students.filter(s => s.status === 'Ativo').length;
+
+  document.getElementById('dashToday').textContent =
+    data.appointments.filter(a =>
+      a.date === today && a.status !== 'Cancelado'
+    ).length;
+
+  const m = monthKey(today);
+
+  const pending = data.dues
+    .filter(d => d.month === m && d.status !== 'Pago')
+    .reduce((s, d) => s + Number(d.amount || 0), 0);
+
+  document.getElementById('dashPending').textContent = money(pending);
+
+  const appointments = data.appointments
+    .filter(a => a.date === today && a.status !== 'Cancelado')
+    .sort((a,b) => (a.time || '').localeCompare(b.time || ''));
+
+  document.getElementById('todayList').innerHTML = appointments.length
+    ? appointments.map(a => `
+      <div class="item">
+        <div>
+          <strong>${esc(a.time || '--:--')} · ${esc(a.title)}</strong>
+          <div class="sub">${esc(a.type)} · ${esc(a.status)}</div>
+        </div>
+
+        <button class="btn secondary small" onclick="openModal('appointment','','${a.id}')">
+          Editar
+        </button>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhum atendimento agendado para hoje.</div>`;
+
+  const dues = data.dues
+    .filter(d => d.month === m && d.status !== 'Pago')
+    .slice(0, 5);
+
+  document.getElementById('pendingList').innerHTML = dues.length
+    ? dues.map(d => `
+      <div class="item">
+        <div>
+          <strong>${esc(studentName(d.studentId))}</strong>
+          <div class="sub">Vence ${fmtDate(d.dueDate)}</div>
+        </div>
+
+        <b>${money(d.amount)}</b>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
+}
+
+function renderAgenda() {
+  const date = document.getElementById('agendaDate').value || iso(now);
+  const filter = document.getElementById('agendaFilter').value;
+
+  const arr = data.appointments
+    .filter(a => a.date === date && (filter === 'all' || a.type === filter))
+    .sort((a,b) => (a.time || '').localeCompare(b.time || ''));
+
+  document.getElementById('agendaList').innerHTML = arr.length
+    ? arr.map(a => `
+      <div class="item">
+        <div>
+          <strong>${esc(a.time || '--:--')} · ${esc(a.title)}</strong>
+
+          <div class="sub">
+            ${esc(a.type)} · ${a.duration || 60} min
+            ${a.studentId ? '· ' + esc(studentName(a.studentId)) : ''}
+          </div>
+
+          ${a.notes ? `<div class="sub">${esc(a.notes)}</div>` : ''}
+
+          <span class="tag ${
+            a.status === 'Concluído'
+              ? 'ok'
+              : a.status === 'Cancelado'
+                ? 'red'
+                : 'warn'
+          }">${esc(a.status)}</span>
+        </div>
+
+        <button class="btn secondary small" onclick="openModal('appointment','','${a.id}')">
+          Editar
+        </button>
+      </div>
+    `).join('')
+    : `<div class="empty">Nada encontrado nessa data.</div>`;
+}
+
+function renderStudents() {
+  const q = (document.getElementById('studentSearch').value || '').toLowerCase();
+  const status = document.getElementById('studentStatus').value || 'ativos';
+
+  const arr = data.students
+    .filter(s =>
+      s.name.toLowerCase().includes(q) ||
+      String(s.phone || '').includes(q)
+    )
+    .filter(s =>
+      status === 'todos'
+        ? true
+        : status === 'ativos'
+          ? s.status === 'Ativo'
+          : s.status !== 'Ativo'
+    );
+
+  document.getElementById('studentsList').innerHTML = arr.length
+    ? arr.map(s => `
+      <div class="item">
+        <div>
+          <strong>${esc(s.name)}</strong>
+
+          <div class="sub">
+            ${esc(s.modality)} · ${s.frequency || 0}x por semana
+          </div>
+
+          <div class="sub">
+            ${esc(s.schedule || 'Horário não informado')}
+          </div>
+
+          <div class="sub">
+            ${money(s.price)} por mês · vence dia ${s.dueDay || 10}
+          </div>
+
+          <span class="tag ${s.status === 'Ativo' ? 'ok' : 'warn'}">
+            ${esc(s.status)}
+          </span>
+        </div>
+
+        <button class="btn secondary small" onclick="openModal('student','','${s.id}')">
+          Editar
+        </button>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhum aluno encontrado.</div>`;
+}
+
+function generateDues() {
+  const m = monthKey(iso(proMonthDate));
+  let created = 0;
+
+  data.students
+    .filter(s => s.status === 'Ativo' && Number(s.price) > 0)
+    .forEach(s => {
+      const exists = data.dues.some(d =>
+        d.studentId === s.id && d.month === m
+      );
+
+      if (!exists) {
+        const day = String(s.dueDay || 10).padStart(2, '0');
+
+        data.dues.push({
+          id:uid(),
+          studentId:s.id,
+          month:m,
+          amount:Number(s.price),
+          dueDate:`${m}-${day}`,
+          status:'Pendente'
+        });
+
+        created++;
+      }
+    });
+
+  save();
+
+  alert(
+    created
+      ? `${created} cobrança(s) criada(s).`
+      : 'Não havia novas cobranças para criar neste mês.'
+  );
+}
+
+function markDue(id) {
+  const d = data.dues.find(x => x.id === id);
+
+  if (!d) return;
+
+  if (d.status === 'Pago') {
+    d.status = 'Pendente';
+
+    data.transactions = data.transactions.filter(t => t.linkedDue !== id);
+  } else {
+    d.status = 'Pago';
+
+    data.transactions.push({
+      id:uid(),
+      scope:'profissional',
+      kind:'Entrada',
+      description:'Mensalidade — ' + studentName(d.studentId),
+      category:'Mensalidade',
+      amount:Number(d.amount),
+      date:iso(now),
+      status:'Pago',
+      linkedDue:id
+    });
+  }
+
+  save();
+}
+
+function renderPro() {
+  document.getElementById('proMonth').textContent = monthName(proMonthDate);
+
+  const m = monthKey(proMonthDate);
+
+  const tx = data.transactions.filter(t =>
+    t.scope === 'profissional' &&
+    monthKey(t.date) === m
+  );
+
+  const inc = tx
+    .filter(t => t.kind === 'Entrada' && t.status === 'Pago')
+    .reduce((a,t) => a + Number(t.amount || 0), 0);
+
+  const out = tx
+    .filter(t => t.kind === 'Saída' && t.status === 'Pago')
+    .reduce((a,t) => a + Number(t.amount || 0), 0);
+
+  document.getElementById('proIncome').textContent = money(inc);
+  document.getElementById('proExpense').textContent = money(out);
+  document.getElementById('proNet').textContent = money(inc - out);
+
+  const dues = data.dues
+    .filter(d => d.month === m)
+    .sort((a,b) => a.dueDate.localeCompare(b.dueDate));
+
+  document.getElementById('duesList').innerHTML = dues.length
+    ? dues.map(d => `
+      <div class="item">
+        <div>
+          <strong>${esc(studentName(d.studentId))}</strong>
+          <div class="sub">
+            Vencimento ${fmtDate(d.dueDate)} · ${money(d.amount)}
+          </div>
+
+          <span class="tag ${d.status === 'Pago' ? 'ok' : 'warn'}">
+            ${d.status}
+          </span>
+        </div>
+
+        <button class="btn small" onclick="markDue('${d.id}')">
+          ${d.status === 'Pago' ? 'Reabrir' : 'Marcar pago'}
+        </button>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhuma cobrança neste mês.</div>`;
+
+  document.getElementById('proTransactions').innerHTML = renderTxList(tx);
+}
+
+function renderPersonal() {
+  document.getElementById('perMonth').textContent = monthName(perMonthDate);
+
+  const tx = data.transactions.filter(t =>
+    t.scope === 'pessoal' &&
+    monthKey(t.date) === monthKey(perMonthDate)
+  );
+
+  const inc = tx
+    .filter(t => t.kind === 'Entrada' && t.status === 'Pago')
+    .reduce((a,t) => a + Number(t.amount || 0), 0);
+
+  const out = tx
+    .filter(t => t.kind === 'Saída' && t.status === 'Pago')
+    .reduce((a,t) => a + Number(t.amount || 0), 0);
+
+  document.getElementById('perIncome').textContent = money(inc);
+  document.getElementById('perExpense').textContent = money(out);
+  document.getElementById('perNet').textContent = money(inc - out);
+
+  document.getElementById('perTransactions').innerHTML =
+    tx.length
+      ? renderTxList(tx)
+      : `<div class="empty">Nenhum lançamento pessoal neste mês.</div>`;
+}
+
+function renderTxList(tx) {
+  if (!tx.length) {
+    return `<div class="empty">Nenhum lançamento neste mês.</div>`;
+  }
+
+  return tx
+    .slice()
+    .sort((a,b) => b.date.localeCompare(a.date))
+    .map(t => `
+      <div class="item">
+        <div>
+          <strong>${esc(t.description)}</strong>
+          <div class="sub">
+            ${fmtDate(t.date)} · ${esc(t.category)} · ${esc(t.status)}
+          </div>
+
+          ${t.notes ? `<div class="sub">${esc(t.notes)}</div>` : ''}
+        </div>
+
+        <div style="text-align:right">
+          <b style="color:${t.kind === 'Entrada' ? 'var(--green)' : '#ff9da5'}">
+            ${t.kind === 'Entrada' ? '+' : '−'} ${money(t.amount)}
+          </b>
+
+          <div style="margin-top:6px">
+            <button class="btn secondary small" onclick="removeTransaction('${t.id}')">
+              Excluir
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+}
+
+function removeTransaction(id) {
+  if (!confirm('Deseja excluir este lançamento?')) return;
+
+  data.transactions = data.transactions.filter(t => t.id !== id);
+
+  save();
+}
+
+function renderReports() {
+  document.getElementById('repMonth').textContent = monthName(repMonthDate);
+
+  const m = monthKey(repMonthDate);
+
+  const pro = data.transactions.filter(t =>
+    t.scope === 'profissional' &&
+    monthKey(t.date) === m &&
+    t.status === 'Pago'
+  );
+
+  const per = data.transactions.filter(t =>
+    t.scope === 'pessoal' &&
+    monthKey(t.date) === m &&
+    t.status === 'Pago'
+  );
+
+  const pi = pro
+    .filter(t => t.kind === 'Entrada')
+    .reduce((s,t) => s + Number(t.amount || 0), 0);
+
+  const po = pro
+    .filter(t => t.kind === 'Saída')
+    .reduce((s,t) => s + Number(t.amount || 0), 0);
+
+  const ei = per
+    .filter(t => t.kind === 'Entrada')
+    .reduce((s,t) => s + Number(t.amount || 0), 0);
+
+  const eo = per
+    .filter(t => t.kind === 'Saída')
+    .reduce((s,t) => s + Number(t.amount || 0), 0);
+
+  const open = data.dues
+    .filter(d => d.month === m && d.status !== 'Pago')
+    .reduce((s,d) => s + Number(d.amount || 0), 0);
+
+  const values = [
+    ['repProIn', pi],
+    ['repProOut', po],
+    ['repProNet', pi - po],
+    ['repOpen', open],
+    ['repPerIn', ei],
+    ['repPerOut', eo],
+    ['repPerNet', ei - eo],
+    ['repTotal', pi - po + ei - eo]
+  ];
+
+  values.forEach(([id, n]) => {
+    document.getElementById(id).textContent = money(n);
+  });
+}
+
+function shiftMonth(which, delta) {
+  let d =
+    which === 'pro'
+      ? proMonthDate
+      : which === 'per'
+        ? perMonthDate
+        : repMonthDate;
+
+  d.setMonth(d.getMonth() + delta);
+
+  if (which === 'pro') proMonthDate = d;
+  if (which === 'per') perMonthDate = d;
+  if (which === 'rep') repMonthDate = d;
+
+  renderAll();
+}
+
+/* ============================================================
+   BACKUP
+============================================================ */
+
+function exportBackup() {
+  const blob = new Blob([
+    JSON.stringify({
+      app:'Metodo Vini Seta Gestor',
+      version:1,
+      exportedAt:new Date().toISOString(),
+      data
+    }, null, 2)
+  ], {
+    type:'application/json'
+  });
+
+  const a = document.createElement('a');
+
+  a.href = URL.createObjectURL(blob);
+  a.download = 'backup-vini-seta-' + iso(now) + '.json';
+
+  a.click();
+
+  URL.revokeObjectURL(a.href);
+}
+
+function importBackup(e) {
+  const file = e.target.files[0];
+
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    try {
+      const backup = JSON.parse(reader.result);
+      const imported = backup.data || backup;
+
+      if (
+        !imported.students ||
+        !imported.appointments ||
+        !imported.transactions ||
+        !imported.dues
+      ) {
+        throw new Error('Arquivo incompatível.');
+      }
+
+      if (confirm('Importar este backup substituirá os dados atuais. Deseja continuar?')) {
+        data = imported;
+        save();
+        alert('Backup importado com sucesso.');
+      }
+
+    } catch (err) {
+      alert('Não foi possível importar este arquivo. Verifique se é um backup válido.');
+    }
+
+    e.target.value = '';
+  };
+
+  reader.readAsText(file);
+}
+
+function clearAll() {
+  if (!confirm('Isso apagará todos os dados. Tem certeza?')) return;
+
+  data = blank();
+
+  save();
+}
+
+function seedDemo() {
+  if (
+    data.students.length ||
+    data.appointments.length ||
+    data.transactions.length
+  ) {
+    if (!confirm('Já existem dados. Deseja adicionar os exemplos mesmo assim?')) {
+      return;
+    }
+  }
+
+  const student = {
+    id:uid(),
+    name:'Aluno exemplo',
+    phone:'',
+    email:'',
+    modality:'Presencial',
+    frequency:3,
+    price:480,
+    dueDay:10,
+    startDate:iso(now),
+    status:'Ativo',
+    schedule:'Seg/Qua/Sex — 8h',
+    notes:'Apague este cadastro quando terminar de testar.'
+  };
+
+  data.students.push(student);
+
+  data.appointments.push({
+    id:uid(),
+    title:'Treino — Aluno exemplo',
+    studentId:student.id,
+    type:'Treino presencial',
+    date:iso(now),
+    time:'08:00',
+    duration:60,
+    status:'Agendado',
+    notes:'Atendimento de demonstração.'
+  });
+
+  save();
+
+  alert('Dados de exemplo adicionados.');
+}
+
+/* ============================================================
+   LOGIN E INICIALIZAÇÃO
+============================================================ */
+
+async function logout() {
+  try {
+    if (sb) {
+      await sb.auth.signOut();
+    }
+  } catch (err) {
+    console.error('Erro ao sair:', err);
+  }
+
+  currentUser = null;
+  data = blank();
+
   showScreen('login');
 }
 
-async function initApp(){
-  document.getElementById('todayLabel').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
-  document.getElementById('agendaDate').value=iso(now);
-  document.getElementById('agendaDate').addEventListener('change',renderAgenda);
-  document.getElementById('agendaFilter').addEventListener('change',renderAgenda);
-  document.getElementById('studentSearch').addEventListener('input',renderStudents);
-  document.getElementById('studentStatus').addEventListener('change',renderStudents);
-  document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+async function initApp() {
+  document.getElementById('todayLabel').textContent =
+    now.toLocaleDateString('pt-BR', {
+      weekday:'long',
+      day:'numeric',
+      month:'long'
+    });
 
+  document.getElementById('agendaDate').value = iso(now);
+
+  document.getElementById('agendaDate').addEventListener('change', renderAgenda);
+  document.getElementById('agendaFilter').addEventListener('change', renderAgenda);
+  document.getElementById('studentSearch').addEventListener('input', renderStudents);
+  document.getElementById('studentStatus').addEventListener('change', renderStudents);
+
+  document.querySelectorAll('.nav button').forEach(b => {
+    b.addEventListener('click', () => showView(b.dataset.view));
+  });
+
+  /*
+    Aqui está a correção principal:
+    loadCloudData nunca impede o app de abrir.
+    Em caso de falha, usa cache local ou abre vazio.
+  */
   await loadCloudData();
+
   renderAll();
+
   showScreen('app');
 }
 
-document.getElementById('loginForm').addEventListener('submit', async (e)=>{
+document.getElementById('loginForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const email=document.getElementById('loginEmail').value.trim();
-  const password=document.getElementById('loginPassword').value;
-  const errorEl=document.getElementById('loginError');
-  const btn=document.getElementById('loginBtn');
-  errorEl.textContent='';btn.textContent='Entrando...';btn.disabled=true;
 
-  try{
-    const {data:authData,error}=await sb.auth.signInWithPassword({email,password});
-    btn.textContent='Entrar';btn.disabled=false;
-    if(error){
-      errorEl.textContent='E-mail ou senha incorretos. ('+error.message+')';
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  const errorEl = document.getElementById('loginError');
+  const btn = document.getElementById('loginBtn');
+
+  errorEl.textContent = '';
+
+  if (!sb) {
+    errorEl.textContent =
+      'Não foi possível conectar ao servidor. Recarregue a página e tente novamente.';
+    return;
+  }
+
+  btn.textContent = 'Entrando...';
+  btn.disabled = true;
+
+  try {
+    const result = await withTimeout(
+      sb.auth.signInWithPassword({ email, password }),
+      10000,
+      'Tempo esgotado ao tentar entrar.'
+    );
+
+    btn.textContent = 'Entrar';
+    btn.disabled = false;
+
+    if (result.error) {
+      errorEl.textContent =
+        'E-mail ou senha incorretos. (' + result.error.message + ')';
       return;
     }
-    currentUser=authData.user;
+
+    if (!result.data || !result.data.user) {
+      errorEl.textContent = 'O login não retornou um usuário válido.';
+      return;
+    }
+
+    currentUser = result.data.user;
+
     showScreen('loading');
+
     await initApp();
-  }catch(err){
-    btn.textContent='Entrar';btn.disabled=false;
-    alert('ERRO INESPERADO NO LOGIN: '+(err.message||err));
+
+  } catch (err) {
+    console.error('Erro no login:', err);
+
+    btn.textContent = 'Entrar';
+    btn.disabled = false;
+
+    errorEl.textContent =
+      'Não foi possível concluir o login. Verifique sua conexão e tente novamente.';
+
     showScreen('login');
   }
 });
 
-(async function boot(){
-  const timeout=new Promise((_,reject)=>setTimeout(()=>reject(new Error('Tempo esgotado ao conectar (timeout de 8s)')),8000));
-  try{
-    const result=await Promise.race([sb.auth.getSession(),timeout]);
-    const sessionData=result.data;
-    if(sessionData?.session?.user){
-      currentUser=sessionData.session.user;
+/*
+  Inicialização automática:
+  se houver login salvo, entra no app.
+  se não houver, abre a tela de login.
+*/
+(async function boot() {
+  try {
+    if (!sb) {
+      showScreen('login');
+
+      document.getElementById('loginError').textContent =
+        'Não foi possível carregar a conexão com o servidor.';
+
+      return;
+    }
+
+    const result = await withTimeout(
+      sb.auth.getSession(),
+      8000,
+      'Tempo esgotado ao verificar a sessão.'
+    );
+
+    const session = result.data?.session;
+
+    if (session?.user) {
+      currentUser = session.user;
+
       await initApp();
-    }else{
+    } else {
       showScreen('login');
     }
-  }catch(err){
-    alert('ERRO NA INICIALIZAÇÃO: '+(err.message||err));
+
+  } catch (err) {
+    console.error('Erro na inicialização:', err);
+
     showScreen('login');
+
+    document.getElementById('loginError').textContent =
+      'Não foi possível conectar ao servidor agora. Tente entrar novamente.';
   }
 })();
 </script>
+
 </body>
 </html>
