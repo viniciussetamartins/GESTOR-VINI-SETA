@@ -2134,6 +2134,99 @@ function seedDemo() {
 }
 
 /* ============================================================
+   SINCRONIZAÇÃO — MASTER TRAINING
+============================================================ */
+
+async function syncMasterTraining() {
+  const btn = document.getElementById('syncMasterBtn');
+
+  if (!sb) {
+    alert('Não foi possível conectar ao Supabase.');
+    return;
+  }
+
+  if (!currentUser) {
+    alert('Sua sessão expirou. Entre novamente no Gestor.');
+    return;
+  }
+
+  const originalText = btn ? btn.innerHTML : '';
+
+  try {
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Sincronizando...';
+    }
+
+    setSyncStatus('saving');
+
+    const result = await withTimeout(
+      sb.functions.invoke('sync-master-training'),
+      30000,
+      'A sincronização demorou mais que o esperado. Tente novamente.'
+    );
+
+    if (result.error) {
+      throw new Error(
+        result.error.message ||
+        'Não foi possível conectar à função de sincronização.'
+      );
+    }
+
+    const response = result.data;
+
+    if (!response?.ok) {
+      throw new Error(
+        response?.error ||
+        'O Master Training retornou uma resposta inválida.'
+      );
+    }
+
+    if (response.state) {
+      data = {
+        ...blank(),
+        ...response.state
+      };
+
+      persistLocalCache();
+      renderAll();
+    }
+
+    setSyncStatus('saved');
+
+    let message =
+      'Sincronização concluída.\n\n' +
+      'Alunos encontrados no Master Training: ' + response.totalReceived + '\n' +
+      'Novos alunos importados: ' + response.created + '\n' +
+      'Alunos atualizados: ' + response.updated;
+
+    if (response.linkedByName > 0) {
+      message +=
+        '\nVinculados por nome: ' + response.linkedByName +
+        '\n\nConfira esses alunos vinculados por nome antes de editar os cadastros.';
+    }
+
+    alert(message);
+
+  } catch (err) {
+    console.error('Erro ao sincronizar Master Training:', err);
+
+    setSyncStatus('offline');
+
+    alert(
+      'Não foi possível sincronizar com o Master Training.\n\n' +
+      (err?.message || 'Erro desconhecido.')
+    );
+
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    }
+  }
+}
+
+/* ============================================================
    LOGIN E INICIALIZAÇÃO
 ============================================================ */
 
