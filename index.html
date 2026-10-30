@@ -118,7 +118,25 @@
 <div class="modal" id="modal"><div class="modalbox"><div class="modalhead"><h3 id="modalTitle">Novo registro</h3><button class="close" onclick="closeModal()">Fechar ✕</button></div><div id="modalBody"></div></div></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+window.addEventListener('error', function(e){
+  alert('ERRO DE SCRIPT DETECTADO: '+e.message+' (linha: '+(e.lineno||'?')+')');
+});
+function handleScriptLoadError(){
+  alert('FALHA AO CARREGAR A BIBLIOTECA DO SUPABASE. Verifique sua conexão com a internet e tente recarregar a página. Se persistir, pode ser bloqueio de rede.');
+  document.getElementById('screen-loading').classList.remove('active');
+  document.getElementById('screen-login').classList.add('active');
+}
+setTimeout(function(){
+  var loading=document.getElementById('screen-loading');
+  if(loading && loading.classList.contains('active')){
+    alert('O APP DEMOROU DEMAIS PARA INICIAR (mais de 10 segundos). Toque em OK e tente recarregar a página.');
+    loading.classList.remove('active');
+    document.getElementById('screen-login').classList.add('active');
+  }
+},10000);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="handleScriptLoadError()"></script>
 <script>
 const SUPABASE_URL = 'https://joeswmohdcazikssvhkr.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvZXN3bW9oZGNhemlrc3N2aGtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNTExNDYsImV4cCI6MjEwODkyNzE0Nn0.ixrukIdRG4RhC_RTrO9dqrH4uywhRw_hCOeNZqpR5Cg';
