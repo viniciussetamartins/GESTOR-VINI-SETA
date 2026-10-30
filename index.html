@@ -154,10 +154,23 @@ function setSyncStatus(state){
 }
 
 async function loadCloudData(){
-  const {data:rows,error}=await sb.from('app_state').select('data').eq('user_id',currentUser.id).maybeSingle();
-  if(error){console.error('Erro ao carregar dados da nuvem:',error);const cache=readLocalCache();data=cache?{...blank(),...cache}:blank();setSyncStatus('offline');return}
-  if(rows&&rows.data){data={...blank(),...rows.data};persistLocalCache();setSyncStatus('saved')}
-  else{const cache=readLocalCache();data=cache?{...blank(),...cache}:blank();await sb.from('app_state').upsert({user_id:currentUser.id,data,updated_at:new Date().toISOString()});setSyncStatus('saved')}
+  try{
+    const {data:rows,error}=await sb.from('app_state').select('data').eq('user_id',currentUser.id).maybeSingle();
+    if(error){
+      alert('ERRO AO CARREGAR DADOS: '+error.message+' | código: '+(error.code||'sem código'));
+      const cache=readLocalCache();data=cache?{...blank(),...cache}:blank();setSyncStatus('offline');return;
+    }
+    if(rows&&rows.data){data={...blank(),...rows.data};persistLocalCache();setSyncStatus('saved')}
+    else{
+      const cache=readLocalCache();data=cache?{...blank(),...cache}:blank();
+      const up=await sb.from('app_state').upsert({user_id:currentUser.id,data,updated_at:new Date().toISOString()});
+      if(up.error)alert('ERRO AO CRIAR REGISTRO INICIAL: '+up.error.message);
+      setSyncStatus('saved')
+    }
+  }catch(err){
+    alert('FALHA DE CONEXÃO: '+(err.message||err));
+    const cache=readLocalCache();data=cache?{...blank(),...cache}:blank();setSyncStatus('offline');
+  }
 }
 
 function save(){
@@ -417,17 +430,21 @@ document.getElementById('loginForm').addEventListener('submit', async (e)=>{
   const btn=document.getElementById('loginBtn');
   errorEl.textContent='';btn.textContent='Entrando...';btn.disabled=true;
 
-  const {data:authData,error}=await sb.auth.signInWithPassword({email,password});
-
-  btn.textContent='Entrar';btn.disabled=false;
-
-  if(error){
-    errorEl.textContent='E-mail ou senha incorretos.';
-    return;
+  try{
+    const {data:authData,error}=await sb.auth.signInWithPassword({email,password});
+    btn.textContent='Entrar';btn.disabled=false;
+    if(error){
+      errorEl.textContent='E-mail ou senha incorretos. ('+error.message+')';
+      return;
+    }
+    currentUser=authData.user;
+    showScreen('loading');
+    await initApp();
+  }catch(err){
+    btn.textContent='Entrar';btn.disabled=false;
+    alert('ERRO INESPERADO NO LOGIN: '+(err.message||err));
+    showScreen('login');
   }
-  currentUser=authData.user;
-  showScreen('loading');
-  await initApp();
 });
 
 (async function boot(){
