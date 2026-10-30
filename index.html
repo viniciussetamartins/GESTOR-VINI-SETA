@@ -725,9 +725,19 @@ textarea{
             <p>Cadastro, plano e mensalidade</p>
           </div>
 
-          <button class="btn" onclick="openModal('student')">
-            ＋ Aluno
-          </button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+            <button
+                class="btn secondary"
+                    id="syncMasterBtn"
+                        onclick="syncMasterTraining()"
+                          >
+                              ↻ Sincronizar Master Training
+                                </button>
+
+                                  <button class="btn" onclick="openModal('student')">
+                                      ＋ Aluno
+                                        </button>
+                                        </div>
         </div>
 
         <div class="toolbar">
