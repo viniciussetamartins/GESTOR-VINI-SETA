@@ -123,14 +123,14 @@ window.addEventListener('error', function(e){
   alert('ERRO DE SCRIPT DETECTADO: '+e.message+' (linha: '+(e.lineno||'?')+')');
 });
 function handleScriptLoadError(){
-  alert('FALHA AO CARREGAR A BIBLIOTECA DO SUPABASE. Verifique sua conexão com a internet e tente recarregar a página. Se persistir, pode ser bloqueio de rede.');
+  alert('FALHA AO CARREGAR A BIBLIOTECA DO SUPABASE. Verifique sua conexão com a internet e tente recarregar a página.');
   document.getElementById('screen-loading').classList.remove('active');
   document.getElementById('screen-login').classList.add('active');
 }
 setTimeout(function(){
   var loading=document.getElementById('screen-loading');
   if(loading && loading.classList.contains('active')){
-    alert('O APP DEMOROU DEMAIS PARA INICIAR (mais de 10 segundos). Toque em OK e tente recarregar a página.');
+    alert('O APP DEMOROU DEMAIS PARA INICIAR (mais de 10 segundos).');
     loading.classList.remove('active');
     document.getElementById('screen-login').classList.add('active');
   }
@@ -200,8 +200,7 @@ async function syncToCloud(){
   if(!currentUser)return;
   const {error}=await sb.from('app_state').upsert({user_id:currentUser.id,data,updated_at:new Date().toISOString()});
   if(error){console.error('Erro ao salvar na nuvem:',error);setSyncStatus('offline')}else{setSyncStatus('saved')}
-}
-</script>function opts(values,selected){return values.map(v=>`<option ${String(v)===String(selected)?'selected':''} value="${esc(v)}">${esc(v)}</option>`).join('')}
+}function opts(values,selected){return values.map(v=>`<option ${String(v)===String(selected)?'selected':''} value="${esc(v)}">${esc(v)}</option>`).join('')}
 
 function studentName(id){return data.students.find(s=>s.id===id)?.name||'Aluno removido'}
 
