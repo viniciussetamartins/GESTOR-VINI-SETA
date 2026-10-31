@@ -1084,26 +1084,59 @@ function showScreen(screenName) {
 }
 
 async function initApp() {
+  const loginForm = document.getElementById('loginForm');
+
+  if (loginForm && !loginForm.dataset.listenerAdded) {
+    loginForm.addEventListener('submit', login);
+    loginForm.dataset.listenerAdded = 'true';
+  }
+
   if (!sb) {
+    console.error('Supabase não foi inicializado.');
+
     showScreen('login');
+
+    const errorEl = document.getElementById('loginError');
+
+    if (errorEl) {
+      errorEl.textContent =
+        'Não foi possível iniciar a conexão com o servidor. Recarregue a página e tente novamente.';
+    }
+
     return;
   }
 
   try {
-    const { data: sessionData, error } = await sb.auth.getSession();
+    const result = await withTimeout(
+      sb.auth.getSession(),
+      6000,
+      'A conexão inicial com o servidor demorou demais.'
+    );
 
-    if (error) throw error;
+    if (result.error) {
+      throw result.error;
+    }
 
-    if (sessionData?.session?.user) {
-      currentUser = sessionData.session.user;
+    const session = result.data?.session;
+
+    if (session?.user) {
+      currentUser = session.user;
       await openApp();
       return;
     }
 
     showScreen('login');
   } catch (error) {
-    console.error('Erro ao verificar sessão:', error);
+    console.error('Erro na inicialização do Gestor:', error);
+
     showScreen('login');
+
+    const errorEl = document.getElementById('loginError');
+
+    if (errorEl) {
+      errorEl.textContent =
+        'Não foi possível conectar automaticamente. Verifique sua internet e tente entrar.';
+    }
   }
 }
 
