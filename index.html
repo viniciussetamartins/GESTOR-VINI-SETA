@@ -2650,6 +2650,24 @@ function markDue(id) {
     });
   }
 
+  /*
+    Abre Financeiro e Resumo no mês em que o dinheiro
+    realmente foi recebido, para o lançamento aparecer imediatamente.
+  */
+  const partesDataRecebimento = dataRecebimento.split('-').map(Number);
+
+  proMonthDate = new Date(
+    partesDataRecebimento[0],
+    partesDataRecebimento[1] - 1,
+    1
+  );
+
+  repMonthDate = new Date(
+    partesDataRecebimento[0],
+    partesDataRecebimento[1] - 1,
+    1
+  );
+
   save();
 
   alert(
