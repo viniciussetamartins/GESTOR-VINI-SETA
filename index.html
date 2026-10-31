@@ -1222,50 +1222,7 @@ async function loadCloudData() {
   }
 }
 
-function criarCobrancasAutomaticas() {
-  if (!Array.isArray(data.students)) data.students = [];
-  if (!Array.isArray(data.dues)) data.dues = [];
-
-  const mesAtual = monthKey(iso(new Date()));
-
-  data.students
-    .filter(aluno =>
-      aluno.status === 'Ativo' &&
-      Number(aluno.price || 0) > 0
-    )
-    .forEach(aluno => {
-      const jaExiste = data.dues.some(cobranca =>
-        cobranca.studentId === aluno.id &&
-        cobranca.month === mesAtual
-      );
-
-      if (jaExiste) return;
-
-      const diaVencimento = Math.min(
-        Math.max(Number(aluno.dueDay || 10), 1),
-        28
-      );
-
-      data.dues.push({
-        id: uid(),
-        studentId: aluno.id,
-        month: mesAtual,
-        amount: Number(aluno.price),
-        dueDate: `${mesAtual}-${String(diaVencimento).padStart(2, '0')}`,
-        status: 'Pendente',
-        createdAutomatically: true
-      });
-    });
-}
-
 function save() {
-  /*
-    Sempre que um aluno for criado ou editado, o Gestor verifica
-    se ele está ativo, possui mensalidade e ainda não tem cobrança
-    no mês atual. Se não tiver, cria automaticamente.
-  */
-  criarCobrancasAutomaticas();
-
   persistLocalCache();
   renderAll();
   setSyncStatus('saving');
@@ -2421,6 +2378,419 @@ document.getElementById('loginForm').addEventListener('submit', async e => {
   }
 })();
 </script>
+<script>
+/* ============================================================
+   COBRANÇAS AUTOMÁTICAS E CONFIRMAÇÃO DE RECEBIMENTO
+   Método Vini Seta
+============================================================ */
 
+/*
+  Cria automaticamente uma cobrança no mês atual para cada aluno:
+  - Ativo;
+  - Com mensalidade maior do que zero;
+  - Que ainda não possui cobrança naquele mês.
+*/
+function criarCobrancasAutomaticas() {
+  if (!Array.isArray(data.students)) data.students = [];
+  if (!Array.isArray(data.dues)) data.dues = [];
+
+  const hoje = new Date();
+  const mesAtual = monthKey(iso(hoje));
+
+  data.students
+    .filter(aluno =>
+      aluno.status === 'Ativo' &&
+      Number(aluno.price || 0) > 0
+    )
+    .forEach(aluno => {
+      const cobrancaJaExiste = data.dues.some(cobranca =>
+        cobranca.studentId === aluno.id &&
+        cobranca.month === mesAtual
+      );
+
+      if (cobrancaJaExiste) return;
+
+      const diaVencimento = Math.min(
+        Math.max(Number(aluno.dueDay || 10), 1),
+        28
+      );
+
+      data.dues.push({
+        id: uid(),
+        studentId: aluno.id,
+        month: mesAtual,
+        amount: Number(aluno.price || 0),
+        dueDate: `${mesAtual}-${String(diaVencimento).padStart(2, '0')}`,
+        status: 'Pendente',
+        createdAutomatically: true,
+        createdAt: new Date().toISOString()
+      });
+    });
+}
+
+/*
+  Substitui a função original de salvar.
+  Antes de salvar, ela verifica e cria as cobranças necessárias.
+*/
+function save() {
+  criarCobrancasAutomaticas();
+
+  persistLocalCache();
+  renderAll();
+  setSyncStatus('saving');
+
+  clearTimeout(saveTimer);
+
+  saveTimer = setTimeout(syncToCloud, 700);
+}
+
+/*
+  Substitui a tela inicial.
+  Exibe todos os alunos com cobrança pendente no mês atual,
+  ordenados pela data de vencimento e com botão "Recebido".
+*/
+function renderDashboard() {
+  criarCobrancasAutomaticas();
+
+  const hoje = iso(new Date());
+
+  document.getElementById('dashStudents').textContent =
+    data.students.filter(aluno => aluno.status === 'Ativo').length;
+
+  document.getElementById('dashToday').textContent =
+    data.appointments.filter(atendimento =>
+      atendimento.date === hoje &&
+      atendimento.status !== 'Cancelado'
+    ).length;
+
+  const mesAtual = monthKey(hoje);
+
+  const valorPendente = data.dues
+    .filter(cobranca =>
+      cobranca.month === mesAtual &&
+      cobranca.status !== 'Pago'
+    )
+    .reduce((total, cobranca) =>
+      total + Number(cobranca.amount || 0), 0
+    );
+
+  document.getElementById('dashPending').textContent =
+    money(valorPendente);
+
+  const atendimentos = data.appointments
+    .filter(atendimento =>
+      atendimento.date === hoje &&
+      atendimento.status !== 'Cancelado'
+    )
+    .sort((a, b) =>
+      (a.time || '').localeCompare(b.time || '')
+    );
+
+  document.getElementById('todayList').innerHTML = atendimentos.length
+    ? atendimentos.map(atendimento => `
+      <div class="item">
+        <div>
+          <strong>
+            ${esc(atendimento.time || '--:--')} ·
+            ${esc(atendimento.title)}
+          </strong>
+
+          <div class="sub">
+            ${esc(atendimento.type)} ·
+            ${esc(atendimento.status)}
+          </div>
+        </div>
+
+        <button
+          class="btn secondary small"
+          onclick="openModal('appointment','','${atendimento.id}')"
+        >
+          Editar
+        </button>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhum atendimento agendado para hoje.</div>`;
+
+  const cobrancasPendentes = data.dues
+    .filter(cobranca =>
+      cobranca.month === mesAtual &&
+      cobranca.status !== 'Pago'
+    )
+    .sort((a, b) =>
+      a.dueDate.localeCompare(b.dueDate)
+    );
+
+  document.getElementById('pendingList').innerHTML =
+    cobrancasPendentes.length
+      ? cobrancasPendentes.map(cobranca => `
+        <div class="item">
+          <div>
+            <strong>${esc(studentName(cobranca.studentId))}</strong>
+
+            <div class="sub">
+              Vence em ${fmtDate(cobranca.dueDate)}
+            </div>
+
+            <span class="tag warn">Pendente</span>
+          </div>
+
+          <div style="text-align:right">
+            <b>${money(cobranca.amount)}</b>
+
+            <div style="margin-top:7px">
+              <button
+                class="btn small"
+                onclick="markDue('${cobranca.id}')"
+              >
+                Recebido
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('')
+      : `
+        <div class="empty">
+          Nenhuma cobrança pendente neste mês.
+        </div>
+      `;
+}
+
+/*
+  Confirma o recebimento da mensalidade.
+
+  Ao clicar em "Recebido":
+  - muda a cobrança para Pago;
+  - registra a data de hoje;
+  - cria uma entrada profissional;
+  - impede lançamento duplicado;
+  - ao reabrir, remove somente a entrada vinculada àquela cobrança.
+*/
+function markDue(id) {
+  const cobranca = data.dues.find(item => item.id === id);
+
+  if (!cobranca) {
+    alert('Cobrança não encontrada.');
+    return;
+  }
+
+  const nomeAluno = studentName(cobranca.studentId);
+
+  /*
+    Caso esteja paga, permite reabrir.
+  */
+  if (cobranca.status === 'Pago') {
+    const confirmarReabertura = confirm(
+      'Deseja reabrir esta cobrança?\n\n' +
+      'Aluno: ' + nomeAluno + '\n' +
+      'Valor: ' + money(cobranca.amount) + '\n\n' +
+      'A entrada financeira relacionada será removida.'
+    );
+
+    if (!confirmarReabertura) return;
+
+    cobranca.status = 'Pendente';
+    cobranca.receivedAt = null;
+
+    data.transactions = data.transactions.filter(
+      transacao => transacao.linkedDue !== cobranca.id
+    );
+
+    save();
+
+    alert(
+      'Cobrança reaberta.\n\n' +
+      'A entrada vinculada foi removida do financeiro profissional.'
+    );
+
+    return;
+  }
+
+  /*
+    Confirma o recebimento usando a data real de hoje.
+  */
+  const confirmarRecebimento = confirm(
+    'Confirmar recebimento?\n\n' +
+    'Aluno: ' + nomeAluno + '\n' +
+    'Valor: ' + money(cobranca.amount) + '\n' +
+    'Vencimento: ' + fmtDate(cobranca.dueDate) + '\n\n' +
+    'O valor será lançado como entrada no Financeiro profissional com a data de hoje.'
+  );
+
+  if (!confirmarRecebimento) return;
+
+  const dataRecebimento = iso(new Date());
+
+  cobranca.status = 'Pago';
+  cobranca.receivedAt = dataRecebimento;
+
+  /*
+    Segurança contra duplicação:
+    procura se já há uma transação relacionada a esta cobrança.
+  */
+  const entradaJaExiste = data.transactions.some(
+    transacao => transacao.linkedDue === cobranca.id
+  );
+
+  if (!entradaJaExiste) {
+    data.transactions.push({
+      id: uid(),
+      scope: 'profissional',
+      kind: 'Entrada',
+      description: 'Mensalidade — ' + nomeAluno,
+      category: 'Mensalidade',
+      amount: Number(cobranca.amount || 0),
+      date: dataRecebimento,
+      status: 'Pago',
+      linkedDue: cobranca.id,
+      notes:
+        'Mensalidade recebida em ' +
+        fmtDate(dataRecebimento) +
+        '. Vencimento original: ' +
+        fmtDate(cobranca.dueDate) + '.'
+    });
+  }
+
+  save();
+
+  alert(
+    'Pagamento registrado com sucesso.\n\n' +
+    money(cobranca.amount) +
+    ' foi lançado como entrada no Financeiro profissional.'
+  );
+}
+
+/*
+  Substitui a página Financeiro profissional.
+  Mostra as cobranças e permite usar:
+  - Recebido;
+  - Reabrir cobrança.
+*/
+function renderPro() {
+  criarCobrancasAutomaticas();
+
+  document.getElementById('proMonth').textContent =
+    monthName(proMonthDate);
+
+  const mesSelecionado = monthKey(proMonthDate);
+
+  const transacoes = data.transactions.filter(transacao =>
+    transacao.scope === 'profissional' &&
+    monthKey(transacao.date) === mesSelecionado
+  );
+
+  const receitas = transacoes
+    .filter(transacao =>
+      transacao.kind === 'Entrada' &&
+      transacao.status === 'Pago'
+    )
+    .reduce((total, transacao) =>
+      total + Number(transacao.amount || 0), 0
+    );
+
+  const despesas = transacoes
+    .filter(transacao =>
+      transacao.kind === 'Saída' &&
+      transacao.status === 'Pago'
+    )
+    .reduce((total, transacao) =>
+      total + Number(transacao.amount || 0), 0
+    );
+
+  document.getElementById('proIncome').textContent =
+    money(receitas);
+
+  document.getElementById('proExpense').textContent =
+    money(despesas);
+
+  document.getElementById('proNet').textContent =
+    money(receitas - despesas);
+
+  const cobrancas = data.dues
+    .filter(cobranca =>
+      cobranca.month === mesSelecionado
+    )
+    .sort((a, b) =>
+      a.dueDate.localeCompare(b.dueDate)
+    );
+
+  document.getElementById('duesList').innerHTML = cobrancas.length
+    ? cobrancas.map(cobranca => `
+      <div class="item">
+        <div>
+          <strong>${esc(studentName(cobranca.studentId))}</strong>
+
+          <div class="sub">
+            Vencimento ${fmtDate(cobranca.dueDate)} ·
+            ${money(cobranca.amount)}
+          </div>
+
+          ${
+            cobranca.status === 'Pago' && cobranca.receivedAt
+              ? `
+                <div class="sub">
+                  Recebido em ${fmtDate(cobranca.receivedAt)}
+                </div>
+              `
+              : ''
+          }
+
+          <span class="tag ${
+            cobranca.status === 'Pago' ? 'ok' : 'warn'
+          }">
+            ${esc(cobranca.status)}
+          </span>
+        </div>
+
+        <button
+          class="btn small"
+          onclick="markDue('${cobranca.id}')"
+        >
+          ${
+            cobranca.status === 'Pago'
+              ? 'Reabrir cobrança'
+              : 'Recebido'
+          }
+        </button>
+      </div>
+    `).join('')
+    : `
+      <div class="empty">
+        Nenhuma cobrança neste mês.
+      </div>
+    `;
+
+  document.getElementById('proTransactions').innerHTML =
+    renderTxList(transacoes);
+}
+
+/*
+  Ao abrir a página, faz uma verificação inicial.
+  Isso ajuda a criar cobranças de alunos que já tinham
+  mensalidade cadastrada antes desta atualização.
+*/
+setTimeout(() => {
+  try {
+    if (
+      typeof data !== 'undefined' &&
+      data &&
+      Array.isArray(data.students)
+    ) {
+      criarCobrancasAutomaticas();
+      persistLocalCache();
+      renderAll();
+
+      if (typeof currentUser !== 'undefined' && currentUser) {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(syncToCloud, 700);
+      }
+    }
+  } catch (erro) {
+    console.error(
+      'Não foi possível iniciar cobranças automáticas:',
+      erro
+    );
+  }
+}, 1500);
+</script>
 </body>
 </html>
