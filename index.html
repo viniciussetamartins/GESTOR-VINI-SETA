@@ -560,6 +560,7 @@ textarea{
 <div id="screen-login" class="screen">
   <div class="authcard">
     <div class="logo">VS</div>
+
     <h2>Método Vini Seta</h2>
     <p class="sub2">Acesso restrito ao administrador</p>
 
@@ -584,6 +585,7 @@ textarea{
 </div>
 
 <div id="screen-app" class="screen">
+
   <div class="app">
 
     <header class="top">
@@ -613,6 +615,7 @@ textarea{
     <main>
 
       <section id="view-inicio" class="view active">
+
         <div class="section-head">
           <div>
             <h2>Visão geral</h2>
@@ -648,6 +651,7 @@ textarea{
         </div>
 
         <div class="grid2">
+
           <div class="box">
             <div class="section-head" style="margin-top:0">
               <div>
@@ -685,6 +689,7 @@ textarea{
       </section>
 
       <section id="view-agenda" class="view">
+
         <div class="section-head">
           <div>
             <h2>Agenda</h2>
@@ -713,21 +718,26 @@ textarea{
       </section>
 
       <section id="view-alunos" class="view">
+
         <div class="section-head">
           <div>
             <h2>Alunos</h2>
             <p>Cadastro, plano e mensalidade</p>
           </div>
 
-          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
-            <button class="btn secondary" id="syncMasterBtn" onclick="syncMasterTraining()">
-              ↻ Sincronizar Master Training
-            </button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+            <button
+                class="btn secondary"
+                    id="syncMasterBtn"
+                        onclick="syncMasterTraining()"
+                          >
+                              ↻ Sincronizar Master Training
+                                </button>
 
-            <button class="btn" onclick="openModal('student')">
-              ＋ Aluno
-            </button>
-          </div>
+                                  <button class="btn" onclick="openModal('student')">
+                                      ＋ Aluno
+                                        </button>
+                                        </div>
         </div>
 
         <div class="toolbar">
@@ -744,6 +754,7 @@ textarea{
       </section>
 
       <section id="view-profissional" class="view">
+
         <div class="section-head">
           <div>
             <h2>Financeiro profissional</h2>
@@ -801,6 +812,7 @@ textarea{
       </section>
 
       <section id="view-pessoal" class="view">
+
         <div class="section-head">
           <div>
             <h2>Finanças pessoais</h2>
@@ -845,6 +857,7 @@ textarea{
       </section>
 
       <section id="view-relatorios" class="view">
+
         <div class="section-head">
           <div>
             <h2>Resumo financeiro</h2>
@@ -862,19 +875,49 @@ textarea{
           <h3 style="margin-top:0">Profissional</h3>
 
           <div class="kpis">
-            <div class="kpi"><span>Receitas recebidas</span><strong id="repProIn">R$ 0</strong></div>
-            <div class="kpi"><span>Despesas</span><strong id="repProOut">R$ 0</strong></div>
-            <div class="kpi"><span>Resultado</span><strong id="repProNet">R$ 0</strong></div>
-            <div class="kpi"><span>Em aberto</span><strong id="repOpen">R$ 0</strong></div>
+            <div class="kpi">
+              <span>Receitas recebidas</span>
+              <strong id="repProIn">R$ 0</strong>
+            </div>
+
+            <div class="kpi">
+              <span>Despesas</span>
+              <strong id="repProOut">R$ 0</strong>
+            </div>
+
+            <div class="kpi">
+              <span>Resultado</span>
+              <strong id="repProNet">R$ 0</strong>
+            </div>
+
+            <div class="kpi">
+              <span>Em aberto</span>
+              <strong id="repOpen">R$ 0</strong>
+            </div>
           </div>
 
           <h3>Finanças pessoais</h3>
 
           <div class="kpis">
-            <div class="kpi"><span>Entradas</span><strong id="repPerIn">R$ 0</strong></div>
-            <div class="kpi"><span>Saídas</span><strong id="repPerOut">R$ 0</strong></div>
-            <div class="kpi"><span>Saldo pessoal</span><strong id="repPerNet">R$ 0</strong></div>
-            <div class="kpi"><span>Saldo consolidado</span><strong id="repTotal">R$ 0</strong></div>
+            <div class="kpi">
+              <span>Entradas</span>
+              <strong id="repPerIn">R$ 0</strong>
+            </div>
+
+            <div class="kpi">
+              <span>Saídas</span>
+              <strong id="repPerOut">R$ 0</strong>
+            </div>
+
+            <div class="kpi">
+              <span>Saldo pessoal</span>
+              <strong id="repPerNet">R$ 0</strong>
+            </div>
+
+            <div class="kpi">
+              <span>Saldo consolidado</span>
+              <strong id="repTotal">R$ 0</strong>
+            </div>
           </div>
         </div>
 
@@ -891,7 +934,13 @@ textarea{
 
             <label class="btn secondary" style="text-align:center;cursor:pointer">
               Importar backup
-              <input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
+              <input
+                type="file"
+                id="importFile"
+                accept="application/json,.json"
+                style="display:none"
+                onchange="importBackup(event)"
+              >
             </label>
           </div>
 
@@ -899,8 +948,13 @@ textarea{
             O backup inclui alunos, agenda, cobranças e lançamentos financeiros.
           </p>
 
-          <button class="btn secondary" onclick="seedDemo()">Adicionar dados de exemplo</button>
-          <button class="btn secondary" onclick="clearAll()">Apagar todos os dados</button>
+          <button class="btn secondary" onclick="seedDemo()">
+            Adicionar dados de exemplo
+          </button>
+
+          <button class="btn secondary" onclick="clearAll()">
+            Apagar todos os dados
+          </button>
         </div>
       </section>
 
@@ -909,6 +963,7 @@ textarea{
     <div class="footer-note">
       Método Vini Seta · Gestor · Feito para uso interno
     </div>
+
   </div>
 
   <div class="modal" id="modal">
@@ -921,27 +976,44 @@ textarea{
       <div id="modalBody"></div>
     </div>
   </div>
+
 </div>
 
 <script>
 function handleScriptLoadError() {
   console.error('Falha ao carregar a biblioteca Supabase.');
+
   document.getElementById('screen-loading').classList.remove('active');
   document.getElementById('screen-login').classList.add('active');
 
   const errorEl = document.getElementById('loginError');
+
   if (errorEl) {
     errorEl.textContent =
       'Não foi possível carregar a conexão com o servidor. Verifique sua internet e recarregue a página.';
   }
 }
 
-window.addEventListener('error', event => {
+window.addEventListener('error', function(event) {
   console.error('Erro de script:', event.message, 'Linha:', event.lineno);
 });
 
-window.addEventListener('unhandledrejection', event => {
+window.addEventListener('unhandledrejection', function(event) {
   console.error('Erro assíncrono não tratado:', event.reason);
+
+  const loading = document.getElementById('screen-loading');
+
+  if (loading && loading.classList.contains('active')) {
+    document.getElementById('screen-loading').classList.remove('active');
+    document.getElementById('screen-login').classList.add('active');
+
+    const errorEl = document.getElementById('loginError');
+
+    if (errorEl) {
+      errorEl.textContent =
+        'Falha de conexão ao iniciar. Verifique sua internet e tente novamente.';
+    }
+  }
 });
 </script>
 
@@ -952,13 +1024,13 @@ window.addEventListener('unhandledrejection', event => {
 
 <script>
 /* ============================================================
-   CONFIGURAÇÃO E FUNÇÕES BÁSICAS
+   CONFIGURAÇÃO SUPABASE
 ============================================================ */
 
 const SUPABASE_URL = 'https://joeswmohdcazikssvhkr.supabase.co';
 
 const SUPABASE_ANON_KEY =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdWIiOiJqb2Vzd21vaGRjYXppa3NzdmhrciIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzkzMzUxMTQ2LCJleHAiOjIxMDg5MjczNDZ9.ixrukIdRG4RhC_RTrO9dqrH4uywhRw_hCOeNZqpR5Cg';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvZXN3bW9oZGNhemlrc3N2aGtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNTExNDYsImV4cCI6MjEwODkyNzE0Nn0.ixrukIdRG4RhC_RTrO9dqrH4uywhRw_hCOeNZqpR5Cg';
 
 let sb = null;
 
@@ -968,11 +1040,17 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
   console.error('Biblioteca do Supabase não foi carregada.');
 }
 
+/* ============================================================
+   FUNÇÕES BÁSICAS
+============================================================ */
+
 const LOCAL_KEY = 'vini_seta_gestor_cache_v1';
+
 const now = new Date();
 
 const iso = d => {
   const x = new Date(d);
+
   return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
 };
 
@@ -980,8 +1058,8 @@ const monthKey = d => String(d).slice(0, 7);
 
 const money = n =>
   Number(n || 0).toLocaleString('pt-BR', {
-    style:'currency',
-    currency:'BRL'
+    style: 'currency',
+    currency: 'BRL'
   });
 
 const esc = s =>
@@ -995,10 +1073,10 @@ const esc = s =>
 
 function blank() {
   return {
-    students:[],
-    appointments:[],
-    dues:[],
-    transactions:[]
+    students: [],
+    appointments: [],
+    dues: [],
+    transactions: []
   };
 }
 
@@ -1011,12 +1089,14 @@ let perMonthDate = new Date(now.getFullYear(), now.getMonth(), 1);
 let repMonthDate = new Date(now.getFullYear(), now.getMonth(), 1);
 
 function uid() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 }
 
 function fmtDate(s) {
   if (!s) return 'Sem data';
-  const [y,m,d] = String(s).split('-');
+
+  const [y, m, d] = s.split('-');
+
   return `${d}/${m}/${y}`;
 }
 
@@ -1030,18 +1110,22 @@ function monthName(d) {
 function persistLocalCache() {
   try {
     localStorage.setItem(LOCAL_KEY, JSON.stringify(data));
-  } catch (error) {
-    console.warn('Não foi possível salvar no cache local.', error);
+  } catch (e) {
+    console.warn('Não foi possível salvar no cache local.', e);
   }
 }
 
 function readLocalCache() {
   try {
     return JSON.parse(localStorage.getItem(LOCAL_KEY) || 'null');
-  } catch (error) {
+  } catch (e) {
     return null;
   }
 }
+
+/* ============================================================
+   TIMEOUT DE CONEXÃO
+============================================================ */
 
 function withTimeout(promise, ms = 8000, message = 'Tempo de conexão esgotado.') {
   return Promise.race([
@@ -1054,6 +1138,7 @@ function withTimeout(promise, ms = 8000, message = 'Tempo de conexão esgotado.'
 
 function setSyncStatus(state) {
   const el = document.getElementById('syncStatus');
+
   if (!el) return;
 
   if (state === 'saving') {
@@ -1069,845 +1154,1230 @@ function setSyncStatus(state) {
     el.textContent = '● Conectando...';
     el.style.color = '#a9a9a9';
   }
-}<script>
-/* ============================================================
-   AUTENTICAÇÃO, BANCO DE DADOS E SINCRONIZAÇÃO
-============================================================ */
-
-function showScreen(screenName) {
-  document.querySelectorAll('.screen').forEach(el => {
-    el.classList.remove('active');
-  });
-
-  const screen = document.getElementById(`screen-${screenName}`);
-  if (screen) screen.classList.add('active');
 }
 
-async function initApp() {
-  const loginForm = document.getElementById('loginForm');
+/* ============================================================
+   NUVEM / SUPABASE — CORRIGIDO PARA NÃO TRAVAR A TELA
+============================================================ */
 
-  if (loginForm && !loginForm.dataset.listenerAdded) {
-    loginForm.addEventListener('submit', login);
-    loginForm.dataset.listenerAdded = 'true';
-  }
-
-  if (!sb) {
-    console.error('Supabase não foi inicializado.');
-
-    showScreen('login');
-
-    const errorEl = document.getElementById('loginError');
-
-    if (errorEl) {
-      errorEl.textContent =
-        'Não foi possível iniciar a conexão com o servidor. Recarregue a página e tente novamente.';
-    }
-
-    return;
-  }
+async function loadCloudData() {
+  const cache = readLocalCache();
 
   try {
+    if (!sb) {
+      throw new Error('Supabase não carregado.');
+    }
+
+    if (!currentUser || !currentUser.id) {
+      throw new Error('Usuário não identificado.');
+    }
+
     const result = await withTimeout(
-      sb.auth.getSession(),
-      6000,
-      'A conexão inicial com o servidor demorou demais.'
+      sb
+        .from('app_state')
+        .select('data')
+        .eq('user_id', currentUser.id)
+        .maybeSingle(),
+      8000,
+      'Tempo esgotado ao carregar os dados da nuvem.'
     );
 
     if (result.error) {
       throw result.error;
     }
 
-    const session = result.data?.session;
-
-    if (session?.user) {
-      currentUser = session.user;
-      await openApp();
-      return;
-    }
-
-    showScreen('login');
-  } catch (error) {
-    console.error('Erro na inicialização do Gestor:', error);
-
-    showScreen('login');
-
-    const errorEl = document.getElementById('loginError');
-
-    if (errorEl) {
-      errorEl.textContent =
-        'Não foi possível conectar automaticamente. Verifique sua internet e tente entrar.';
-    }
-  }
-}
-
-async function login(event) {
-  event.preventDefault();
-
-  if (!sb) {
-    document.getElementById('loginError').textContent =
-      'A conexão com o Supabase não foi carregada. Recarregue a página.';
-    return;
-  }
-
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  const btn = document.getElementById('loginBtn');
-  const errorEl = document.getElementById('loginError');
-
-  errorEl.textContent = '';
-  btn.disabled = true;
-  btn.textContent = 'Entrando...';
-
-  try {
-    const { data: authData, error } = await sb.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (error) throw error;
-
-    currentUser = authData.user;
-    await openApp();
-  } catch (error) {
-    console.error('Erro no login:', error);
-    errorEl.textContent =
-      error.message === 'Invalid login credentials'
-        ? 'E-mail ou senha incorretos.'
-        : (error.message || 'Não foi possível entrar. Tente novamente.');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Entrar';
-  }
-}
-
-async function logout() {
-  if (!confirm('Deseja realmente sair do Gestor?')) return;
-
-  try {
-    if (sb) await sb.auth.signOut();
-  } catch (error) {
-    console.warn('Erro ao sair:', error);
-  }
-
-  currentUser = null;
-  data = blank();
-
-  document.getElementById('loginPassword').value = '';
-  document.getElementById('loginError').textContent = '';
-
-  showScreen('login');
-}
-
-async function openApp() {
-  showScreen('app');
-
-  document.getElementById('todayLabel').textContent =
-    new Date().toLocaleDateString('pt-BR', {
-      weekday:'long',
-      day:'2-digit',
-      month:'long',
-      year:'numeric'
-    });
-
-  document.getElementById('agendaDate').value = iso(new Date());
-
-  bindEvents();
-  await loadData();
-  renderAll();
-}
-
-async function loadData() {
-  setSyncStatus('loading');
-
-  const localData = readLocalCache();
-
-  if (!sb || !currentUser) {
-    data = localData || blank();
-    setSyncStatus('offline');
-    return;
-  }
-
-  try {
-    const result = await withTimeout(
-      sb
-        .from('gestor_dados')
-        .select('dados')
-        .eq('user_id', currentUser.id)
-        .maybeSingle()
-    );
-
-    if (result.error) throw result.error;
-
-    if (result.data?.dados) {
-      data = normalizeData(result.data.dados);
+    if (result.data && result.data.data) {
+      data = { ...blank(), ...result.data.data };
       persistLocalCache();
       setSyncStatus('saved');
       return;
     }
 
-    data = localData || blank();
+    data = cache ? { ...blank(), ...cache } : blank();
 
-    if (
-      data.students.length ||
-      data.appointments.length ||
-      data.dues.length ||
-      data.transactions.length
-    ) {
-      await saveDataNow();
-    } else {
-      setSyncStatus('saved');
+    const createResult = await withTimeout(
+      sb
+        .from('app_state')
+        .upsert({
+          user_id: currentUser.id,
+          data,
+          updated_at: new Date().toISOString()
+        }),
+      8000,
+      'Tempo esgotado ao criar os dados iniciais.'
+    );
+
+    if (createResult.error) {
+      throw createResult.error;
     }
-  } catch (error) {
-    console.warn('Erro ao carregar dados do servidor:', error);
 
-    data = localData || blank();
+    setSyncStatus('saved');
+
+  } catch (err) {
+    console.error('Falha ao carregar dados da nuvem:', err);
+
+    data = cache ? { ...blank(), ...cache } : blank();
+
     setSyncStatus('offline');
   }
 }
 
-function normalizeData(raw) {
-  const clean = raw && typeof raw === 'object' ? raw : {};
-
-  return {
-    students:Array.isArray(clean.students) ? clean.students : [],
-    appointments:Array.isArray(clean.appointments) ? clean.appointments : [],
-    dues:Array.isArray(clean.dues) ? clean.dues : [],
-    transactions:Array.isArray(clean.transactions) ? clean.transactions : []
-  };
-}
-
-function scheduleSave() {
+function save() {
   persistLocalCache();
+  renderAll();
+  setSyncStatus('saving');
 
   clearTimeout(saveTimer);
 
-  saveTimer = setTimeout(() => {
-    saveDataNow();
-  }, 700);
+  saveTimer = setTimeout(syncToCloud, 700);
 }
 
-async function saveDataNow() {
-  persistLocalCache();
-
-  if (!sb || !currentUser) {
+async function syncToCloud() {
+  if (!currentUser || !sb) {
     setSyncStatus('offline');
-    return false;
+    return;
   }
 
-  setSyncStatus('saving');
-
   try {
-    const payload = {
-      user_id: currentUser.id,
-      dados: data,
-      atualizado_em: new Date().toISOString()
-    };
-
     const result = await withTimeout(
       sb
-        .from('gestor_dados')
-        .upsert(payload, { onConflict:'user_id' })
-        .select()
+        .from('app_state')
+        .upsert({
+          user_id: currentUser.id,
+          data,
+          updated_at: new Date().toISOString()
+        }),
+      8000,
+      'Tempo esgotado ao salvar na nuvem.'
     );
 
-    if (result.error) throw result.error;
+    if (result.error) {
+      throw result.error;
+    }
 
     setSyncStatus('saved');
-    return true;
-  } catch (error) {
-    console.error('Erro ao salvar no Supabase:', error);
+
+  } catch (err) {
+    console.error('Erro ao salvar na nuvem:', err);
     setSyncStatus('offline');
-    return false;
   }
 }
 
 /* ============================================================
-   NAVEGAÇÃO E EVENTOS
+   FUNÇÕES DE INTERFACE
 ============================================================ */
 
-let eventsBound = false;
+function opts(values, selected) {
+  return values.map(v =>
+    `<option ${String(v) === String(selected) ? 'selected' : ''} value="${esc(v)}">${esc(v)}</option>`
+  ).join('');
+}
 
-function bindEvents() {
-  if (eventsBound) return;
-  eventsBound = true;
+function studentName(id) {
+  return data.students.find(s => s.id === id)?.name || 'Aluno removido';
+}
 
-  document.querySelectorAll('.nav button[data-view]').forEach(btn => {
-    btn.addEventListener('click', () => showView(btn.dataset.view));
-  });
-
-  document.getElementById('loginForm').addEventListener('submit', login);
-
-  document.getElementById('agendaDate').addEventListener('change', renderAgenda);
-  document.getElementById('agendaFilter').addEventListener('change', renderAgenda);
-
-  document.getElementById('studentSearch').addEventListener('input', renderStudents);
-  document.getElementById('studentStatus').addEventListener('change', renderStudents);
-
-  window.addEventListener('online', async () => {
-    if (currentUser) await saveDataNow();
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.toggle('active', s.id === 'screen-' + name);
   });
 }
 
-function showView(viewName) {
-  document.querySelectorAll('.view').forEach(view => {
-    view.classList.remove('active');
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => {
+    v.classList.toggle('active', v.id === 'view-' + name);
   });
 
-  const target = document.getElementById(`view-${viewName}`);
-  if (target) target.classList.add('active');
-
-  document.querySelectorAll('.nav button[data-view]').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.view === viewName);
+  document.querySelectorAll('.nav button').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === name);
   });
 
-  renderAll();
+  if (name === 'agenda') renderAgenda();
+  if (name === 'alunos') renderStudents();
+  if (name === 'profissional') renderPro();
+  if (name === 'pessoal') renderPersonal();
+  if (name === 'relatorios') renderReports();
+
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target.id === 'modal') closeModal();
+});
+
 /* ============================================================
-   RENDERIZAÇÃO PRINCIPAL
+   MODAIS
+============================================================ */
+
+function openModal(type, scope = '', id = '') {
+  const modal = document.getElementById('modal');
+  const body = document.getElementById('modalBody');
+
+  modal.classList.add('open');
+  modal.dataset.type = type;
+  modal.dataset.id = id;
+  modal.dataset.scope = scope;
+
+  if (type === 'student') {
+    let s = data.students.find(x => x.id === id) || {};
+
+    document.getElementById('modalTitle').textContent =
+      id ? 'Editar aluno' : 'Cadastrar aluno';
+
+    body.innerHTML = `
+      <form id="recordForm">
+        <div class="formgrid">
+
+          <div class="field full">
+            <label>Nome completo *</label>
+            <input name="name" required value="${esc(s.name || '')}" placeholder="Nome do aluno">
+          </div>
+
+          <div class="field">
+            <label>Telefone / WhatsApp</label>
+            <input name="phone" value="${esc(s.phone || '')}">
+          </div>
+
+          <div class="field">
+            <label>E-mail</label>
+            <input name="email" type="email" value="${esc(s.email || '')}">
+          </div>
+
+          <div class="field">
+            <label>Modalidade</label>
+            <select name="modality">
+              ${opts(['Presencial','Consultoria online','Híbrido','Aula avulsa'], s.modality || 'Presencial')}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Frequência por semana</label>
+            <select name="frequency">
+              ${opts(['1','2','3','4','5','6','7'], s.frequency || '3')}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Mensalidade (R$)</label>
+            <input name="price" type="number" min="0" step=".01" value="${s.price ?? ''}">
+          </div>
+
+          <div class="field">
+            <label>Dia de vencimento</label>
+            <select name="dueDay">
+              ${Array.from({length:28}, (_, i) =>
+                `<option value="${i + 1}" ${(s.dueDay || 10) == i + 1 ? 'selected' : ''}>Dia ${i + 1}</option>`
+              ).join('')}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Início do plano</label>
+            <input name="startDate" type="date" value="${s.startDate || iso(now)}">
+          </div>
+
+          <div class="field">
+            <label>Status</label>
+            <select name="status">
+              ${opts(['Ativo','Pausado','Inativo'], s.status || 'Ativo')}
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Dias e horários habituais</label>
+            <input name="schedule" value="${esc(s.schedule || '')}" placeholder="Ex.: seg/qua/sex — 8h">
+          </div>
+
+          <div class="field full">
+            <label>Observações</label>
+            <textarea name="notes">${esc(s.notes || '')}</textarea>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button>
+          <button class="btn">Salvar aluno</button>
+        </div>
+      </form>
+    `;
+
+    document.getElementById('recordForm').onsubmit = e => {
+      e.preventDefault();
+
+      let f = Object.fromEntries(new FormData(e.target));
+
+      f.price = Number(f.price || 0);
+      f.frequency = Number(f.frequency);
+
+      if (id) {
+        Object.assign(s, f);
+      } else {
+        data.students.push({
+          id:uid(),
+          ...f,
+          createdAt:iso(now)
+        });
+      }
+
+      save();
+      closeModal();
+    };
+  }
+
+  if (type === 'appointment') {
+    let a = data.appointments.find(x => x.id === id) || {};
+
+    document.getElementById('modalTitle').textContent =
+      id ? 'Editar atendimento' : 'Novo atendimento';
+
+    body.innerHTML = `
+      <form id="recordForm">
+        <div class="formgrid">
+
+          <div class="field full">
+            <label>Descrição / aluno *</label>
+            <input name="title" required value="${esc(a.title || '')}" placeholder="Ex.: Treino — Maria">
+          </div>
+
+          <div class="field">
+            <label>Tipo</label>
+            <select name="type">
+              ${opts(
+                ['Treino presencial','Avaliação física','Aula avulsa','Compromisso','Consultoria online'],
+                a.type || 'Treino presencial'
+              )}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Aluno (opcional)</label>
+            <select name="studentId">
+              <option value="">Sem aluno vinculado</option>
+              ${data.students.map(s =>
+                `<option value="${s.id}" ${a.studentId === s.id ? 'selected' : ''}>${esc(s.name)}</option>`
+              ).join('')}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Data *</label>
+            <input name="date" type="date" required value="${a.date || iso(now)}">
+          </div>
+
+          <div class="field">
+            <label>Horário</label>
+            <input name="time" type="time" value="${a.time || '08:00'}">
+          </div>
+
+          <div class="field">
+            <label>Duração (min)</label>
+            <input name="duration" type="number" min="1" value="${a.duration || 60}">
+          </div>
+
+          <div class="field">
+            <label>Status</label>
+            <select name="status">
+              ${opts(['Agendado','Concluído','Cancelado','Remarcado'], a.status || 'Agendado')}
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Observações</label>
+            <textarea name="notes">${esc(a.notes || '')}</textarea>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button>
+          <button class="btn">Salvar atendimento</button>
+        </div>
+      </form>
+    `;
+
+    document.getElementById('recordForm').onsubmit = e => {
+      e.preventDefault();
+
+      let f = Object.fromEntries(new FormData(e.target));
+      f.duration = Number(f.duration || 60);
+
+      if (id) {
+        Object.assign(a, f);
+      } else {
+        data.appointments.push({
+          id:uid(),
+          ...f
+        });
+      }
+
+      save();
+      closeModal();
+    };
+  }
+
+  if (type === 'transaction') {
+    document.getElementById('modalTitle').textContent = 'Novo lançamento';
+
+    const defaultScope = scope || 'profissional';
+
+    body.innerHTML = `
+      <form id="recordForm">
+        <div class="formgrid">
+
+          <div class="field">
+            <label>Área</label>
+            <select name="scope">
+              ${opts(['profissional','pessoal'], defaultScope)}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Movimento</label>
+            <select name="kind">
+              ${opts(['Entrada','Saída'], 'Saída')}
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Descrição *</label>
+            <input name="description" required placeholder="Ex.: Mensalidade, mercado, aplicativo">
+          </div>
+
+          <div class="field">
+            <label>Categoria</label>
+            <select name="category">
+              ${opts(
+                [
+                  'Mensalidade','Aula avulsa','Avaliação','Consultoria','Outros recebimentos',
+                  'Moradia','Alimentação','Transporte','Saúde','Assinaturas',
+                  'Equipamentos','Marketing','Impostos','Outros'
+                ],
+                'Outros'
+              )}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Valor (R$) *</label>
+            <input name="amount" required type="number" min=".01" step=".01">
+          </div>
+
+          <div class="field">
+            <label>Data</label>
+            <input name="date" type="date" value="${iso(now)}">
+          </div>
+
+          <div class="field">
+            <label>Situação</label>
+            <select name="status">
+              ${opts(['Pago','Pendente'], 'Pago')}
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Observações</label>
+            <textarea name="notes"></textarea>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button>
+          <button class="btn">Salvar lançamento</button>
+        </div>
+      </form>
+    `;
+
+    document.getElementById('recordForm').onsubmit = e => {
+      e.preventDefault();
+
+      let f = Object.fromEntries(new FormData(e.target));
+      f.amount = Number(f.amount);
+
+      data.transactions.push({
+        id:uid(),
+        ...f
+      });
+
+      save();
+      closeModal();
+    };
+  }
+}
+
+/* ============================================================
+   RENDERIZAÇÃO
 ============================================================ */
 
 function renderAll() {
   renderDashboard();
   renderAgenda();
   renderStudents();
-  renderProfessional();
+  renderPro();
   renderPersonal();
   renderReports();
 }
 
 function renderDashboard() {
-  const today = iso(new Date());
+  const today = iso(now);
 
-  const activeStudents = data.students.filter(student =>
-    student.status !== 'inativo' && student.status !== 'pausado'
-  );
+  document.getElementById('dashStudents').textContent =
+    data.students.filter(s => s.status === 'Ativo').length;
 
-  const todayAppointments = data.appointments
-    .filter(item => item.date === today)
-    .sort((a, b) => String(a.time).localeCompare(String(b.time)));
+  document.getElementById('dashToday').textContent =
+    data.appointments.filter(a =>
+      a.date === today && a.status !== 'Cancelado'
+    ).length;
 
-  const pendingDues = data.dues.filter(due =>
-    due.status !== 'received' &&
-    due.month === today.slice(0, 7)
-  );
+  const m = monthKey(today);
 
-  const pendingValue = pendingDues.reduce((sum, due) =>
-    sum + Number(due.amount || 0), 0);
+  const pending = data.dues
+    .filter(d => d.month === m && d.status !== 'Pago')
+    .reduce((s, d) => s + Number(d.amount || 0), 0);
 
-  document.getElementById('dashStudents').textContent = activeStudents.length;
-  document.getElementById('dashToday').textContent = todayAppointments.length;
-  document.getElementById('dashPending').textContent = money(pendingValue);
+  document.getElementById('dashPending').textContent = money(pending);
 
-  const todayList = document.getElementById('todayList');
+  const appointments = data.appointments
+    .filter(a => a.date === today && a.status !== 'Cancelado')
+    .sort((a,b) => (a.time || '').localeCompare(b.time || ''));
 
-  if (!todayAppointments.length) {
-    todayList.innerHTML = `
-      <div class="empty">
-        Nenhum atendimento agendado para hoje.
-      </div>
-    `;
-  } else {
-    todayList.innerHTML = todayAppointments.map(item => `
+  document.getElementById('todayList').innerHTML = appointments.length
+    ? appointments.map(a => `
       <div class="item">
         <div>
-          <strong>${esc(item.time || '--:--')} · ${esc(item.title || 'Atendimento')}</strong>
-          <div class="sub">${esc(item.studentName || item.description || 'Sem observações')}</div>
-          <span class="tag">${esc(item.type || 'Compromisso')}</span>
+          <strong>${esc(a.time || '--:--')} · ${esc(a.title)}</strong>
+          <div class="sub">${esc(a.type)} · ${esc(a.status)}</div>
         </div>
-        <button class="btn secondary small" onclick="editAppointment('${item.id}')">
+
+        <button class="btn secondary small" onclick="openModal('appointment','','${a.id}')">
           Editar
         </button>
       </div>
-    `).join('');
-  }
+    `).join('')
+    : `<div class="empty">Nenhum atendimento agendado para hoje.</div>`;
 
-  const pendingList = document.getElementById('pendingList');
+  const dues = data.dues
+    .filter(d => d.month === m && d.status !== 'Pago')
+    .slice(0, 5);
 
-  if (!pendingDues.length) {
-    pendingList.innerHTML = `
-      <div class="empty">
-        Nenhuma mensalidade pendente neste mês.
-      </div>
-    `;
-  } else {
-    pendingList.innerHTML = pendingDues
-      .sort((a, b) => String(a.dueDate).localeCompare(String(b.dueDate)))
-      .slice(0, 5)
-      .map(due => `
-        <div class="item">
-          <div>
-            <strong>${esc(getStudentName(due.studentId, due.studentName))}</strong>
-            <div class="sub">
-              Vencimento: ${fmtDate(due.dueDate)} · ${money(due.amount)}
-            </div>
-            <span class="tag ${isOverdue(due) ? 'red' : 'warn'}">
-              ${isOverdue(due) ? 'Em atraso' : 'Em aberto'}
-            </span>
-          </div>
-
-          <button class="btn small" onclick="markDueReceived('${due.id}')">
-            Recebido
-          </button>
+  document.getElementById('pendingList').innerHTML = dues.length
+    ? dues.map(d => `
+      <div class="item">
+        <div>
+          <strong>${esc(studentName(d.studentId))}</strong>
+          <div class="sub">Vence ${fmtDate(d.dueDate)}</div>
         </div>
-      `).join('');
-  }
+
+        <b>${money(d.amount)}</b>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
 }
 
 function renderAgenda() {
-  const selectedDate = document.getElementById('agendaDate').value || iso(new Date());
-  const selectedType = document.getElementById('agendaFilter').value;
+  const date = document.getElementById('agendaDate').value || iso(now);
+  const filter = document.getElementById('agendaFilter').value;
 
-  const list = data.appointments
-    .filter(item => item.date === selectedDate)
-    .filter(item => selectedType === 'all' || item.type === selectedType)
-    .sort((a, b) => String(a.time).localeCompare(String(b.time)));
+  const arr = data.appointments
+    .filter(a => a.date === date && (filter === 'all' || a.type === filter))
+    .sort((a,b) => (a.time || '').localeCompare(b.time || ''));
 
-  const container = document.getElementById('agendaList');
+  document.getElementById('agendaList').innerHTML = arr.length
+    ? arr.map(a => `
+      <div class="item">
+        <div>
+          <strong>${esc(a.time || '--:--')} · ${esc(a.title)}</strong>
 
-  if (!list.length) {
-    container.innerHTML = `
-      <div class="empty">
-        Nenhum compromisso encontrado para ${fmtDate(selectedDate)}.
-      </div>
-    `;
-    return;
-  }
+          <div class="sub">
+            ${esc(a.type)} · ${a.duration || 60} min
+            ${a.studentId ? '· ' + esc(studentName(a.studentId)) : ''}
+          </div>
 
-  container.innerHTML = list.map(item => `
-    <div class="item">
-      <div>
-        <strong>${esc(item.time || '--:--')} · ${esc(item.title || 'Compromisso')}</strong>
-        <div class="sub">
-          ${esc(item.studentName || 'Sem aluno vinculado')}
-          ${item.description ? `· ${esc(item.description)}` : ''}
+          ${a.notes ? `<div class="sub">${esc(a.notes)}</div>` : ''}
+
+          <span class="tag ${
+            a.status === 'Concluído'
+              ? 'ok'
+              : a.status === 'Cancelado'
+                ? 'red'
+                : 'warn'
+          }">${esc(a.status)}</span>
         </div>
-        <span class="tag">${esc(item.type || 'Compromisso')}</span>
-      </div>
 
-      <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
-        <button class="btn secondary small" onclick="editAppointment('${item.id}')">
+        <button class="btn secondary small" onclick="openModal('appointment','','${a.id}')">
           Editar
         </button>
-
-        <button class="btn secondary small" onclick="deleteAppointment('${item.id}')">
-          Excluir
-        </button>
       </div>
-    </div>
-  `).join('');
+    `).join('')
+    : `<div class="empty">Nada encontrado nessa data.</div>`;
 }
 
 function renderStudents() {
-  const search = document.getElementById('studentSearch').value.trim().toLowerCase();
-  const statusFilter = document.getElementById('studentStatus').value;
+  const q = (document.getElementById('studentSearch').value || '').toLowerCase();
+  const status = document.getElementById('studentStatus').value || 'ativos';
 
-  const students = [...data.students]
-    .filter(student => {
-      const status = student.status || 'ativo';
+  const arr = data.students
+    .filter(s =>
+      s.name.toLowerCase().includes(q) ||
+      String(s.phone || '').includes(q)
+    )
+    .filter(s =>
+      status === 'todos'
+        ? true
+        : status === 'ativos'
+          ? s.status === 'Ativo'
+          : s.status !== 'Ativo'
+    );
 
-      if (statusFilter === 'ativos') {
-        return status !== 'inativo' && status !== 'pausado';
-      }
-
-      if (statusFilter === 'inativos') {
-        return status === 'inativo' || status === 'pausado';
-      }
-
-      return true;
-    })
-    .filter(student => {
-      const text = [
-        student.name,
-        student.phone,
-        student.email,
-        student.plan
-      ].join(' ').toLowerCase();
-
-      return text.includes(search);
-    })
-    .sort((a, b) => String(a.name).localeCompare(String(b.name), 'pt-BR'));
-
-  const container = document.getElementById('studentsList');
-
-  if (!students.length) {
-    container.innerHTML = `
-      <div class="empty">
-        Nenhum aluno encontrado.
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = students.map(student => {
-    const status = student.status || 'ativo';
-    const statusClass =
-      status === 'ativo' ? 'ok' :
-      status === 'pausado' ? 'warn' : 'red';
-
-    const statusText =
-      status === 'ativo' ? 'Ativo' :
-      status === 'pausado' ? 'Pausado' : 'Inativo';
-
-    return `
+  document.getElementById('studentsList').innerHTML = arr.length
+    ? arr.map(s => `
       <div class="item">
         <div>
-          <strong>${esc(student.name || 'Aluno sem nome')}</strong>
+          <strong>${esc(s.name)}</strong>
+
           <div class="sub">
-            ${student.phone ? esc(student.phone) : 'Sem telefone'}
-            ${student.plan ? `· ${esc(student.plan)}` : ''}
+            ${esc(s.modality)} · ${s.frequency || 0}x por semana
           </div>
 
-          <span class="tag ${statusClass}">${statusText}</span>
+          <div class="sub">
+            ${esc(s.schedule || 'Horário não informado')}
+          </div>
 
-          ${
-            Number(student.monthlyFee || 0) > 0
-              ? `<span class="tag">${money(student.monthlyFee)}/mês</span>`
-              : ''
-          }
+          <div class="sub">
+            ${money(s.price)} por mês · vence dia ${s.dueDay || 10}
+          </div>
+
+          <span class="tag ${s.status === 'Ativo' ? 'ok' : 'warn'}">
+            ${esc(s.status)}
+          </span>
         </div>
 
-        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
-          <button class="btn secondary small" onclick="viewStudent('${student.id}')">
-            Ver
-          </button>
-
-          <button class="btn secondary small" onclick="editStudent('${student.id}')">
-            Editar
-          </button>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function renderProfessional() {
-  const key = monthKey(proMonthDate);
-
-  document.getElementById('proMonth').textContent = capitalize(monthName(proMonthDate));
-
-  const transactions = data.transactions
-    .filter(item => item.area === 'profissional')
-    .filter(item => monthKey(item.date) === key)
-    .sort((a, b) => {
-      const dateCompare = String(b.date).localeCompare(String(a.date));
-      if (dateCompare !== 0) return dateCompare;
-      return String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
-    });
-
-  const incomes = transactions
-    .filter(item => item.type === 'entrada')
-    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
-
-  const expenses = transactions
-    .filter(item => item.type === 'saida')
-    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
-
-  document.getElementById('proIncome').textContent = money(incomes);
-  document.getElementById('proExpense').textContent = money(expenses);
-  document.getElementById('proNet').textContent = money(incomes - expenses);
-
-  const dues = data.dues
-    .filter(due => due.month === key)
-    .sort((a, b) => String(a.dueDate).localeCompare(String(b.dueDate)));
-
-  const duesList = document.getElementById('duesList');
-
-  if (!dues.length) {
-    duesList.innerHTML = `
-      <div class="empty">
-        Nenhuma cobrança gerada para este mês.
-        <br>
-        <br>
-        <button class="btn small" onclick="generateDues()">
-          Gerar cobranças deste mês
+        <button class="btn secondary small" onclick="openModal('student','','${s.id}')">
+          Editar
         </button>
       </div>
-    `;
+    `).join('')
+    : `<div class="empty">Nenhum aluno encontrado.</div>`;
+}
+
+function generateDues() {
+  const m = monthKey(iso(proMonthDate));
+  let created = 0;
+
+  data.students
+    .filter(s => s.status === 'Ativo' && Number(s.price) > 0)
+    .forEach(s => {
+      const exists = data.dues.some(d =>
+        d.studentId === s.id && d.month === m
+      );
+
+      if (!exists) {
+        const day = String(s.dueDay || 10).padStart(2, '0');
+
+        data.dues.push({
+          id:uid(),
+          studentId:s.id,
+          month:m,
+          amount:Number(s.price),
+          dueDate:`${m}-${day}`,
+          status:'Pendente'
+        });
+
+        created++;
+      }
+    });
+
+  save();
+
+  alert(
+    created
+      ? `${created} cobrança(s) criada(s).`
+      : 'Não havia novas cobranças para criar neste mês.'
+  );
+}
+
+function markDue(id) {
+  const d = data.dues.find(x => x.id === id);
+
+  if (!d) return;
+
+  if (d.status === 'Pago') {
+    d.status = 'Pendente';
+
+    data.transactions = data.transactions.filter(t => t.linkedDue !== id);
   } else {
-    duesList.innerHTML = dues.map(due => {
-      const received = due.status === 'received';
+    d.status = 'Pago';
 
-      return `
-        <div class="item">
-          <div>
-            <strong>${esc(getStudentName(due.studentId, due.studentName))}</strong>
-            <div class="sub">
-              Vencimento: ${fmtDate(due.dueDate)} · ${money(due.amount)}
-            </div>
+    data.transactions.push({
+      id:uid(),
+      scope:'profissional',
+      kind:'Entrada',
+      description:'Mensalidade — ' + studentName(d.studentId),
+      category:'Mensalidade',
+      amount:Number(d.amount),
+      date:iso(now),
+      status:'Pago',
+      linkedDue:id
+    });
+  }
 
-            ${
-              received
-                ? `
-                  <span class="tag ok">
-                    Recebido em ${fmtDate(due.receivedDate || due.dueDate)}
-                  </span>
-                `
-                : `
-                  <span class="tag ${isOverdue(due) ? 'red' : 'warn'}">
-                    ${isOverdue(due) ? 'Em atraso' : 'Aguardando pagamento'}
-                  </span>
-                `
-            }
+  save();
+}
+
+function renderPro() {
+  document.getElementById('proMonth').textContent = monthName(proMonthDate);
+
+  const m = monthKey(proMonthDate);
+
+  const tx = data.transactions.filter(t =>
+    t.scope === 'profissional' &&
+    monthKey(t.date) === m
+  );
+
+  const inc = tx
+    .filter(t => t.kind === 'Entrada' && t.status === 'Pago')
+    .reduce((a,t) => a + Number(t.amount || 0), 0);
+
+  const out = tx
+    .filter(t => t.kind === 'Saída' && t.status === 'Pago')
+    .reduce((a,t) => a + Number(t.amount || 0), 0);
+
+  document.getElementById('proIncome').textContent = money(inc);
+  document.getElementById('proExpense').textContent = money(out);
+  document.getElementById('proNet').textContent = money(inc - out);
+
+  const dues = data.dues
+    .filter(d => d.month === m)
+    .sort((a,b) => a.dueDate.localeCompare(b.dueDate));
+
+  document.getElementById('duesList').innerHTML = dues.length
+    ? dues.map(d => `
+      <div class="item">
+        <div>
+          <strong>${esc(studentName(d.studentId))}</strong>
+          <div class="sub">
+            Vencimento ${fmtDate(d.dueDate)} · ${money(d.amount)}
           </div>
 
-          <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
-            ${
-              received
-                ? `
-                  <button class="btn secondary small" onclick="reopenDue('${due.id}')">
-                    Reabrir cobrança
-                  </button>
-                `
-                : `
-                  <button class="btn small" onclick="markDueReceived('${due.id}')">
-                    Recebido
-                  </button>
-                `
-            }
+          <span class="tag ${d.status === 'Pago' ? 'ok' : 'warn'}">
+            ${d.status}
+          </span>
+        </div>
 
-            <button class="btn secondary small" onclick="deleteDue('${due.id}')">
+        <button class="btn small" onclick="markDue('${d.id}')">
+          ${d.status === 'Pago' ? 'Reabrir' : 'Marcar pago'}
+        </button>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhuma cobrança neste mês.</div>`;
+
+  document.getElementById('proTransactions').innerHTML = renderTxList(tx);
+}
+
+function renderPersonal() {
+  document.getElementById('perMonth').textContent = monthName(perMonthDate);
+
+  const tx = data.transactions.filter(t =>
+    t.scope === 'pessoal' &&
+    monthKey(t.date) === monthKey(perMonthDate)
+  );
+
+  const inc = tx
+    .filter(t => t.kind === 'Entrada' && t.status === 'Pago')
+    .reduce((a,t) => a + Number(t.amount || 0), 0);
+
+  const out = tx
+    .filter(t => t.kind === 'Saída' && t.status === 'Pago')
+    .reduce((a,t) => a + Number(t.amount || 0), 0);
+
+  document.getElementById('perIncome').textContent = money(inc);
+  document.getElementById('perExpense').textContent = money(out);
+  document.getElementById('perNet').textContent = money(inc - out);
+
+  document.getElementById('perTransactions').innerHTML =
+    tx.length
+      ? renderTxList(tx)
+      : `<div class="empty">Nenhum lançamento pessoal neste mês.</div>`;
+}
+
+function renderTxList(tx) {
+  if (!tx.length) {
+    return `<div class="empty">Nenhum lançamento neste mês.</div>`;
+  }
+
+  return tx
+    .slice()
+    .sort((a,b) => b.date.localeCompare(a.date))
+    .map(t => `
+      <div class="item">
+        <div>
+          <strong>${esc(t.description)}</strong>
+          <div class="sub">
+            ${fmtDate(t.date)} · ${esc(t.category)} · ${esc(t.status)}
+          </div>
+
+          ${t.notes ? `<div class="sub">${esc(t.notes)}</div>` : ''}
+        </div>
+
+        <div style="text-align:right">
+          <b style="color:${t.kind === 'Entrada' ? 'var(--green)' : '#ff9da5'}">
+            ${t.kind === 'Entrada' ? '+' : '−'} ${money(t.amount)}
+          </b>
+
+          <div style="margin-top:6px">
+            <button class="btn secondary small" onclick="removeTransaction('${t.id}')">
               Excluir
             </button>
           </div>
         </div>
-      `;
-    }).join('');
-  }
-
-  const transactionList = document.getElementById('proTransactions');
-
-  if (!transactions.length) {
-    transactionList.innerHTML = `
-      <div class="empty">
-        Nenhum lançamento profissional neste mês.
-      </div>
-    `;
-  } else {
-    transactionList.innerHTML = transactions.map(item => `
-      <div class="item">
-        <div>
-          <strong>${esc(item.description || 'Lançamento sem descrição')}</strong>
-          <div class="sub">
-            ${fmtDate(item.date)}
-            ${item.category ? `· ${esc(item.category)}` : ''}
-          </div>
-
-          ${
-            item.dueId
-              ? '<span class="tag ok">Mensalidade recebida</span>'
-              : `<span class="tag ${item.type === 'entrada' ? 'ok' : 'red'}">
-                   ${item.type === 'entrada' ? 'Entrada' : 'Saída'}
-                 </span>`
-          }
-        </div>
-
-        <div style="text-align:right">
-          <strong style="color:${item.type === 'entrada' ? 'var(--green)' : '#ff9da5'}">
-            ${item.type === 'entrada' ? '+' : '-'} ${money(item.amount)}
-          </strong>
-          <br>
-          <button class="btn secondary small" style="margin-top:7px" onclick="deleteTransaction('${item.id}')">
-            Excluir
-          </button>
-        </div>
       </div>
     `).join('');
-  }
 }
 
-function renderPersonal() {
-  const key = monthKey(perMonthDate);
+function removeTransaction(id) {
+  if (!confirm('Deseja excluir este lançamento?')) return;
 
-  document.getElementById('perMonth').textContent = capitalize(monthName(perMonthDate));
+  data.transactions = data.transactions.filter(t => t.id !== id);
 
-  const transactions = data.transactions
-    .filter(item => item.area === 'pessoal')
-    .filter(item => monthKey(item.date) === key)
-    .sort((a, b) => {
-      const dateCompare = String(b.date).localeCompare(String(a.date));
-      if (dateCompare !== 0) return dateCompare;
-      return String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
-    });
-
-  const incomes = transactions
-    .filter(item => item.type === 'entrada')
-    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
-
-  const expenses = transactions
-    .filter(item => item.type === 'saida')
-    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
-
-  document.getElementById('perIncome').textContent = money(incomes);
-  document.getElementById('perExpense').textContent = money(expenses);
-  document.getElementById('perNet').textContent = money(incomes - expenses);
-
-  const list = document.getElementById('perTransactions');
-
-  if (!transactions.length) {
-    list.innerHTML = `
-      <div class="empty">
-        Nenhum lançamento pessoal neste mês.
-      </div>
-    `;
-    return;
-  }
-
-  list.innerHTML = transactions.map(item => `
-    <div class="item">
-      <div>
-        <strong>${esc(item.description || 'Lançamento sem descrição')}</strong>
-        <div class="sub">
-          ${fmtDate(item.date)}
-          ${item.category ? `· ${esc(item.category)}` : ''}
-        </div>
-
-        <span class="tag ${item.type === 'entrada' ? 'ok' : 'red'}">
-          ${item.type === 'entrada' ? 'Entrada' : 'Saída'}
-        </span>
-      </div>
-
-      <div style="text-align:right">
-        <strong style="color:${item.type === 'entrada' ? 'var(--green)' : '#ff9da5'}">
-          ${item.type === 'entrada' ? '+' : '-'} ${money(item.amount)}
-        </strong>
-        <br>
-        <button class="btn secondary small" style="margin-top:7px" onclick="deleteTransaction('${item.id}')">
-          Excluir
-        </button>
-      </div>
-    </div>
-  `).join('');
+  save();
 }
 
 function renderReports() {
-  const key = monthKey(repMonthDate);
+  document.getElementById('repMonth').textContent = monthName(repMonthDate);
 
-  document.getElementById('repMonth').textContent = capitalize(monthName(repMonthDate));
+  const m = monthKey(repMonthDate);
 
-  const proTransactions = data.transactions
-    .filter(item => item.area === 'profissional')
-    .filter(item => monthKey(item.date) === key);
+  const pro = data.transactions.filter(t =>
+    t.scope === 'profissional' &&
+    monthKey(t.date) === m &&
+    t.status === 'Pago'
+  );
 
-  const perTransactions = data.transactions
-    .filter(item => item.area === 'pessoal')
-    .filter(item => monthKey(item.date) === key);
+  const per = data.transactions.filter(t =>
+    t.scope === 'pessoal' &&
+    monthKey(t.date) === m &&
+    t.status === 'Pago'
+  );
 
-  const proIncome = proTransactions
-    .filter(item => item.type === 'entrada')
-    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const pi = pro
+    .filter(t => t.kind === 'Entrada')
+    .reduce((s,t) => s + Number(t.amount || 0), 0);
 
-  const proExpense = proTransactions
-    .filter(item => item.type === 'saida')
-    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const po = pro
+    .filter(t => t.kind === 'Saída')
+    .reduce((s,t) => s + Number(t.amount || 0), 0);
 
-  const perIncome = perTransactions
-    .filter(item => item.type === 'entrada')
-    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const ei = per
+    .filter(t => t.kind === 'Entrada')
+    .reduce((s,t) => s + Number(t.amount || 0), 0);
 
-  const perExpense = perTransactions
-    .filter(item => item.type === 'saida')
-    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const eo = per
+    .filter(t => t.kind === 'Saída')
+    .reduce((s,t) => s + Number(t.amount || 0), 0);
 
-  const openDues = data.dues
-    .filter(due => due.month === key)
-    .filter(due => due.status !== 'received')
-    .reduce((sum, due) => sum + Number(due.amount || 0), 0);
+  const open = data.dues
+    .filter(d => d.month === m && d.status !== 'Pago')
+    .reduce((s,d) => s + Number(d.amount || 0), 0);
 
-  const proNet = proIncome - proExpense;
-  const perNet = perIncome - perExpense;
+  const values = [
+    ['repProIn', pi],
+    ['repProOut', po],
+    ['repProNet', pi - po],
+    ['repOpen', open],
+    ['repPerIn', ei],
+    ['repPerOut', eo],
+    ['repPerNet', ei - eo],
+    ['repTotal', pi - po + ei - eo]
+  ];
 
-  document.getElementById('repProIn').textContent = money(proIncome);
-  document.getElementById('repProOut').textContent = money(proExpense);
-  document.getElementById('repProNet').textContent = money(proNet);
-  document.getElementById('repOpen').textContent = money(openDues);
-
-  document.getElementById('repPerIn').textContent = money(perIncome);
-  document.getElementById('repPerOut').textContent = money(perExpense);
-  document.getElementById('repPerNet').textContent = money(perNet);
-  document.getElementById('repTotal').textContent = money(proNet + perNet);
+  values.forEach(([id, n]) => {
+    document.getElementById(id).textContent = money(n);
+  });
 }
 
-/* ============================================================
-   UTILITÁRIOS DE ALUNOS, COBRANÇAS E MESES
-============================================================ */
+function shiftMonth(which, delta) {
+  let d =
+    which === 'pro'
+      ? proMonthDate
+      : which === 'per'
+        ? perMonthDate
+        : repMonthDate;
 
-function capitalize(text) {
-  return String(text || '').charAt(0).toUpperCase() + String(text || '').slice(1);
-}
+  d.setMonth(d.getMonth() + delta);
 
-function getStudent(studentId) {
-  return data.students.find(student => student.id === studentId);
-}
-
-function getStudentName(studentId, fallback = '') {
-  return getStudent(studentId)?.name || fallback || 'Aluno não identificado';
-}
-
-function isOverdue(due) {
-  if (!due || due.status === 'received') return false;
-  return String(due.dueDate || '') < iso(new Date());
-}
-
-function shiftMonth(type, direction) {
-  if (type === 'pro') {
-    proMonthDate.setMonth(proMonthDate.getMonth() + direction);
-  }
-
-  if (type === 'per') {
-    perMonthDate.setMonth(perMonthDate.getMonth() + direction);
-  }
-
-  if (type === 'rep') {
-    repMonthDate.setMonth(repMonthDate.getMonth() + direction);
-  }
+  if (which === 'pro') proMonthDate = d;
+  if (which === 'per') perMonthDate = d;
+  if (which === 'rep') repMonthDate = d;
 
   renderAll();
 }
 
-function getDueDay(student) {
-  const parsed = Number(student?.dueDay || 10);
+/* ============================================================
+   BACKUP
+============================================================ */
 
-  if (!Number.isFinite(parsed) || parsed < 1) return 10;
-  if (parsed > 28) return 28;
+function exportBackup() {
+  const blob = new Blob([
+    JSON.stringify({
+      app:'Metodo Vini Seta Gestor',
+      version:1,
+      exportedAt:new Date().toISOString(),
+      data
+    }, null, 2)
+  ], {
+    type:'application/json'
+  });
 
-  return Math.floor(parsed);
+  const a = document.createElement('a');
+
+  a.href = URL.createObjectURL(blob);
+  a.download = 'backup-vini-seta-' + iso(now) + '.json';
+
+  a.click();
+
+  URL.revokeObjectURL(a.href);
 }
-</script>async function initApp() {
-  if (!sb) {
-    console.error('Supabase não foi inicializado.');
-    showScreen('login');
 
-    document.getElementById('loginError').textContent =
-      'Não foi possível iniciar a conexão com o Supabase. Verifique a URL e a chave do projeto.';
+function importBackup(e) {
+  const file = e.target.files[0];
+
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    try {
+      const backup = JSON.parse(reader.result);
+      const imported = backup.data || backup;
+
+      if (
+        !imported.students ||
+        !imported.appointments ||
+        !imported.transactions ||
+        !imported.dues
+      ) {
+        throw new Error('Arquivo incompatível.');
+      }
+
+      if (confirm('Importar este backup substituirá os dados atuais. Deseja continuar?')) {
+        data = imported;
+        save();
+        alert('Backup importado com sucesso.');
+      }
+
+    } catch (err) {
+      alert('Não foi possível importar este arquivo. Verifique se é um backup válido.');
+    }
+
+    e.target.value = '';
+  };
+
+  reader.readAsText(file);
+}
+
+function clearAll() {
+  if (!confirm('Isso apagará todos os dados. Tem certeza?')) return;
+
+  data = blank();
+
+  save();
+}
+
+function seedDemo() {
+  if (
+    data.students.length ||
+    data.appointments.length ||
+    data.transactions.length
+  ) {
+    if (!confirm('Já existem dados. Deseja adicionar os exemplos mesmo assim?')) {
+      return;
+    }
+  }
+
+  const student = {
+    id:uid(),
+    name:'Aluno exemplo',
+    phone:'',
+    email:'',
+    modality:'Presencial',
+    frequency:3,
+    price:480,
+    dueDay:10,
+    startDate:iso(now),
+    status:'Ativo',
+    schedule:'Seg/Qua/Sex — 8h',
+    notes:'Apague este cadastro quando terminar de testar.'
+  };
+
+  data.students.push(student);
+
+  data.appointments.push({
+    id:uid(),
+    title:'Treino — Aluno exemplo',
+    studentId:student.id,
+    type:'Treino presencial',
+    date:iso(now),
+    time:'08:00',
+    duration:60,
+    status:'Agendado',
+    notes:'Atendimento de demonstração.'
+  });
+
+  save();
+
+  alert('Dados de exemplo adicionados.');
+}
+
+/* ============================================================
+   SINCRONIZAÇÃO — MASTER TRAINING
+============================================================ */
+
+async function syncMasterTraining() {
+  const btn = document.getElementById('syncMasterBtn');
+
+  if (!sb) {
+    alert('Não foi possível conectar ao Supabase.');
     return;
   }
 
+  if (!currentUser) {
+    alert('Sua sessão expirou. Entre novamente no Gestor.');
+    return;
+  }
+
+  const originalText = btn ? btn.innerHTML : '';
+
   try {
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Sincronizando...';
+    }
+
+    setSyncStatus('saving');
+
     const result = await withTimeout(
-      sb.auth.getSession(),
-      6000,
-      'A conexão inicial com o Supabase demorou demais.'
+      sb.functions.invoke('sync-master-training'),
+      30000,
+      'A sincronização demorou mais que o esperado. Tente novamente.'
     );
 
-    if (result.error) throw result.error;
+    if (result.error) {
+      throw new Error(
+        result.error.message ||
+        'Não foi possível conectar à função de sincronização.'
+      );
+    }
+
+    const response = result.data;
+
+    if (!response?.ok) {
+      throw new Error(
+        response?.error ||
+        'O Master Training retornou uma resposta inválida.'
+      );
+    }
+
+    if (response.state) {
+      data = {
+        ...blank(),
+        ...response.state
+      };
+
+      persistLocalCache();
+      renderAll();
+    }
+
+    setSyncStatus('saved');
+
+    let message =
+      'Sincronização concluída.\n\n' +
+      'Alunos encontrados no Master Training: ' + response.totalReceived + '\n' +
+      'Novos alunos importados: ' + response.created + '\n' +
+      'Alunos atualizados: ' + response.updated;
+
+    if (response.linkedByName > 0) {
+      message +=
+        '\nVinculados por nome: ' + response.linkedByName +
+        '\n\nConfira esses alunos vinculados por nome antes de editar os cadastros.';
+    }
+
+    alert(message);
+
+  } catch (err) {
+    console.error('Erro ao sincronizar Master Training:', err);
+
+    setSyncStatus('offline');
+
+    alert(
+      'Não foi possível sincronizar com o Master Training.\n\n' +
+      (err?.message || 'Erro desconhecido.')
+    );
+
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    }
+  }
+}
+
+/* ============================================================
+   LOGIN E INICIALIZAÇÃO
+============================================================ */
+
+async function logout() {
+  try {
+    if (sb) {
+      await sb.auth.signOut();
+    }
+  } catch (err) {
+    console.error('Erro ao sair:', err);
+  }
+
+  currentUser = null;
+  data = blank();
+
+  showScreen('login');
+}
+
+async function initApp() {
+  document.getElementById('todayLabel').textContent =
+    now.toLocaleDateString('pt-BR', {
+      weekday:'long',
+      day:'numeric',
+      month:'long'
+    });
+
+  document.getElementById('agendaDate').value = iso(now);
+
+  document.getElementById('agendaDate').addEventListener('change', renderAgenda);
+  document.getElementById('agendaFilter').addEventListener('change', renderAgenda);
+  document.getElementById('studentSearch').addEventListener('input', renderStudents);
+  document.getElementById('studentStatus').addEventListener('change', renderStudents);
+
+  document.querySelectorAll('.nav button').forEach(b => {
+    b.addEventListener('click', () => showView(b.dataset.view));
+  });
+
+  /*
+    Aqui está a correção principal:
+    loadCloudData nunca impede o app de abrir.
+    Em caso de falha, usa cache local ou abre vazio.
+  */
+  await loadCloudData();
+
+  renderAll();
+
+  showScreen('app');
+}
+
+document.getElementById('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  const errorEl = document.getElementById('loginError');
+  const btn = document.getElementById('loginBtn');
+
+  errorEl.textContent = '';
+
+  if (!sb) {
+    errorEl.textContent =
+      'Não foi possível conectar ao servidor. Recarregue a página e tente novamente.';
+    return;
+  }
+
+  btn.textContent = 'Entrando...';
+  btn.disabled = true;
+
+  try {
+    const result = await withTimeout(
+      sb.auth.signInWithPassword({ email, password }),
+      10000,
+      'Tempo esgotado ao tentar entrar.'
+    );
+
+    btn.textContent = 'Entrar';
+    btn.disabled = false;
+
+    if (result.error) {
+      errorEl.textContent =
+        'E-mail ou senha incorretos. (' + result.error.message + ')';
+      return;
+    }
+
+    if (!result.data || !result.data.user) {
+      errorEl.textContent = 'O login não retornou um usuário válido.';
+      return;
+    }
+
+    currentUser = result.data.user;
+
+    showScreen('loading');
+
+    await initApp();
+
+  } catch (err) {
+    console.error('Erro no login:', err);
+
+    btn.textContent = 'Entrar';
+    btn.disabled = false;
+
+    errorEl.textContent =
+      'Não foi possível concluir o login. Verifique sua conexão e tente novamente.';
+
+    showScreen('login');
+  }
+});
+
+/*
+  Inicialização automática:
+  se houver login salvo, entra no app.
+  se não houver, abre a tela de login.
+*/
+(async function boot() {
+  try {
+    if (!sb) {
+      showScreen('login');
+
+      document.getElementById('loginError').textContent =
+        'Não foi possível carregar a conexão com o servidor.';
+
+      return;
+    }
+
+    const result = await withTimeout(
+      sb.auth.getSession(),
+      8000,
+      'Tempo esgotado ao verificar a sessão.'
+    );
 
     const session = result.data?.session;
 
     if (session?.user) {
       currentUser = session.user;
-      await openApp();
-      return;
+
+      await initApp();
+    } else {
+      showScreen('login');
     }
 
-    showScreen('login');
-  } catch (error) {
-    console.error('Erro na inicialização do Gestor:', error);
+  } catch (err) {
+    console.error('Erro na inicialização:', err);
 
     showScreen('login');
 
     document.getElementById('loginError').textContent =
-      'Não foi possível conectar automaticamente. Confira a internet e tente entrar novamente.';
+      'Não foi possível conectar ao servidor agora. Tente entrar novamente.';
   }
-}
+})();
+</script>
+
+</body>
+</html>
