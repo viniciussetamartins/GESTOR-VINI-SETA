@@ -1222,7 +1222,50 @@ async function loadCloudData() {
   }
 }
 
+function criarCobrancasAutomaticas() {
+  if (!Array.isArray(data.students)) data.students = [];
+  if (!Array.isArray(data.dues)) data.dues = [];
+
+  const mesAtual = monthKey(iso(new Date()));
+
+  data.students
+    .filter(aluno =>
+      aluno.status === 'Ativo' &&
+      Number(aluno.price || 0) > 0
+    )
+    .forEach(aluno => {
+      const jaExiste = data.dues.some(cobranca =>
+        cobranca.studentId === aluno.id &&
+        cobranca.month === mesAtual
+      );
+
+      if (jaExiste) return;
+
+      const diaVencimento = Math.min(
+        Math.max(Number(aluno.dueDay || 10), 1),
+        28
+      );
+
+      data.dues.push({
+        id: uid(),
+        studentId: aluno.id,
+        month: mesAtual,
+        amount: Number(aluno.price),
+        dueDate: `${mesAtual}-${String(diaVencimento).padStart(2, '0')}`,
+        status: 'Pendente',
+        createdAutomatically: true
+      });
+    });
+}
+
 function save() {
+  /*
+    Sempre que um aluno for criado ou editado, o Gestor verifica
+    se ele está ativo, possui mensalidade e ainda não tem cobrança
+    no mês atual. Se não tiver, cria automaticamente.
+  */
+  criarCobrancasAutomaticas();
+
   persistLocalCache();
   renderAll();
   setSyncStatus('saving');
