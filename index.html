@@ -560,7 +560,6 @@ textarea{
 <div id="screen-login" class="screen">
   <div class="authcard">
     <div class="logo">VS</div>
-
     <h2>Método Vini Seta</h2>
     <p class="sub2">Acesso restrito ao administrador</p>
 
@@ -585,7 +584,6 @@ textarea{
 </div>
 
 <div id="screen-app" class="screen">
-
   <div class="app">
 
     <header class="top">
@@ -615,7 +613,6 @@ textarea{
     <main>
 
       <section id="view-inicio" class="view active">
-
         <div class="section-head">
           <div>
             <h2>Visão geral</h2>
@@ -651,7 +648,6 @@ textarea{
         </div>
 
         <div class="grid2">
-
           <div class="box">
             <div class="section-head" style="margin-top:0">
               <div>
@@ -689,7 +685,6 @@ textarea{
       </section>
 
       <section id="view-agenda" class="view">
-
         <div class="section-head">
           <div>
             <h2>Agenda</h2>
@@ -718,26 +713,21 @@ textarea{
       </section>
 
       <section id="view-alunos" class="view">
-
         <div class="section-head">
           <div>
             <h2>Alunos</h2>
             <p>Cadastro, plano e mensalidade</p>
           </div>
 
-        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
-            <button
-                class="btn secondary"
-                    id="syncMasterBtn"
-                        onclick="syncMasterTraining()"
-                          >
-                              ↻ Sincronizar Master Training
-                                </button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+            <button class="btn secondary" id="syncMasterBtn" onclick="syncMasterTraining()">
+              ↻ Sincronizar Master Training
+            </button>
 
-                                  <button class="btn" onclick="openModal('student')">
-                                      ＋ Aluno
-                                        </button>
-                                        </div>
+            <button class="btn" onclick="openModal('student')">
+              ＋ Aluno
+            </button>
+          </div>
         </div>
 
         <div class="toolbar">
@@ -754,7 +744,6 @@ textarea{
       </section>
 
       <section id="view-profissional" class="view">
-
         <div class="section-head">
           <div>
             <h2>Financeiro profissional</h2>
@@ -812,7 +801,6 @@ textarea{
       </section>
 
       <section id="view-pessoal" class="view">
-
         <div class="section-head">
           <div>
             <h2>Finanças pessoais</h2>
@@ -857,7 +845,6 @@ textarea{
       </section>
 
       <section id="view-relatorios" class="view">
-
         <div class="section-head">
           <div>
             <h2>Resumo financeiro</h2>
@@ -875,49 +862,19 @@ textarea{
           <h3 style="margin-top:0">Profissional</h3>
 
           <div class="kpis">
-            <div class="kpi">
-              <span>Receitas recebidas</span>
-              <strong id="repProIn">R$ 0</strong>
-            </div>
-
-            <div class="kpi">
-              <span>Despesas</span>
-              <strong id="repProOut">R$ 0</strong>
-            </div>
-
-            <div class="kpi">
-              <span>Resultado</span>
-              <strong id="repProNet">R$ 0</strong>
-            </div>
-
-            <div class="kpi">
-              <span>Em aberto</span>
-              <strong id="repOpen">R$ 0</strong>
-            </div>
+            <div class="kpi"><span>Receitas recebidas</span><strong id="repProIn">R$ 0</strong></div>
+            <div class="kpi"><span>Despesas</span><strong id="repProOut">R$ 0</strong></div>
+            <div class="kpi"><span>Resultado</span><strong id="repProNet">R$ 0</strong></div>
+            <div class="kpi"><span>Em aberto</span><strong id="repOpen">R$ 0</strong></div>
           </div>
 
           <h3>Finanças pessoais</h3>
 
           <div class="kpis">
-            <div class="kpi">
-              <span>Entradas</span>
-              <strong id="repPerIn">R$ 0</strong>
-            </div>
-
-            <div class="kpi">
-              <span>Saídas</span>
-              <strong id="repPerOut">R$ 0</strong>
-            </div>
-
-            <div class="kpi">
-              <span>Saldo pessoal</span>
-              <strong id="repPerNet">R$ 0</strong>
-            </div>
-
-            <div class="kpi">
-              <span>Saldo consolidado</span>
-              <strong id="repTotal">R$ 0</strong>
-            </div>
+            <div class="kpi"><span>Entradas</span><strong id="repPerIn">R$ 0</strong></div>
+            <div class="kpi"><span>Saídas</span><strong id="repPerOut">R$ 0</strong></div>
+            <div class="kpi"><span>Saldo pessoal</span><strong id="repPerNet">R$ 0</strong></div>
+            <div class="kpi"><span>Saldo consolidado</span><strong id="repTotal">R$ 0</strong></div>
           </div>
         </div>
 
@@ -934,13 +891,7 @@ textarea{
 
             <label class="btn secondary" style="text-align:center;cursor:pointer">
               Importar backup
-              <input
-                type="file"
-                id="importFile"
-                accept="application/json,.json"
-                style="display:none"
-                onchange="importBackup(event)"
-              >
+              <input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
             </label>
           </div>
 
@@ -948,13 +899,8 @@ textarea{
             O backup inclui alunos, agenda, cobranças e lançamentos financeiros.
           </p>
 
-          <button class="btn secondary" onclick="seedDemo()">
-            Adicionar dados de exemplo
-          </button>
-
-          <button class="btn secondary" onclick="clearAll()">
-            Apagar todos os dados
-          </button>
+          <button class="btn secondary" onclick="seedDemo()">Adicionar dados de exemplo</button>
+          <button class="btn secondary" onclick="clearAll()">Apagar todos os dados</button>
         </div>
       </section>
 
@@ -963,7 +909,6 @@ textarea{
     <div class="footer-note">
       Método Vini Seta · Gestor · Feito para uso interno
     </div>
-
   </div>
 
   <div class="modal" id="modal">
@@ -976,44 +921,27 @@ textarea{
       <div id="modalBody"></div>
     </div>
   </div>
-
 </div>
 
 <script>
 function handleScriptLoadError() {
   console.error('Falha ao carregar a biblioteca Supabase.');
-
   document.getElementById('screen-loading').classList.remove('active');
   document.getElementById('screen-login').classList.add('active');
 
   const errorEl = document.getElementById('loginError');
-
   if (errorEl) {
     errorEl.textContent =
       'Não foi possível carregar a conexão com o servidor. Verifique sua internet e recarregue a página.';
   }
 }
 
-window.addEventListener('error', function(event) {
+window.addEventListener('error', event => {
   console.error('Erro de script:', event.message, 'Linha:', event.lineno);
 });
 
-window.addEventListener('unhandledrejection', function(event) {
+window.addEventListener('unhandledrejection', event => {
   console.error('Erro assíncrono não tratado:', event.reason);
-
-  const loading = document.getElementById('screen-loading');
-
-  if (loading && loading.classList.contains('active')) {
-    document.getElementById('screen-loading').classList.remove('active');
-    document.getElementById('screen-login').classList.add('active');
-
-    const errorEl = document.getElementById('loginError');
-
-    if (errorEl) {
-      errorEl.textContent =
-        'Falha de conexão ao iniciar. Verifique sua internet e tente novamente.';
-    }
-  }
 });
 </script>
 
@@ -1024,13 +952,13 @@ window.addEventListener('unhandledrejection', function(event) {
 
 <script>
 /* ============================================================
-   CONFIGURAÇÃO SUPABASE
+   CONFIGURAÇÃO E FUNÇÕES BÁSICAS
 ============================================================ */
 
 const SUPABASE_URL = 'https://joeswmohdcazikssvhkr.supabase.co';
 
 const SUPABASE_ANON_KEY =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvZXN3bW9oZGNhemlrc3N2aGtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNTExNDYsImV4cCI6MjEwODkyNzE0Nn0.ixrukIdRG4RhC_RTrO9dqrH4uywhRw_hCOeNZqpR5Cg';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdWIiOiJqb2Vzd21vaGRjYXppa3NzdmhrciIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzkzMzUxMTQ2LCJleHAiOjIxMDg5MjczNDZ9.ixrukIdRG4RhC_RTrO9dqrH4uywhRw_hCOeNZqpR5Cg';
 
 let sb = null;
 
@@ -1040,17 +968,11 @@ if (window.supabase && typeof window.supabase.createClient === 'function') {
   console.error('Biblioteca do Supabase não foi carregada.');
 }
 
-/* ============================================================
-   FUNÇÕES BÁSICAS
-============================================================ */
-
 const LOCAL_KEY = 'vini_seta_gestor_cache_v1';
-
 const now = new Date();
 
 const iso = d => {
   const x = new Date(d);
-
   return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
 };
 
@@ -1058,8 +980,8 @@ const monthKey = d => String(d).slice(0, 7);
 
 const money = n =>
   Number(n || 0).toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
+    style:'currency',
+    currency:'BRL'
   });
 
 const esc = s =>
@@ -1073,10 +995,10 @@ const esc = s =>
 
 function blank() {
   return {
-    students: [],
-    appointments: [],
-    dues: [],
-    transactions: []
+    students:[],
+    appointments:[],
+    dues:[],
+    transactions:[]
   };
 }
 
@@ -1089,14 +1011,12 @@ let perMonthDate = new Date(now.getFullYear(), now.getMonth(), 1);
 let repMonthDate = new Date(now.getFullYear(), now.getMonth(), 1);
 
 function uid() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
 
 function fmtDate(s) {
   if (!s) return 'Sem data';
-
-  const [y, m, d] = s.split('-');
-
+  const [y,m,d] = String(s).split('-');
   return `${d}/${m}/${y}`;
 }
 
@@ -1110,22 +1030,18 @@ function monthName(d) {
 function persistLocalCache() {
   try {
     localStorage.setItem(LOCAL_KEY, JSON.stringify(data));
-  } catch (e) {
-    console.warn('Não foi possível salvar no cache local.', e);
+  } catch (error) {
+    console.warn('Não foi possível salvar no cache local.', error);
   }
 }
 
 function readLocalCache() {
   try {
     return JSON.parse(localStorage.getItem(LOCAL_KEY) || 'null');
-  } catch (e) {
+  } catch (error) {
     return null;
   }
 }
-
-/* ============================================================
-   TIMEOUT DE CONEXÃO
-============================================================ */
 
 function withTimeout(promise, ms = 8000, message = 'Tempo de conexão esgotado.') {
   return Promise.race([
@@ -1138,7 +1054,6 @@ function withTimeout(promise, ms = 8000, message = 'Tempo de conexão esgotado.'
 
 function setSyncStatus(state) {
   const el = document.getElementById('syncStatus');
-
   if (!el) return;
 
   if (state === 'saving') {
@@ -1154,86 +1069,127 @@ function setSyncStatus(state) {
     el.textContent = '● Conectando...';
     el.style.color = '#a9a9a9';
   }
-}
-
+}<script>
 /* ============================================================
-   NUVEM / SUPABASE — CORRIGIDO PARA NÃO TRAVAR A TELA
+   AUTENTICAÇÃO, BANCO DE DADOS E SINCRONIZAÇÃO
 ============================================================ */
 
-async function loadCloudData() {
-  const cache = readLocalCache();
+function showScreen(screenName) {
+  document.querySelectorAll('.screen').forEach(el => {
+    el.classList.remove('active');
+  });
+
+  const screen = document.getElementById(`screen-${screenName}`);
+  if (screen) screen.classList.add('active');
+}
+
+async function initApp() {
+  if (!sb) {
+    showScreen('login');
+    return;
+  }
 
   try {
-    if (!sb) {
-      throw new Error('Supabase não carregado.');
-    }
+    const { data: sessionData, error } = await sb.auth.getSession();
 
-    if (!currentUser || !currentUser.id) {
-      throw new Error('Usuário não identificado.');
-    }
+    if (error) throw error;
 
-    const result = await withTimeout(
-      sb
-        .from('app_state')
-        .select('data')
-        .eq('user_id', currentUser.id)
-        .maybeSingle(),
-      8000,
-      'Tempo esgotado ao carregar os dados da nuvem.'
-    );
-
-    if (result.error) {
-      throw result.error;
-    }
-
-    if (result.data && result.data.data) {
-      data = { ...blank(), ...result.data.data };
-      persistLocalCache();
-      setSyncStatus('saved');
+    if (sessionData?.session?.user) {
+      currentUser = sessionData.session.user;
+      await openApp();
       return;
     }
 
-    data = cache ? { ...blank(), ...cache } : blank();
-
-    const createResult = await withTimeout(
-      sb
-        .from('app_state')
-        .upsert({
-          user_id: currentUser.id,
-          data,
-          updated_at: new Date().toISOString()
-        }),
-      8000,
-      'Tempo esgotado ao criar os dados iniciais.'
-    );
-
-    if (createResult.error) {
-      throw createResult.error;
-    }
-
-    setSyncStatus('saved');
-
-  } catch (err) {
-    console.error('Falha ao carregar dados da nuvem:', err);
-
-    data = cache ? { ...blank(), ...cache } : blank();
-
-    setSyncStatus('offline');
+    showScreen('login');
+  } catch (error) {
+    console.error('Erro ao verificar sessão:', error);
+    showScreen('login');
   }
 }
 
-function save() {
-  persistLocalCache();
-  renderAll();
-  setSyncStatus('saving');
+async function login(event) {
+  event.preventDefault();
 
-  clearTimeout(saveTimer);
+  if (!sb) {
+    document.getElementById('loginError').textContent =
+      'A conexão com o Supabase não foi carregada. Recarregue a página.';
+    return;
+  }
 
-  saveTimer = setTimeout(syncToCloud, 700);
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const errorEl = document.getElementById('loginError');
+
+  errorEl.textContent = '';
+  btn.disabled = true;
+  btn.textContent = 'Entrando...';
+
+  try {
+    const { data: authData, error } = await sb.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    currentUser = authData.user;
+    await openApp();
+  } catch (error) {
+    console.error('Erro no login:', error);
+    errorEl.textContent =
+      error.message === 'Invalid login credentials'
+        ? 'E-mail ou senha incorretos.'
+        : (error.message || 'Não foi possível entrar. Tente novamente.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Entrar';
+  }
 }
 
-async function syncToCloud() {
-  if (!currentUser || !sb) {
+async function logout() {
+  if (!confirm('Deseja realmente sair do Gestor?')) return;
+
+  try {
+    if (sb) await sb.auth.signOut();
+  } catch (error) {
+    console.warn('Erro ao sair:', error);
+  }
+
+  currentUser = null;
+  data = blank();
+
+  document.getElementById('loginPassword').value = '';
+  document.getElementById('loginError').textContent = '';
+
+  showScreen('login');
+}
+
+async function openApp() {
+  showScreen('app');
+
+  document.getElementById('todayLabel').textContent =
+    new Date().toLocaleDateString('pt-BR', {
+      weekday:'long',
+      day:'2-digit',
+      month:'long',
+      year:'numeric'
+    });
+
+  document.getElementById('agendaDate').value = iso(new Date());
+
+  bindEvents();
+  await loadData();
+  renderAll();
+}
+
+async function loadData() {
+  setSyncStatus('loading');
+
+  const localData = readLocalCache();
+
+  if (!sb || !currentUser) {
+    data = localData || blank();
     setSyncStatus('offline');
     return;
   }
@@ -1241,1617 +1197,1688 @@ async function syncToCloud() {
   try {
     const result = await withTimeout(
       sb
-        .from('app_state')
-        .upsert({
-          user_id: currentUser.id,
-          data,
-          updated_at: new Date().toISOString()
-        }),
-      8000,
-      'Tempo esgotado ao salvar na nuvem.'
+        .from('gestor_dados')
+        .select('dados')
+        .eq('user_id', currentUser.id)
+        .maybeSingle()
     );
 
-    if (result.error) {
-      throw result.error;
+    if (result.error) throw result.error;
+
+    if (result.data?.dados) {
+      data = normalizeData(result.data.dados);
+      persistLocalCache();
+      setSyncStatus('saved');
+      return;
     }
 
-    setSyncStatus('saved');
+    data = localData || blank();
 
-  } catch (err) {
-    console.error('Erro ao salvar na nuvem:', err);
+    if (
+      data.students.length ||
+      data.appointments.length ||
+      data.dues.length ||
+      data.transactions.length
+    ) {
+      await saveDataNow();
+    } else {
+      setSyncStatus('saved');
+    }
+  } catch (error) {
+    console.warn('Erro ao carregar dados do servidor:', error);
+
+    data = localData || blank();
     setSyncStatus('offline');
   }
 }
 
+function normalizeData(raw) {
+  const clean = raw && typeof raw === 'object' ? raw : {};
+
+  return {
+    students:Array.isArray(clean.students) ? clean.students : [],
+    appointments:Array.isArray(clean.appointments) ? clean.appointments : [],
+    dues:Array.isArray(clean.dues) ? clean.dues : [],
+    transactions:Array.isArray(clean.transactions) ? clean.transactions : []
+  };
+}
+
+function scheduleSave() {
+  persistLocalCache();
+
+  clearTimeout(saveTimer);
+
+  saveTimer = setTimeout(() => {
+    saveDataNow();
+  }, 700);
+}
+
+async function saveDataNow() {
+  persistLocalCache();
+
+  if (!sb || !currentUser) {
+    setSyncStatus('offline');
+    return false;
+  }
+
+  setSyncStatus('saving');
+
+  try {
+    const payload = {
+      user_id: currentUser.id,
+      dados: data,
+      atualizado_em: new Date().toISOString()
+    };
+
+    const result = await withTimeout(
+      sb
+        .from('gestor_dados')
+        .upsert(payload, { onConflict:'user_id' })
+        .select()
+    );
+
+    if (result.error) throw result.error;
+
+    setSyncStatus('saved');
+    return true;
+  } catch (error) {
+    console.error('Erro ao salvar no Supabase:', error);
+    setSyncStatus('offline');
+    return false;
+  }
+}
+
 /* ============================================================
-   FUNÇÕES DE INTERFACE
+   NAVEGAÇÃO E EVENTOS
 ============================================================ */
 
-function opts(values, selected) {
-  return values.map(v =>
-    `<option ${String(v) === String(selected) ? 'selected' : ''} value="${esc(v)}">${esc(v)}</option>`
-  ).join('');
-}
+let eventsBound = false;
 
-function studentName(id) {
-  return data.students.find(s => s.id === id)?.name || 'Aluno removido';
-}
+function bindEvents() {
+  if (eventsBound) return;
+  eventsBound = true;
 
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => {
-    s.classList.toggle('active', s.id === 'screen-' + name);
+  document.querySelectorAll('.nav button[data-view]').forEach(btn => {
+    btn.addEventListener('click', () => showView(btn.dataset.view));
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', login);
+
+  document.getElementById('agendaDate').addEventListener('change', renderAgenda);
+  document.getElementById('agendaFilter').addEventListener('change', renderAgenda);
+
+  document.getElementById('studentSearch').addEventListener('input', renderStudents);
+  document.getElementById('studentStatus').addEventListener('change', renderStudents);
+
+  window.addEventListener('online', async () => {
+    if (currentUser) await saveDataNow();
   });
 }
 
-function showView(name) {
-  document.querySelectorAll('.view').forEach(v => {
-    v.classList.toggle('active', v.id === 'view-' + name);
+function showView(viewName) {
+  document.querySelectorAll('.view').forEach(view => {
+    view.classList.remove('active');
   });
 
-  document.querySelectorAll('.nav button').forEach(b => {
-    b.classList.toggle('active', b.dataset.view === name);
+  const target = document.getElementById(`view-${viewName}`);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('.nav button[data-view]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === viewName);
   });
 
-  if (name === 'agenda') renderAgenda();
-  if (name === 'alunos') renderStudents();
-  if (name === 'profissional') renderPro();
-  if (name === 'pessoal') renderPersonal();
-  if (name === 'relatorios') renderReports();
-
+  renderAll();
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
-}
-
-document.getElementById('modal').addEventListener('click', e => {
-  if (e.target.id === 'modal') closeModal();
-});
-
 /* ============================================================
-   MODAIS
-============================================================ */
-
-function openModal(type, scope = '', id = '') {
-  const modal = document.getElementById('modal');
-  const body = document.getElementById('modalBody');
-
-  modal.classList.add('open');
-  modal.dataset.type = type;
-  modal.dataset.id = id;
-  modal.dataset.scope = scope;
-
-  if (type === 'student') {
-    let s = data.students.find(x => x.id === id) || {};
-
-    document.getElementById('modalTitle').textContent =
-      id ? 'Editar aluno' : 'Cadastrar aluno';
-
-    body.innerHTML = `
-      <form id="recordForm">
-        <div class="formgrid">
-
-          <div class="field full">
-            <label>Nome completo *</label>
-            <input name="name" required value="${esc(s.name || '')}" placeholder="Nome do aluno">
-          </div>
-
-          <div class="field">
-            <label>Telefone / WhatsApp</label>
-            <input name="phone" value="${esc(s.phone || '')}">
-          </div>
-
-          <div class="field">
-            <label>E-mail</label>
-            <input name="email" type="email" value="${esc(s.email || '')}">
-          </div>
-
-          <div class="field">
-            <label>Modalidade</label>
-            <select name="modality">
-              ${opts(['Presencial','Consultoria online','Híbrido','Aula avulsa'], s.modality || 'Presencial')}
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Frequência por semana</label>
-            <select name="frequency">
-              ${opts(['1','2','3','4','5','6','7'], s.frequency || '3')}
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Mensalidade (R$)</label>
-            <input name="price" type="number" min="0" step=".01" value="${s.price ?? ''}">
-          </div>
-
-          <div class="field">
-            <label>Dia de vencimento</label>
-            <select name="dueDay">
-              ${Array.from({length:28}, (_, i) =>
-                `<option value="${i + 1}" ${(s.dueDay || 10) == i + 1 ? 'selected' : ''}>Dia ${i + 1}</option>`
-              ).join('')}
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Início do plano</label>
-            <input name="startDate" type="date" value="${s.startDate || iso(now)}">
-          </div>
-
-          <div class="field">
-            <label>Status</label>
-            <select name="status">
-              ${opts(['Ativo','Pausado','Inativo'], s.status || 'Ativo')}
-            </select>
-          </div>
-
-          <div class="field full">
-            <label>Dias e horários habituais</label>
-            <input name="schedule" value="${esc(s.schedule || '')}" placeholder="Ex.: seg/qua/sex — 8h">
-          </div>
-
-          <div class="field full">
-            <label>Observações</label>
-            <textarea name="notes">${esc(s.notes || '')}</textarea>
-          </div>
-
-        </div>
-
-        <div class="form-actions">
-          <button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button>
-          <button class="btn">Salvar aluno</button>
-        </div>
-      </form>
-    `;
-
-    document.getElementById('recordForm').onsubmit = e => {
-      e.preventDefault();
-
-      let f = Object.fromEntries(new FormData(e.target));
-
-      f.price = Number(f.price || 0);
-      f.frequency = Number(f.frequency);
-
-      if (id) {
-        Object.assign(s, f);
-      } else {
-        data.students.push({
-          id:uid(),
-          ...f,
-          createdAt:iso(now)
-        });
-      }
-
-      save();
-      closeModal();
-    };
-  }
-
-  if (type === 'appointment') {
-    let a = data.appointments.find(x => x.id === id) || {};
-
-    document.getElementById('modalTitle').textContent =
-      id ? 'Editar atendimento' : 'Novo atendimento';
-
-    body.innerHTML = `
-      <form id="recordForm">
-        <div class="formgrid">
-
-          <div class="field full">
-            <label>Descrição / aluno *</label>
-            <input name="title" required value="${esc(a.title || '')}" placeholder="Ex.: Treino — Maria">
-          </div>
-
-          <div class="field">
-            <label>Tipo</label>
-            <select name="type">
-              ${opts(
-                ['Treino presencial','Avaliação física','Aula avulsa','Compromisso','Consultoria online'],
-                a.type || 'Treino presencial'
-              )}
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Aluno (opcional)</label>
-            <select name="studentId">
-              <option value="">Sem aluno vinculado</option>
-              ${data.students.map(s =>
-                `<option value="${s.id}" ${a.studentId === s.id ? 'selected' : ''}>${esc(s.name)}</option>`
-              ).join('')}
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Data *</label>
-            <input name="date" type="date" required value="${a.date || iso(now)}">
-          </div>
-
-          <div class="field">
-            <label>Horário</label>
-            <input name="time" type="time" value="${a.time || '08:00'}">
-          </div>
-
-          <div class="field">
-            <label>Duração (min)</label>
-            <input name="duration" type="number" min="1" value="${a.duration || 60}">
-          </div>
-
-          <div class="field">
-            <label>Status</label>
-            <select name="status">
-              ${opts(['Agendado','Concluído','Cancelado','Remarcado'], a.status || 'Agendado')}
-            </select>
-          </div>
-
-          <div class="field full">
-            <label>Observações</label>
-            <textarea name="notes">${esc(a.notes || '')}</textarea>
-          </div>
-
-        </div>
-
-        <div class="form-actions">
-          <button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button>
-          <button class="btn">Salvar atendimento</button>
-        </div>
-      </form>
-    `;
-
-    document.getElementById('recordForm').onsubmit = e => {
-      e.preventDefault();
-
-      let f = Object.fromEntries(new FormData(e.target));
-      f.duration = Number(f.duration || 60);
-
-      if (id) {
-        Object.assign(a, f);
-      } else {
-        data.appointments.push({
-          id:uid(),
-          ...f
-        });
-      }
-
-      save();
-      closeModal();
-    };
-  }
-
-  if (type === 'transaction') {
-    document.getElementById('modalTitle').textContent = 'Novo lançamento';
-
-    const defaultScope = scope || 'profissional';
-
-    body.innerHTML = `
-      <form id="recordForm">
-        <div class="formgrid">
-
-          <div class="field">
-            <label>Área</label>
-            <select name="scope">
-              ${opts(['profissional','pessoal'], defaultScope)}
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Movimento</label>
-            <select name="kind">
-              ${opts(['Entrada','Saída'], 'Saída')}
-            </select>
-          </div>
-
-          <div class="field full">
-            <label>Descrição *</label>
-            <input name="description" required placeholder="Ex.: Mensalidade, mercado, aplicativo">
-          </div>
-
-          <div class="field">
-            <label>Categoria</label>
-            <select name="category">
-              ${opts(
-                [
-                  'Mensalidade','Aula avulsa','Avaliação','Consultoria','Outros recebimentos',
-                  'Moradia','Alimentação','Transporte','Saúde','Assinaturas',
-                  'Equipamentos','Marketing','Impostos','Outros'
-                ],
-                'Outros'
-              )}
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Valor (R$) *</label>
-            <input name="amount" required type="number" min=".01" step=".01">
-          </div>
-
-          <div class="field">
-            <label>Data</label>
-            <input name="date" type="date" value="${iso(now)}">
-          </div>
-
-          <div class="field">
-            <label>Situação</label>
-            <select name="status">
-              ${opts(['Pago','Pendente'], 'Pago')}
-            </select>
-          </div>
-
-          <div class="field full">
-            <label>Observações</label>
-            <textarea name="notes"></textarea>
-          </div>
-
-        </div>
-
-        <div class="form-actions">
-          <button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button>
-          <button class="btn">Salvar lançamento</button>
-        </div>
-      </form>
-    `;
-
-    document.getElementById('recordForm').onsubmit = e => {
-      e.preventDefault();
-
-      let f = Object.fromEntries(new FormData(e.target));
-      f.amount = Number(f.amount);
-
-      data.transactions.push({
-        id:uid(),
-        ...f
-      });
-
-      save();
-      closeModal();
-    };
-  }
-}
-
-/* ============================================================
-   RENDERIZAÇÃO
+   RENDERIZAÇÃO PRINCIPAL
 ============================================================ */
 
 function renderAll() {
   renderDashboard();
   renderAgenda();
   renderStudents();
-  renderPro();
+  renderProfessional();
   renderPersonal();
   renderReports();
 }
 
 function renderDashboard() {
-  const today = iso(now);
+  const today = iso(new Date());
 
-  document.getElementById('dashStudents').textContent =
-    data.students.filter(s => s.status === 'Ativo').length;
+  const activeStudents = data.students.filter(student =>
+    student.status !== 'inativo' && student.status !== 'pausado'
+  );
 
-  document.getElementById('dashToday').textContent =
-    data.appointments.filter(a =>
-      a.date === today && a.status !== 'Cancelado'
-    ).length;
+  const todayAppointments = data.appointments
+    .filter(item => item.date === today)
+    .sort((a, b) => String(a.time).localeCompare(String(b.time)));
 
-  const m = monthKey(today);
+  const pendingDues = data.dues.filter(due =>
+    due.status !== 'received' &&
+    due.month === today.slice(0, 7)
+  );
 
-  const pending = data.dues
-    .filter(d => d.month === m && d.status !== 'Pago')
-    .reduce((s, d) => s + Number(d.amount || 0), 0);
+  const pendingValue = pendingDues.reduce((sum, due) =>
+    sum + Number(due.amount || 0), 0);
 
-  document.getElementById('dashPending').textContent = money(pending);
+  document.getElementById('dashStudents').textContent = activeStudents.length;
+  document.getElementById('dashToday').textContent = todayAppointments.length;
+  document.getElementById('dashPending').textContent = money(pendingValue);
 
-  const appointments = data.appointments
-    .filter(a => a.date === today && a.status !== 'Cancelado')
-    .sort((a,b) => (a.time || '').localeCompare(b.time || ''));
+  const todayList = document.getElementById('todayList');
 
-  document.getElementById('todayList').innerHTML = appointments.length
-    ? appointments.map(a => `
+  if (!todayAppointments.length) {
+    todayList.innerHTML = `
+      <div class="empty">
+        Nenhum atendimento agendado para hoje.
+      </div>
+    `;
+  } else {
+    todayList.innerHTML = todayAppointments.map(item => `
       <div class="item">
         <div>
-          <strong>${esc(a.time || '--:--')} · ${esc(a.title)}</strong>
-          <div class="sub">${esc(a.type)} · ${esc(a.status)}</div>
+          <strong>${esc(item.time || '--:--')} · ${esc(item.title || 'Atendimento')}</strong>
+          <div class="sub">${esc(item.studentName || item.description || 'Sem observações')}</div>
+          <span class="tag">${esc(item.type || 'Compromisso')}</span>
         </div>
-
-        <button class="btn secondary small" onclick="openModal('appointment','','${a.id}')">
+        <button class="btn secondary small" onclick="editAppointment('${item.id}')">
           Editar
         </button>
       </div>
-    `).join('')
-    : `<div class="empty">Nenhum atendimento agendado para hoje.</div>`;
+    `).join('');
+  }
 
-  const dues = data.dues
-    .filter(d => d.month === m && d.status !== 'Pago')
-    .slice(0, 5);
+  const pendingList = document.getElementById('pendingList');
 
-  document.getElementById('pendingList').innerHTML = dues.length
-    ? dues.map(d => `
-      <div class="item">
-        <div>
-          <strong>${esc(studentName(d.studentId))}</strong>
-          <div class="sub">Vence ${fmtDate(d.dueDate)}</div>
-        </div>
-
-        <b>${money(d.amount)}</b>
+  if (!pendingDues.length) {
+    pendingList.innerHTML = `
+      <div class="empty">
+        Nenhuma mensalidade pendente neste mês.
       </div>
-    `).join('')
-    : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
+    `;
+  } else {
+    pendingList.innerHTML = pendingDues
+      .sort((a, b) => String(a.dueDate).localeCompare(String(b.dueDate)))
+      .slice(0, 5)
+      .map(due => `
+        <div class="item">
+          <div>
+            <strong>${esc(getStudentName(due.studentId, due.studentName))}</strong>
+            <div class="sub">
+              Vencimento: ${fmtDate(due.dueDate)} · ${money(due.amount)}
+            </div>
+            <span class="tag ${isOverdue(due) ? 'red' : 'warn'}">
+              ${isOverdue(due) ? 'Em atraso' : 'Em aberto'}
+            </span>
+          </div>
+
+          <button class="btn small" onclick="markDueReceived('${due.id}')">
+            Recebido
+          </button>
+        </div>
+      `).join('');
+  }
 }
 
 function renderAgenda() {
-  const date = document.getElementById('agendaDate').value || iso(now);
-  const filter = document.getElementById('agendaFilter').value;
+  const selectedDate = document.getElementById('agendaDate').value || iso(new Date());
+  const selectedType = document.getElementById('agendaFilter').value;
 
-  const arr = data.appointments
-    .filter(a => a.date === date && (filter === 'all' || a.type === filter))
-    .sort((a,b) => (a.time || '').localeCompare(b.time || ''));
+  const list = data.appointments
+    .filter(item => item.date === selectedDate)
+    .filter(item => selectedType === 'all' || item.type === selectedType)
+    .sort((a, b) => String(a.time).localeCompare(String(b.time)));
 
-  document.getElementById('agendaList').innerHTML = arr.length
-    ? arr.map(a => `
-      <div class="item">
-        <div>
-          <strong>${esc(a.time || '--:--')} · ${esc(a.title)}</strong>
+  const container = document.getElementById('agendaList');
 
-          <div class="sub">
-            ${esc(a.type)} · ${a.duration || 60} min
-            ${a.studentId ? '· ' + esc(studentName(a.studentId)) : ''}
-          </div>
+  if (!list.length) {
+    container.innerHTML = `
+      <div class="empty">
+        Nenhum compromisso encontrado para ${fmtDate(selectedDate)}.
+      </div>
+    `;
+    return;
+  }
 
-          ${a.notes ? `<div class="sub">${esc(a.notes)}</div>` : ''}
-
-          <span class="tag ${
-            a.status === 'Concluído'
-              ? 'ok'
-              : a.status === 'Cancelado'
-                ? 'red'
-                : 'warn'
-          }">${esc(a.status)}</span>
+  container.innerHTML = list.map(item => `
+    <div class="item">
+      <div>
+        <strong>${esc(item.time || '--:--')} · ${esc(item.title || 'Compromisso')}</strong>
+        <div class="sub">
+          ${esc(item.studentName || 'Sem aluno vinculado')}
+          ${item.description ? `· ${esc(item.description)}` : ''}
         </div>
+        <span class="tag">${esc(item.type || 'Compromisso')}</span>
+      </div>
 
-        <button class="btn secondary small" onclick="openModal('appointment','','${a.id}')">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+        <button class="btn secondary small" onclick="editAppointment('${item.id}')">
           Editar
         </button>
+
+        <button class="btn secondary small" onclick="deleteAppointment('${item.id}')">
+          Excluir
+        </button>
       </div>
-    `).join('')
-    : `<div class="empty">Nada encontrado nessa data.</div>`;
+    </div>
+  `).join('');
 }
 
 function renderStudents() {
-  const q = (document.getElementById('studentSearch').value || '').toLowerCase();
-  const status = document.getElementById('studentStatus').value || 'ativos';
+  const search = document.getElementById('studentSearch').value.trim().toLowerCase();
+  const statusFilter = document.getElementById('studentStatus').value;
 
-  const arr = data.students
-    .filter(s =>
-      s.name.toLowerCase().includes(q) ||
-      String(s.phone || '').includes(q)
-    )
-    .filter(s =>
-      status === 'todos'
-        ? true
-        : status === 'ativos'
-          ? s.status === 'Ativo'
-          : s.status !== 'Ativo'
-    );
+  const students = [...data.students]
+    .filter(student => {
+      const status = student.status || 'ativo';
 
-  document.getElementById('studentsList').innerHTML = arr.length
-    ? arr.map(s => `
-      <div class="item">
-        <div>
-          <strong>${esc(s.name)}</strong>
-
-          <div class="sub">
-            ${esc(s.modality)} · ${s.frequency || 0}x por semana
-          </div>
-
-          <div class="sub">
-            ${esc(s.schedule || 'Horário não informado')}
-          </div>
-
-          <div class="sub">
-            ${money(s.price)} por mês · vence dia ${s.dueDay || 10}
-          </div>
-
-          <span class="tag ${s.status === 'Ativo' ? 'ok' : 'warn'}">
-            ${esc(s.status)}
-          </span>
-        </div>
-
-        <button class="btn secondary small" onclick="openModal('student','','${s.id}')">
-          Editar
-        </button>
-      </div>
-    `).join('')
-    : `<div class="empty">Nenhum aluno encontrado.</div>`;
-}
-
-function generateDues() {
-  const m = monthKey(iso(proMonthDate));
-  let created = 0;
-
-  data.students
-    .filter(s => s.status === 'Ativo' && Number(s.price) > 0)
-    .forEach(s => {
-      const exists = data.dues.some(d =>
-        d.studentId === s.id && d.month === m
-      );
-
-      if (!exists) {
-        const day = String(s.dueDay || 10).padStart(2, '0');
-
-        data.dues.push({
-          id:uid(),
-          studentId:s.id,
-          month:m,
-          amount:Number(s.price),
-          dueDate:`${m}-${day}`,
-          status:'Pendente'
-        });
-
-        created++;
+      if (statusFilter === 'ativos') {
+        return status !== 'inativo' && status !== 'pausado';
       }
-    });
 
-  save();
+      if (statusFilter === 'inativos') {
+        return status === 'inativo' || status === 'pausado';
+      }
 
-  alert(
-    created
-      ? `${created} cobrança(s) criada(s).`
-      : 'Não havia novas cobranças para criar neste mês.'
-  );
-}
+      return true;
+    })
+    .filter(student => {
+      const text = [
+        student.name,
+        student.phone,
+        student.email,
+        student.plan
+      ].join(' ').toLowerCase();
 
-function markDue(id) {
-  const d = data.dues.find(x => x.id === id);
+      return text.includes(search);
+    })
+    .sort((a, b) => String(a.name).localeCompare(String(b.name), 'pt-BR'));
 
-  if (!d) return;
+  const container = document.getElementById('studentsList');
 
-  if (d.status === 'Pago') {
-    d.status = 'Pendente';
-
-    data.transactions = data.transactions.filter(t => t.linkedDue !== id);
-  } else {
-    d.status = 'Pago';
-
-    data.transactions.push({
-      id:uid(),
-      scope:'profissional',
-      kind:'Entrada',
-      description:'Mensalidade — ' + studentName(d.studentId),
-      category:'Mensalidade',
-      amount:Number(d.amount),
-      date:iso(now),
-      status:'Pago',
-      linkedDue:id
-    });
+  if (!students.length) {
+    container.innerHTML = `
+      <div class="empty">
+        Nenhum aluno encontrado.
+      </div>
+    `;
+    return;
   }
 
-  save();
+  container.innerHTML = students.map(student => {
+    const status = student.status || 'ativo';
+    const statusClass =
+      status === 'ativo' ? 'ok' :
+      status === 'pausado' ? 'warn' : 'red';
+
+    const statusText =
+      status === 'ativo' ? 'Ativo' :
+      status === 'pausado' ? 'Pausado' : 'Inativo';
+
+    return `
+      <div class="item">
+        <div>
+          <strong>${esc(student.name || 'Aluno sem nome')}</strong>
+          <div class="sub">
+            ${student.phone ? esc(student.phone) : 'Sem telefone'}
+            ${student.plan ? `· ${esc(student.plan)}` : ''}
+          </div>
+
+          <span class="tag ${statusClass}">${statusText}</span>
+
+          ${
+            Number(student.monthlyFee || 0) > 0
+              ? `<span class="tag">${money(student.monthlyFee)}/mês</span>`
+              : ''
+          }
+        </div>
+
+        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+          <button class="btn secondary small" onclick="viewStudent('${student.id}')">
+            Ver
+          </button>
+
+          <button class="btn secondary small" onclick="editStudent('${student.id}')">
+            Editar
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
-function renderPro() {
-  document.getElementById('proMonth').textContent = monthName(proMonthDate);
+function renderProfessional() {
+  const key = monthKey(proMonthDate);
 
-  const m = monthKey(proMonthDate);
+  document.getElementById('proMonth').textContent = capitalize(monthName(proMonthDate));
 
-  const tx = data.transactions.filter(t =>
-    t.scope === 'profissional' &&
-    monthKey(t.date) === m
-  );
+  const transactions = data.transactions
+    .filter(item => item.area === 'profissional')
+    .filter(item => monthKey(item.date) === key)
+    .sort((a, b) => {
+      const dateCompare = String(b.date).localeCompare(String(a.date));
+      if (dateCompare !== 0) return dateCompare;
+      return String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
+    });
 
-  const inc = tx
-    .filter(t => t.kind === 'Entrada' && t.status === 'Pago')
-    .reduce((a,t) => a + Number(t.amount || 0), 0);
+  const incomes = transactions
+    .filter(item => item.type === 'entrada')
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
-  const out = tx
-    .filter(t => t.kind === 'Saída' && t.status === 'Pago')
-    .reduce((a,t) => a + Number(t.amount || 0), 0);
+  const expenses = transactions
+    .filter(item => item.type === 'saida')
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
-  document.getElementById('proIncome').textContent = money(inc);
-  document.getElementById('proExpense').textContent = money(out);
-  document.getElementById('proNet').textContent = money(inc - out);
+  document.getElementById('proIncome').textContent = money(incomes);
+  document.getElementById('proExpense').textContent = money(expenses);
+  document.getElementById('proNet').textContent = money(incomes - expenses);
 
   const dues = data.dues
-    .filter(d => d.month === m)
-    .sort((a,b) => a.dueDate.localeCompare(b.dueDate));
+    .filter(due => due.month === key)
+    .sort((a, b) => String(a.dueDate).localeCompare(String(b.dueDate)));
 
-  document.getElementById('duesList').innerHTML = dues.length
-    ? dues.map(d => `
-      <div class="item">
-        <div>
-          <strong>${esc(studentName(d.studentId))}</strong>
-          <div class="sub">
-            Vencimento ${fmtDate(d.dueDate)} · ${money(d.amount)}
-          </div>
+  const duesList = document.getElementById('duesList');
 
-          <span class="tag ${d.status === 'Pago' ? 'ok' : 'warn'}">
-            ${d.status}
-          </span>
-        </div>
-
-        <button class="btn small" onclick="markDue('${d.id}')">
-          ${d.status === 'Pago' ? 'Reabrir' : 'Marcar pago'}
+  if (!dues.length) {
+    duesList.innerHTML = `
+      <div class="empty">
+        Nenhuma cobrança gerada para este mês.
+        <br>
+        <br>
+        <button class="btn small" onclick="generateDues()">
+          Gerar cobranças deste mês
         </button>
       </div>
-    `).join('')
-    : `<div class="empty">Nenhuma cobrança neste mês.</div>`;
+    `;
+  } else {
+    duesList.innerHTML = dues.map(due => {
+      const received = due.status === 'received';
 
-  document.getElementById('proTransactions').innerHTML = renderTxList(tx);
-}
+      return `
+        <div class="item">
+          <div>
+            <strong>${esc(getStudentName(due.studentId, due.studentName))}</strong>
+            <div class="sub">
+              Vencimento: ${fmtDate(due.dueDate)} · ${money(due.amount)}
+            </div>
 
-function renderPersonal() {
-  document.getElementById('perMonth').textContent = monthName(perMonthDate);
-
-  const tx = data.transactions.filter(t =>
-    t.scope === 'pessoal' &&
-    monthKey(t.date) === monthKey(perMonthDate)
-  );
-
-  const inc = tx
-    .filter(t => t.kind === 'Entrada' && t.status === 'Pago')
-    .reduce((a,t) => a + Number(t.amount || 0), 0);
-
-  const out = tx
-    .filter(t => t.kind === 'Saída' && t.status === 'Pago')
-    .reduce((a,t) => a + Number(t.amount || 0), 0);
-
-  document.getElementById('perIncome').textContent = money(inc);
-  document.getElementById('perExpense').textContent = money(out);
-  document.getElementById('perNet').textContent = money(inc - out);
-
-  document.getElementById('perTransactions').innerHTML =
-    tx.length
-      ? renderTxList(tx)
-      : `<div class="empty">Nenhum lançamento pessoal neste mês.</div>`;
-}
-
-function renderTxList(tx) {
-  if (!tx.length) {
-    return `<div class="empty">Nenhum lançamento neste mês.</div>`;
-  }
-
-  return tx
-    .slice()
-    .sort((a,b) => b.date.localeCompare(a.date))
-    .map(t => `
-      <div class="item">
-        <div>
-          <strong>${esc(t.description)}</strong>
-          <div class="sub">
-            ${fmtDate(t.date)} · ${esc(t.category)} · ${esc(t.status)}
+            ${
+              received
+                ? `
+                  <span class="tag ok">
+                    Recebido em ${fmtDate(due.receivedDate || due.dueDate)}
+                  </span>
+                `
+                : `
+                  <span class="tag ${isOverdue(due) ? 'red' : 'warn'}">
+                    ${isOverdue(due) ? 'Em atraso' : 'Aguardando pagamento'}
+                  </span>
+                `
+            }
           </div>
 
-          ${t.notes ? `<div class="sub">${esc(t.notes)}</div>` : ''}
-        </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+            ${
+              received
+                ? `
+                  <button class="btn secondary small" onclick="reopenDue('${due.id}')">
+                    Reabrir cobrança
+                  </button>
+                `
+                : `
+                  <button class="btn small" onclick="markDueReceived('${due.id}')">
+                    Recebido
+                  </button>
+                `
+            }
 
-        <div style="text-align:right">
-          <b style="color:${t.kind === 'Entrada' ? 'var(--green)' : '#ff9da5'}">
-            ${t.kind === 'Entrada' ? '+' : '−'} ${money(t.amount)}
-          </b>
-
-          <div style="margin-top:6px">
-            <button class="btn secondary small" onclick="removeTransaction('${t.id}')">
+            <button class="btn secondary small" onclick="deleteDue('${due.id}')">
               Excluir
             </button>
           </div>
         </div>
+      `;
+    }).join('');
+  }
+
+  const transactionList = document.getElementById('proTransactions');
+
+  if (!transactions.length) {
+    transactionList.innerHTML = `
+      <div class="empty">
+        Nenhum lançamento profissional neste mês.
+      </div>
+    `;
+  } else {
+    transactionList.innerHTML = transactions.map(item => `
+      <div class="item">
+        <div>
+          <strong>${esc(item.description || 'Lançamento sem descrição')}</strong>
+          <div class="sub">
+            ${fmtDate(item.date)}
+            ${item.category ? `· ${esc(item.category)}` : ''}
+          </div>
+
+          ${
+            item.dueId
+              ? '<span class="tag ok">Mensalidade recebida</span>'
+              : `<span class="tag ${item.type === 'entrada' ? 'ok' : 'red'}">
+                   ${item.type === 'entrada' ? 'Entrada' : 'Saída'}
+                 </span>`
+          }
+        </div>
+
+        <div style="text-align:right">
+          <strong style="color:${item.type === 'entrada' ? 'var(--green)' : '#ff9da5'}">
+            ${item.type === 'entrada' ? '+' : '-'} ${money(item.amount)}
+          </strong>
+          <br>
+          <button class="btn secondary small" style="margin-top:7px" onclick="deleteTransaction('${item.id}')">
+            Excluir
+          </button>
+        </div>
       </div>
     `).join('');
+  }
 }
 
-function removeTransaction(id) {
-  if (!confirm('Deseja excluir este lançamento?')) return;
+function renderPersonal() {
+  const key = monthKey(perMonthDate);
 
-  data.transactions = data.transactions.filter(t => t.id !== id);
+  document.getElementById('perMonth').textContent = capitalize(monthName(perMonthDate));
 
-  save();
+  const transactions = data.transactions
+    .filter(item => item.area === 'pessoal')
+    .filter(item => monthKey(item.date) === key)
+    .sort((a, b) => {
+      const dateCompare = String(b.date).localeCompare(String(a.date));
+      if (dateCompare !== 0) return dateCompare;
+      return String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
+    });
+
+  const incomes = transactions
+    .filter(item => item.type === 'entrada')
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+  const expenses = transactions
+    .filter(item => item.type === 'saida')
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+  document.getElementById('perIncome').textContent = money(incomes);
+  document.getElementById('perExpense').textContent = money(expenses);
+  document.getElementById('perNet').textContent = money(incomes - expenses);
+
+  const list = document.getElementById('perTransactions');
+
+  if (!transactions.length) {
+    list.innerHTML = `
+      <div class="empty">
+        Nenhum lançamento pessoal neste mês.
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = transactions.map(item => `
+    <div class="item">
+      <div>
+        <strong>${esc(item.description || 'Lançamento sem descrição')}</strong>
+        <div class="sub">
+          ${fmtDate(item.date)}
+          ${item.category ? `· ${esc(item.category)}` : ''}
+        </div>
+
+        <span class="tag ${item.type === 'entrada' ? 'ok' : 'red'}">
+          ${item.type === 'entrada' ? 'Entrada' : 'Saída'}
+        </span>
+      </div>
+
+      <div style="text-align:right">
+        <strong style="color:${item.type === 'entrada' ? 'var(--green)' : '#ff9da5'}">
+          ${item.type === 'entrada' ? '+' : '-'} ${money(item.amount)}
+        </strong>
+        <br>
+        <button class="btn secondary small" style="margin-top:7px" onclick="deleteTransaction('${item.id}')">
+          Excluir
+        </button>
+      </div>
+    </div>
+  `).join('');
 }
 
 function renderReports() {
-  document.getElementById('repMonth').textContent = monthName(repMonthDate);
+  const key = monthKey(repMonthDate);
 
-  const m = monthKey(repMonthDate);
+  document.getElementById('repMonth').textContent = capitalize(monthName(repMonthDate));
 
-  const pro = data.transactions.filter(t =>
-    t.scope === 'profissional' &&
-    monthKey(t.date) === m &&
-    t.status === 'Pago'
-  );
+  const proTransactions = data.transactions
+    .filter(item => item.area === 'profissional')
+    .filter(item => monthKey(item.date) === key);
 
-  const per = data.transactions.filter(t =>
-    t.scope === 'pessoal' &&
-    monthKey(t.date) === m &&
-    t.status === 'Pago'
-  );
+  const perTransactions = data.transactions
+    .filter(item => item.area === 'pessoal')
+    .filter(item => monthKey(item.date) === key);
 
-  const pi = pro
-    .filter(t => t.kind === 'Entrada')
-    .reduce((s,t) => s + Number(t.amount || 0), 0);
+  const proIncome = proTransactions
+    .filter(item => item.type === 'entrada')
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
-  const po = pro
-    .filter(t => t.kind === 'Saída')
-    .reduce((s,t) => s + Number(t.amount || 0), 0);
+  const proExpense = proTransactions
+    .filter(item => item.type === 'saida')
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
-  const ei = per
-    .filter(t => t.kind === 'Entrada')
-    .reduce((s,t) => s + Number(t.amount || 0), 0);
+  const perIncome = perTransactions
+    .filter(item => item.type === 'entrada')
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
-  const eo = per
-    .filter(t => t.kind === 'Saída')
-    .reduce((s,t) => s + Number(t.amount || 0), 0);
+  const perExpense = perTransactions
+    .filter(item => item.type === 'saida')
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
-  const open = data.dues
-    .filter(d => d.month === m && d.status !== 'Pago')
-    .reduce((s,d) => s + Number(d.amount || 0), 0);
+  const openDues = data.dues
+    .filter(due => due.month === key)
+    .filter(due => due.status !== 'received')
+    .reduce((sum, due) => sum + Number(due.amount || 0), 0);
 
-  const values = [
-    ['repProIn', pi],
-    ['repProOut', po],
-    ['repProNet', pi - po],
-    ['repOpen', open],
-    ['repPerIn', ei],
-    ['repPerOut', eo],
-    ['repPerNet', ei - eo],
-    ['repTotal', pi - po + ei - eo]
-  ];
+  const proNet = proIncome - proExpense;
+  const perNet = perIncome - perExpense;
 
-  values.forEach(([id, n]) => {
-    document.getElementById(id).textContent = money(n);
-  });
+  document.getElementById('repProIn').textContent = money(proIncome);
+  document.getElementById('repProOut').textContent = money(proExpense);
+  document.getElementById('repProNet').textContent = money(proNet);
+  document.getElementById('repOpen').textContent = money(openDues);
+
+  document.getElementById('repPerIn').textContent = money(perIncome);
+  document.getElementById('repPerOut').textContent = money(perExpense);
+  document.getElementById('repPerNet').textContent = money(perNet);
+  document.getElementById('repTotal').textContent = money(proNet + perNet);
 }
 
-function shiftMonth(which, delta) {
-  let d =
-    which === 'pro'
-      ? proMonthDate
-      : which === 'per'
-        ? perMonthDate
-        : repMonthDate;
+/* ============================================================
+   UTILITÁRIOS DE ALUNOS, COBRANÇAS E MESES
+============================================================ */
 
-  d.setMonth(d.getMonth() + delta);
+function capitalize(text) {
+  return String(text || '').charAt(0).toUpperCase() + String(text || '').slice(1);
+}
 
-  if (which === 'pro') proMonthDate = d;
-  if (which === 'per') perMonthDate = d;
-  if (which === 'rep') repMonthDate = d;
+function getStudent(studentId) {
+  return data.students.find(student => student.id === studentId);
+}
+
+function getStudentName(studentId, fallback = '') {
+  return getStudent(studentId)?.name || fallback || 'Aluno não identificado';
+}
+
+function isOverdue(due) {
+  if (!due || due.status === 'received') return false;
+  return String(due.dueDate || '') < iso(new Date());
+}
+
+function shiftMonth(type, direction) {
+  if (type === 'pro') {
+    proMonthDate.setMonth(proMonthDate.getMonth() + direction);
+  }
+
+  if (type === 'per') {
+    perMonthDate.setMonth(perMonthDate.getMonth() + direction);
+  }
+
+  if (type === 'rep') {
+    repMonthDate.setMonth(repMonthDate.getMonth() + direction);
+  }
 
   renderAll();
 }
 
+function getDueDay(student) {
+  const parsed = Number(student?.dueDay || 10);
+
+  if (!Number.isFinite(parsed) || parsed < 1) return 10;
+  if (parsed > 28) return 28;
+
+  return Math.floor(parsed);
+}
+</script><script>
 /* ============================================================
-   BACKUP
+   MODAIS E FORMULÁRIOS
+============================================================ */
+
+function openModal(type, area = '', recordId = '') {
+  const modal = document.getElementById('modal');
+  const title = document.getElementById('modalTitle');
+  const body = document.getElementById('modalBody');
+
+  modal.classList.add('open');
+
+  if (type === 'student') {
+    const student = recordId ? getStudent(recordId) : null;
+
+    title.textContent = student ? 'Editar aluno' : 'Novo aluno';
+
+    body.innerHTML = `
+      <form onsubmit="saveStudent(event, '${student?.id || ''}')">
+        <div class="formgrid">
+          <div class="field full">
+            <label>Nome completo *</label>
+            <input name="name" required value="${esc(student?.name || '')}" placeholder="Nome do aluno">
+          </div>
+
+          <div class="field">
+            <label>Telefone</label>
+            <input name="phone" value="${esc(student?.phone || '')}" placeholder="(00) 00000-0000">
+          </div>
+
+          <div class="field">
+            <label>E-mail</label>
+            <input name="email" type="email" value="${esc(student?.email || '')}" placeholder="aluno@email.com">
+          </div>
+
+          <div class="field">
+            <label>Data de nascimento</label>
+            <input name="birthDate" type="date" value="${esc(student?.birthDate || '')}">
+          </div>
+
+          <div class="field">
+            <label>Sexo</label>
+            <select name="gender">
+              <option value="">Não informado</option>
+              <option value="Masculino" ${student?.gender === 'Masculino' ? 'selected' : ''}>Masculino</option>
+              <option value="Feminino" ${student?.gender === 'Feminino' ? 'selected' : ''}>Feminino</option>
+              <option value="Outro" ${student?.gender === 'Outro' ? 'selected' : ''}>Outro</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Status</label>
+            <select name="status">
+              <option value="ativo" ${(student?.status || 'ativo') === 'ativo' ? 'selected' : ''}>Ativo</option>
+              <option value="pausado" ${student?.status === 'pausado' ? 'selected' : ''}>Pausado</option>
+              <option value="inativo" ${student?.status === 'inativo' ? 'selected' : ''}>Inativo</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Plano / serviço</label>
+            <input name="plan" value="${esc(student?.plan || '')}" placeholder="Ex.: Consultoria online">
+          </div>
+
+          <div class="field">
+            <label>Mensalidade (R$)</label>
+            <input name="monthlyFee" inputmode="decimal" value="${student?.monthlyFee || ''}" placeholder="Ex.: 150">
+          </div>
+
+          <div class="field">
+            <label>Dia de vencimento</label>
+            <input name="dueDay" type="number" min="1" max="28" value="${student?.dueDay || 10}" placeholder="10">
+          </div>
+
+          <div class="field full">
+            <label>Treino, protocolo ou observações</label>
+            <textarea name="notes" placeholder="Ex.: Protocolo atual, restrições, objetivo...">${esc(student?.notes || '')}</textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button>
+          <button type="submit" class="btn">Salvar aluno</button>
+        </div>
+      </form>
+    `;
+
+    return;
+  }
+
+  if (type === 'appointment') {
+    const appointment = recordId
+      ? data.appointments.find(item => item.id === recordId)
+      : null;
+
+    title.textContent = appointment ? 'Editar atendimento' : 'Novo atendimento';
+
+    body.innerHTML = `
+      <form onsubmit="saveAppointment(event, '${appointment?.id || ''}')">
+        <div class="formgrid">
+          <div class="field full">
+            <label>Título *</label>
+            <input name="title" required value="${esc(appointment?.title || '')}" placeholder="Ex.: Treino presencial">
+          </div>
+
+          <div class="field">
+            <label>Data *</label>
+            <input name="date" type="date" required value="${esc(appointment?.date || iso(new Date()))}">
+          </div>
+
+          <div class="field">
+            <label>Horário</label>
+            <input name="time" type="time" value="${esc(appointment?.time || '')}">
+          </div>
+
+          <div class="field">
+            <label>Tipo</label>
+            <select name="type">
+              ${[
+                'Treino presencial',
+                'Avaliação física',
+                'Aula avulsa',
+                'Compromisso',
+                'Consultoria online'
+              ].map(option => `
+                <option value="${option}" ${(appointment?.type || 'Treino presencial') === option ? 'selected' : ''}>
+                  ${option}
+                </option>
+              `).join('')}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Aluno vinculado</label>
+            <select name="studentId">
+              <option value="">Nenhum aluno</option>
+              ${data.students
+                .sort((a, b) => String(a.name).localeCompare(String(b.name), 'pt-BR'))
+                .map(student => `
+                  <option value="${student.id}" ${appointment?.studentId === student.id ? 'selected' : ''}>
+                    ${esc(student.name)}
+                  </option>
+                `).join('')}
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Descrição / observação</label>
+            <textarea name="description" placeholder="Informações adicionais">${esc(appointment?.description || '')}</textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button>
+          <button type="submit" class="btn">Salvar atendimento</button>
+        </div>
+      </form>
+    `;
+
+    return;
+  }
+
+  if (type === 'transaction') {
+    title.textContent =
+      area === 'profissional'
+        ? 'Novo lançamento profissional'
+        : 'Novo lançamento pessoal';
+
+    body.innerHTML = `
+      <form onsubmit="saveTransaction(event, '${area}')">
+        <div class="formgrid">
+          <div class="field full">
+            <label>Descrição *</label>
+            <input name="description" required placeholder="Ex.: Pagamento de aluno, aluguel, mercado...">
+          </div>
+
+          <div class="field">
+            <label>Data *</label>
+            <input name="date" type="date" required value="${iso(new Date())}">
+          </div>
+
+          <div class="field">
+            <label>Tipo *</label>
+            <select name="type">
+              <option value="entrada">Entrada</option>
+              <option value="saida">Saída</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Valor (R$) *</label>
+            <input name="amount" required inputmode="decimal" placeholder="Ex.: 150,00">
+          </div>
+
+          <div class="field">
+            <label>Categoria</label>
+            <input name="category" placeholder="Ex.: Mensalidade, transporte...">
+          </div>
+
+          <div class="field full">
+            <label>Observação</label>
+            <textarea name="notes" placeholder="Opcional"></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn secondary" onclick="closeModal()">Cancelar</button>
+          <button type="submit" class="btn">Salvar lançamento</button>
+        </div>
+      </form>
+    `;
+
+    return;
+  }
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('modalBody').innerHTML = '';
+}
+
+document.getElementById('modal').addEventListener('click', event => {
+  if (event.target.id === 'modal') closeModal();
+});
+
+/* ============================================================
+   CRUD DE ALUNOS
+============================================================ */
+
+function parseMoney(value) {
+  let text = String(value || '').trim();
+
+  if (!text) return 0;
+
+  text = text.replace(/[R$\s]/g, '');
+
+  if (text.includes(',') && text.includes('.')) {
+    text = text.replace(/\./g, '').replace(',', '.');
+  } else if (text.includes(',')) {
+    text = text.replace(',', '.');
+  }
+
+  const result = Number(text);
+  return Number.isFinite(result) ? result : 0;
+}
+
+function saveStudent(event, studentId = '') {
+  event.preventDefault();
+
+  const form = new FormData(event.target);
+
+  const student = {
+    id: studentId || uid(),
+    name: String(form.get('name') || '').trim(),
+    phone: String(form.get('phone') || '').trim(),
+    email: String(form.get('email') || '').trim(),
+    birthDate: String(form.get('birthDate') || ''),
+    gender: String(form.get('gender') || ''),
+    status: String(form.get('status') || 'ativo'),
+    plan: String(form.get('plan') || '').trim(),
+    monthlyFee: parseMoney(form.get('monthlyFee')),
+    dueDay: getDueDay({ dueDay: form.get('dueDay') }),
+    notes: String(form.get('notes') || '').trim(),
+    createdAt: new Date().toISOString()
+  };
+
+  if (!student.name) {
+    alert('Informe o nome do aluno.');
+    return;
+  }
+
+  const index = data.students.findIndex(item => item.id === studentId);
+
+  if (index >= 0) {
+    student.createdAt = data.students[index].createdAt || student.createdAt;
+    data.students[index] = student;
+  } else {
+    data.students.push(student);
+  }
+
+  scheduleSave();
+  renderAll();
+  closeModal();
+}
+
+function editStudent(studentId) {
+  openModal('student', '', studentId);
+}
+
+function viewStudent(studentId) {
+  const student = getStudent(studentId);
+
+  if (!student) {
+    alert('Aluno não encontrado.');
+    return;
+  }
+
+  const dues = data.dues
+    .filter(due => due.studentId === student.id)
+    .sort((a, b) => String(b.month).localeCompare(String(a.month)));
+
+  document.getElementById('modalTitle').textContent = student.name || 'Aluno';
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="list">
+      <div class="item">
+        <div>
+          <strong>Contato</strong>
+          <div class="sub">
+            ${student.phone ? esc(student.phone) : 'Telefone não informado'}
+            <br>
+            ${student.email ? esc(student.email) : 'E-mail não informado'}
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div>
+          <strong>Plano e mensalidade</strong>
+          <div class="sub">
+            ${student.plan ? esc(student.plan) : 'Plano não informado'}
+            <br>
+            ${
+              Number(student.monthlyFee || 0) > 0
+                ? `${money(student.monthlyFee)} · Vencimento dia ${student.dueDay || 10}`
+                : 'Aluno sem mensalidade cadastrada'
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div>
+          <strong>Observações</strong>
+          <div class="sub">
+            ${student.notes ? esc(student.notes).replace(/\n/g, '<br>') : 'Nenhuma observação cadastrada.'}
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <strong style="display:block;margin:5px 0 8px">Cobranças</strong>
+
+        ${
+          dues.length
+            ? dues.map(due => `
+                <div class="item" style="margin-bottom:8px">
+                  <div>
+                    <strong>${capitalize(due.month.split('-').reverse().join('/'))}</strong>
+                    <div class="sub">
+                      Vencimento: ${fmtDate(due.dueDate)} · ${money(due.amount)}
+                    </div>
+                    <span class="tag ${due.status === 'received' ? 'ok' : (isOverdue(due) ? 'red' : 'warn')}">
+                      ${
+                        due.status === 'received'
+                          ? 'Recebido'
+                          : (isOverdue(due) ? 'Em atraso' : 'Em aberto')
+                      }
+                    </span>
+                  </div>
+                </div>
+              `).join('')
+            : '<div class="empty">Nenhuma cobrança gerada para este aluno.</div>'
+        }
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn secondary" onclick="deleteStudent('${student.id}')">Excluir aluno</button>
+      <button class="btn secondary" onclick="editStudent('${student.id}')">Editar</button>
+      <button class="btn" onclick="closeModal()">Fechar</button>
+    </div>
+  `;
+
+  document.getElementById('modal').classList.add('open');
+}
+
+function deleteStudent(studentId) {
+  const student = getStudent(studentId);
+
+  if (!student) return;
+
+  const confirmed = confirm(
+    `Excluir o aluno "${student.name}"?\n\nAs cobranças vinculadas a ele também serão excluídas.`
+  );
+
+  if (!confirmed) return;
+
+  data.students = data.students.filter(item => item.id !== studentId);
+
+  const deletedDueIds = data.dues
+    .filter(due => due.studentId === studentId)
+    .map(due => due.id);
+
+  data.dues = data.dues.filter(due => due.studentId !== studentId);
+
+  data.transactions = data.transactions.filter(transaction =>
+    !deletedDueIds.includes(transaction.dueId)
+  );
+
+  data.appointments = data.appointments.map(appointment => {
+    if (appointment.studentId === studentId) {
+      return {
+        ...appointment,
+        studentId:'',
+        studentName:student.name
+      };
+    }
+
+    return appointment;
+  });
+
+  scheduleSave();
+  renderAll();
+  closeModal();
+}
+
+/* ============================================================
+   CRUD DE AGENDA
+============================================================ */
+
+function saveAppointment(event, appointmentId = '') {
+  event.preventDefault();
+
+  const form = new FormData(event.target);
+  const studentId = String(form.get('studentId') || '');
+  const student = getStudent(studentId);
+
+  const appointment = {
+    id: appointmentId || uid(),
+    title: String(form.get('title') || '').trim(),
+    date: String(form.get('date') || ''),
+    time: String(form.get('time') || ''),
+    type: String(form.get('type') || 'Compromisso'),
+    studentId,
+    studentName: student?.name || '',
+    description: String(form.get('description') || '').trim(),
+    createdAt: new Date().toISOString()
+  };
+
+  if (!appointment.title || !appointment.date) {
+    alert('Informe o título e a data do atendimento.');
+    return;
+  }
+
+  const index = data.appointments.findIndex(item => item.id === appointmentId);
+
+  if (index >= 0) {
+    appointment.createdAt = data.appointments[index].createdAt || appointment.createdAt;
+    data.appointments[index] = appointment;
+  } else {
+    data.appointments.push(appointment);
+  }
+
+  scheduleSave();
+  renderAll();
+  closeModal();
+}
+
+function editAppointment(appointmentId) {
+  openModal('appointment', '', appointmentId);
+}
+
+function deleteAppointment(appointmentId) {
+  if (!confirm('Deseja excluir este atendimento?')) return;
+
+  data.appointments = data.appointments.filter(item => item.id !== appointmentId);
+
+  scheduleSave();
+  renderAll();
+}
+
+/* ============================================================
+   FINANCEIRO E CONTAS A RECEBER
+============================================================ */
+
+function saveTransaction(event, area) {
+  event.preventDefault();
+
+  const form = new FormData(event.target);
+
+  const transaction = {
+    id: uid(),
+    area,
+    type: String(form.get('type') || 'entrada'),
+    description: String(form.get('description') || '').trim(),
+    date: String(form.get('date') || iso(new Date())),
+    amount: parseMoney(form.get('amount')),
+    category: String(form.get('category') || '').trim(),
+    notes: String(form.get('notes') || '').trim(),
+    createdAt: new Date().toISOString()
+  };
+
+  if (!transaction.description || transaction.amount <= 0) {
+    alert('Informe uma descrição e um valor maior que zero.');
+    return;
+  }
+
+  data.transactions.push(transaction);
+
+  scheduleSave();
+  renderAll();
+  closeModal();
+}
+
+function deleteTransaction(transactionId) {
+  const transaction = data.transactions.find(item => item.id === transactionId);
+
+  if (!transaction) return;
+
+  if (transaction.dueId) {
+    alert(
+      'Este lançamento foi criado automaticamente por uma mensalidade. Para removê-lo, use o botão "Reabrir cobrança" na mensalidade correspondente.'
+    );
+    return;
+  }
+
+  if (!confirm('Deseja excluir este lançamento?')) return;
+
+  data.transactions = data.transactions.filter(item => item.id !== transactionId);
+
+  scheduleSave();
+  renderAll();
+}
+
+function generateDues() {
+  const key = monthKey(proMonthDate);
+  const [year, month] = key.split('-').map(Number);
+
+  const eligibleStudents = data.students.filter(student =>
+    student.status !== 'inativo' &&
+    student.status !== 'pausado' &&
+    Number(student.monthlyFee || 0) > 0
+  );
+
+  if (!eligibleStudents.length) {
+    alert('Não há alunos ativos com mensalidade cadastrada.');
+    return;
+  }
+
+  let created = 0;
+
+  eligibleStudents.forEach(student => {
+    const exists = data.dues.some(due =>
+      due.studentId === student.id &&
+      due.month === key
+    );
+
+    if (exists) return;
+
+    const dueDay = getDueDay(student);
+
+    data.dues.push({
+      id: uid(),
+      studentId: student.id,
+      studentName: student.name,
+      month:key,
+      dueDate:`${year}-${String(month).padStart(2, '0')}-${String(dueDay).padStart(2, '0')}`,
+      amount:Number(student.monthlyFee),
+      status:'open',
+      receivedDate:'',
+      transactionId:'',
+      createdAt:new Date().toISOString()
+    });
+
+    created++;
+  });
+
+  if (!created) {
+    alert('As cobranças desse mês já foram geradas para todos os alunos ativos.');
+    return;
+  }
+
+  scheduleSave();
+  renderAll();
+
+  alert(`${created} cobrança(s) gerada(s) para ${capitalize(monthName(proMonthDate))}.`);
+}
+
+function markDueReceived(dueId) {
+  const due = data.dues.find(item => item.id === dueId);
+
+  if (!due) {
+    alert('Cobrança não encontrada.');
+    return;
+  }
+
+  if (due.status === 'received') {
+    alert('Esta cobrança já está marcada como recebida.');
+    return;
+  }
+
+  const studentName = getStudentName(due.studentId, due.studentName);
+
+  const confirmed = confirm(
+    `Confirmar recebimento de ${money(due.amount)}?\n\nAluno: ${studentName}\n\nO valor será registrado automaticamente como entrada no Financeiro profissional.`
+  );
+
+  if (!confirmed) return;
+
+  const receivedDate = iso(new Date());
+
+  const transaction = {
+    id: uid(),
+    area:'profissional',
+    type:'entrada',
+    description:`Mensalidade - ${studentName}`,
+    date:receivedDate,
+    amount:Number(due.amount || 0),
+    category:'Mensalidade',
+    notes:`Recebimento automático da cobrança referente a ${due.month}.`,
+    dueId:due.id,
+    createdAt:new Date().toISOString()
+  };
+
+  due.status = 'received';
+  due.receivedDate = receivedDate;
+  due.transactionId = transaction.id;
+
+  const alreadyExists = data.transactions.some(item => item.dueId === due.id);
+
+  if (!alreadyExists) {
+    data.transactions.push(transaction);
+  }
+
+  scheduleSave();
+  renderAll();
+}
+
+function reopenDue(dueId) {
+  const due = data.dues.find(item => item.id === dueId);
+
+  if (!due) return;
+
+  if (due.status !== 'received') {
+    alert('Esta cobrança já está em aberto.');
+    return;
+  }
+
+  const confirmed = confirm(
+    'Reabrir esta cobrança?\n\nO lançamento automático criado no Financeiro profissional será removido.'
+  );
+
+  if (!confirmed) return;
+
+  data.transactions = data.transactions.filter(transaction =>
+    transaction.dueId !== due.id
+  );
+
+  due.status = 'open';
+  due.receivedDate = '';
+  due.transactionId = '';
+
+  scheduleSave();
+  renderAll();
+}
+
+function deleteDue(dueId) {
+  const due = data.dues.find(item => item.id === dueId);
+
+  if (!due) return;
+
+  if (!confirm('Deseja excluir esta cobrança?')) return;
+
+  data.transactions = data.transactions.filter(transaction =>
+    transaction.dueId !== due.id
+  );
+
+  data.dues = data.dues.filter(item => item.id !== dueId);
+
+  scheduleSave();
+  renderAll();
+}
+
+/* ============================================================
+   IMPORTAÇÃO MASTER TRAINING
+============================================================ */
+
+async function syncMasterTraining() {
+  const button = document.getElementById('syncMasterBtn');
+
+  if (!sb || !currentUser) {
+    alert('Você precisa estar conectado para sincronizar o Master Training.');
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = 'Sincronizando...';
+
+  try {
+    const { data: sessionData } = await sb.auth.getSession();
+    const accessToken = sessionData?.session?.access_token;
+
+    const response = await fetch(
+      `${SUPABASE_URL}/functions/v1/sync-master-training`,
+      {
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':`Bearer ${accessToken}`,
+          'apikey':SUPABASE_ANON_KEY
+        },
+        body:JSON.stringify({})
+      }
+    );
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      throw new Error(result?.error || result?.message || 'Não foi possível sincronizar.');
+    }
+
+    /*
+      A Edge Function pode devolver:
+      - { students: [...] }
+      - { alunos: [...] }
+      - { data: { students: [...] } }
+    */
+    const importedStudents =
+      result.students ||
+      result.alunos ||
+      result?.data?.students ||
+      result?.data?.alunos ||
+      [];
+
+    if (!Array.isArray(importedStudents) || !importedStudents.length) {
+      alert(
+        result?.message ||
+        'A sincronização foi concluída, mas nenhum aluno novo foi encontrado.'
+      );
+      return;
+    }
+
+    let added = 0;
+    let updated = 0;
+
+    importedStudents.forEach(rawStudent => {
+      const name = String(
+        rawStudent.name ||
+        rawStudent.nome ||
+        rawStudent.full_name ||
+        ''
+      ).trim();
+
+      if (!name) return;
+
+      const email = String(rawStudent.email || '').trim();
+      const phone = String(rawStudent.phone || rawStudent.telefone || '').trim();
+
+      const existingIndex = data.students.findIndex(student => {
+        const sameEmail = email && student.email &&
+          student.email.toLowerCase() === email.toLowerCase();
+
+        const normalizePhone = value => String(value || '').replace(/\D/g, '');
+        const samePhone = phone && student.phone &&
+          normalizePhone(student.phone) === normalizePhone(phone);
+
+        return sameEmail || samePhone;
+      });
+
+      const incoming = {
+        id: existingIndex >= 0 ? data.students[existingIndex].id : uid(),
+        name,
+        phone,
+        email,
+        birthDate:String(rawStudent.birthDate || rawStudent.data_nascimento || rawStudent.nascimento || ''),
+        gender:String(rawStudent.gender || rawStudent.sexo || ''),
+        status:'ativo',
+        plan:String(rawStudent.plan || rawStudent.plano || 'Master Training'),
+        monthlyFee:parseMoney(rawStudent.monthlyFee || rawStudent.mensalidade || rawStudent.valor_mensal),
+        dueDay:getDueDay({
+          dueDay:rawStudent.dueDay || rawStudent.dia_vencimento || 10
+        }),
+        notes:String(
+          rawStudent.notes ||
+          rawStudent.observacoes ||
+          rawStudent.training ||
+          rawStudent.treino ||
+          rawStudent.protocol ||
+          rawStudent.protocolo ||
+          ''
+        ).trim(),
+        createdAt:existingIndex >= 0
+          ? data.students[existingIndex].createdAt
+          : new Date().toISOString()
+      };
+
+      if (existingIndex >= 0) {
+        const current = data.students[existingIndex];
+
+        data.students[existingIndex] = {
+          ...current,
+          ...incoming,
+          phone:incoming.phone || current.phone,
+          email:incoming.email || current.email,
+          birthDate:incoming.birthDate || current.birthDate,
+          gender:incoming.gender || current.gender,
+          plan:incoming.plan || current.plan,
+          monthlyFee:incoming.monthlyFee || current.monthlyFee,
+          notes:incoming.notes || current.notes
+        };
+
+        updated++;
+      } else {
+        data.students.push(incoming);
+        added++;
+      }
+    });
+
+    scheduleSave();
+    await saveDataNow();
+    renderAll();
+
+    alert(
+      `Sincronização concluída.\n\nNovos alunos: ${added}\nAtualizados: ${updated}`
+    );
+  } catch (error) {
+    console.error('Erro ao sincronizar Master Training:', error);
+
+    alert(
+      `Não foi possível sincronizar o Master Training.\n\n${error.message || 'Erro desconhecido.'}`
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent = '↻ Sincronizar Master Training';
+  }
+}
+
+/* ============================================================
+   BACKUP, IMPORTAÇÃO E DADOS DE EXEMPLO
 ============================================================ */
 
 function exportBackup() {
-  const blob = new Blob([
-    JSON.stringify({
-      app:'Metodo Vini Seta Gestor',
-      version:1,
-      exportedAt:new Date().toISOString(),
-      data
-    }, null, 2)
-  ], {
-    type:'application/json'
-  });
+  const backup = {
+    app:'Método Vini Seta — Gestor',
+    exportedAt:new Date().toISOString(),
+    data
+  };
 
-  const a = document.createElement('a');
+  const file = new Blob(
+    [JSON.stringify(backup, null, 2)],
+    { type:'application/json' }
+  );
 
-  a.href = URL.createObjectURL(blob);
-  a.download = 'backup-vini-seta-' + iso(now) + '.json';
+  const url = URL.createObjectURL(file);
+  const link = document.createElement('a');
 
-  a.click();
+  link.href = url;
+  link.download = `backup-gestor-vini-seta-${iso(new Date())}.json`;
 
-  URL.revokeObjectURL(a.href);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  URL.revokeObjectURL(url);
 }
 
-function importBackup(e) {
-  const file = e.target.files[0];
+async function importBackup(event) {
+  const file = event.target.files?.[0];
 
   if (!file) return;
 
-  const reader = new FileReader();
+  try {
+    const text = await file.text();
+    const imported = JSON.parse(text);
 
-  reader.onload = () => {
-    try {
-      const backup = JSON.parse(reader.result);
-      const imported = backup.data || backup;
+    const importedData = normalizeData(imported.data || imported);
 
-      if (
-        !imported.students ||
-        !imported.appointments ||
-        !imported.transactions ||
-        !imported.dues
-      ) {
-        throw new Error('Arquivo incompatível.');
-      }
+    const confirmed = confirm(
+      'Importar este backup substituirá os dados atuais do Gestor. Deseja continuar?'
+    );
 
-      if (confirm('Importar este backup substituirá os dados atuais. Deseja continuar?')) {
-        data = imported;
-        save();
-        alert('Backup importado com sucesso.');
-      }
-
-    } catch (err) {
-      alert('Não foi possível importar este arquivo. Verifique se é um backup válido.');
+    if (!confirmed) {
+      event.target.value = '';
+      return;
     }
 
-    e.target.value = '';
-  };
+    data = importedData;
 
-  reader.readAsText(file);
+    persistLocalCache();
+    await saveDataNow();
+
+    renderAll();
+
+    alert('Backup importado com sucesso.');
+  } catch (error) {
+    console.error('Erro ao importar backup:', error);
+    alert('Não foi possível importar este arquivo. Verifique se ele é um backup válido.');
+  } finally {
+    event.target.value = '';
+  }
 }
 
 function clearAll() {
-  if (!confirm('Isso apagará todos os dados. Tem certeza?')) return;
+  const confirmed = confirm(
+    'ATENÇÃO: esta ação apagará alunos, agenda, cobranças e lançamentos.\n\nDeseja continuar?'
+  );
+
+  if (!confirmed) return;
+
+  const secondConfirmation = confirm(
+    'Confirma a exclusão definitiva de todos os dados do Gestor?'
+  );
+
+  if (!secondConfirmation) return;
 
   data = blank();
 
-  save();
+  scheduleSave();
+  renderAll();
+
+  alert('Todos os dados foram apagados.');
 }
 
 function seedDemo() {
   if (
     data.students.length ||
     data.appointments.length ||
+    data.dues.length ||
     data.transactions.length
   ) {
-    if (!confirm('Já existem dados. Deseja adicionar os exemplos mesmo assim?')) {
-      return;
-    }
+    const confirmed = confirm(
+      'Já existem dados cadastrados. Os dados de exemplo serão adicionados aos atuais. Deseja continuar?'
+    );
+
+    if (!confirmed) return;
   }
 
-  const student = {
+  const student1 = {
     id:uid(),
-    name:'Aluno exemplo',
-    phone:'',
-    email:'',
-    modality:'Presencial',
-    frequency:3,
-    price:480,
+    name:'João da Silva',
+    phone:'(11) 99999-1111',
+    email:'joao@email.com',
+    birthDate:'1995-04-12',
+    gender:'Masculino',
+    status:'ativo',
+    plan:'Consultoria online',
+    monthlyFee:150,
     dueDay:10,
-    startDate:iso(now),
-    status:'Ativo',
-    schedule:'Seg/Qua/Sex — 8h',
-    notes:'Apague este cadastro quando terminar de testar.'
+    notes:'Objetivo: hipertrofia e ganho de massa muscular.',
+    createdAt:new Date().toISOString()
   };
 
-  data.students.push(student);
-
-  data.appointments.push({
+  const student2 = {
     id:uid(),
-    title:'Treino — Aluno exemplo',
-    studentId:student.id,
-    type:'Treino presencial',
-    date:iso(now),
-    time:'08:00',
-    duration:60,
-    status:'Agendado',
-    notes:'Atendimento de demonstração.'
-  });
+    name:'Mariana Souza',
+    phone:'(11) 98888-2222',
+    email:'mariana@email.com',
+    birthDate:'1998-09-23',
+    gender:'Feminino',
+    status:'ativo',
+    plan:'Treino presencial',
+    monthlyFee:300,
+    dueDay:5,
+    notes:'Objetivo: emagrecimento e condicionamento.',
+    createdAt:new Date().toISOString()
+  };
 
-  save();
+  data.students.push(student1, student2);
+
+  const today = iso(new Date());
+  const currentMonth = monthKey(today);
+
+  data.appointments.push(
+    {
+      id:uid(),
+      title:'Treino presencial',
+      date:today,
+      time:'08:00',
+      type:'Treino presencial',
+      studentId:student2.id,
+      studentName:student2.name,
+      description:'Treino de membros inferiores.',
+      createdAt:new Date().toISOString()
+    },
+    {
+      id:uid(),
+      title:'Avaliação física',
+      date:today,
+      time:'18:00',
+      type:'Avaliação física',
+      studentId:student1.id,
+      studentName:student1.name,
+      description:'Reavaliação mensal.',
+      createdAt:new Date().toISOString()
+    }
+  );
+
+  data.dues.push(
+    {
+      id:uid(),
+      studentId:student1.id,
+      studentName:student1.name,
+      month:currentMonth,
+      dueDate:`${currentMonth}-10`,
+      amount:150,
+      status:'open',
+      receivedDate:'',
+      transactionId:'',
+      createdAt:new Date().toISOString()
+    },
+    {
+      id:uid(),
+      studentId:student2.id,
+      studentName:student2.name,
+      month:currentMonth,
+      dueDate:`${currentMonth}-05`,
+      amount:300,
+      status:'open',
+      receivedDate:'',
+      transactionId:'',
+      createdAt:new Date().toISOString()
+    }
+  );
+
+  scheduleSave();
+  renderAll();
 
   alert('Dados de exemplo adicionados.');
 }
 
 /* ============================================================
-   SINCRONIZAÇÃO — MASTER TRAINING
+   INICIALIZAÇÃO
 ============================================================ */
 
-async function syncMasterTraining() {
-  const btn = document.getElementById('syncMasterBtn');
-
-  if (!sb) {
-    alert('Não foi possível conectar ao Supabase.');
-    return;
-  }
-
-  if (!currentUser) {
-    alert('Sua sessão expirou. Entre novamente no Gestor.');
-    return;
-  }
-
-  const originalText = btn ? btn.innerHTML : '';
-
-  try {
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = 'Sincronizando...';
-    }
-
-    setSyncStatus('saving');
-
-    const result = await withTimeout(
-      sb.functions.invoke('sync-master-training'),
-      30000,
-      'A sincronização demorou mais que o esperado. Tente novamente.'
-    );
-
-    if (result.error) {
-      throw new Error(
-        result.error.message ||
-        'Não foi possível conectar à função de sincronização.'
-      );
-    }
-
-    const response = result.data;
-
-    if (!response?.ok) {
-      throw new Error(
-        response?.error ||
-        'O Master Training retornou uma resposta inválida.'
-      );
-    }
-
-    if (response.state) {
-      data = {
-        ...blank(),
-        ...response.state
-      };
-
-      persistLocalCache();
-      renderAll();
-    }
-
-    setSyncStatus('saved');
-
-    let message =
-      'Sincronização concluída.\n\n' +
-      'Alunos encontrados no Master Training: ' + response.totalReceived + '\n' +
-      'Novos alunos importados: ' + response.created + '\n' +
-      'Alunos atualizados: ' + response.updated;
-
-    if (response.linkedByName > 0) {
-      message +=
-        '\nVinculados por nome: ' + response.linkedByName +
-        '\n\nConfira esses alunos vinculados por nome antes de editar os cadastros.';
-    }
-
-    alert(message);
-
-  } catch (err) {
-    console.error('Erro ao sincronizar Master Training:', err);
-
-    setSyncStatus('offline');
-
-    alert(
-      'Não foi possível sincronizar com o Master Training.\n\n' +
-      (err?.message || 'Erro desconhecido.')
-    );
-
-  } finally {
-    if (btn) {
-      btn.disabled = false;
-      btn.innerHTML = originalText;
-    }
-  }
-}
-
-/* ============================================================
-   LOGIN E INICIALIZAÇÃO
-============================================================ */
-
-async function logout() {
-  try {
-    if (sb) {
-      await sb.auth.signOut();
-    }
-  } catch (err) {
-    console.error('Erro ao sair:', err);
-  }
-
-  currentUser = null;
-  data = blank();
-
-  showScreen('login');
-}
-
-async function initApp() {
-  document.getElementById('todayLabel').textContent =
-    now.toLocaleDateString('pt-BR', {
-      weekday:'long',
-      day:'numeric',
-      month:'long'
-    });
-
-  document.getElementById('agendaDate').value = iso(now);
-
-  document.getElementById('agendaDate').addEventListener('change', renderAgenda);
-  document.getElementById('agendaFilter').addEventListener('change', renderAgenda);
-  document.getElementById('studentSearch').addEventListener('input', renderStudents);
-  document.getElementById('studentStatus').addEventListener('change', renderStudents);
-
-  document.querySelectorAll('.nav button').forEach(b => {
-    b.addEventListener('click', () => showView(b.dataset.view));
-  });
-
-  /*
-    Aqui está a correção principal:
-    loadCloudData nunca impede o app de abrir.
-    Em caso de falha, usa cache local ou abre vazio.
-  */
-  await loadCloudData();
-
-  renderAll();
-
-  showScreen('app');
-}
-
-document.getElementById('loginForm').addEventListener('submit', async e => {
-  e.preventDefault();
-
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-
-  const errorEl = document.getElementById('loginError');
-  const btn = document.getElementById('loginBtn');
-
-  errorEl.textContent = '';
-
-  if (!sb) {
-    errorEl.textContent =
-      'Não foi possível conectar ao servidor. Recarregue a página e tente novamente.';
-    return;
-  }
-
-  btn.textContent = 'Entrando...';
-  btn.disabled = true;
-
-  try {
-    const result = await withTimeout(
-      sb.auth.signInWithPassword({ email, password }),
-      10000,
-      'Tempo esgotado ao tentar entrar.'
-    );
-
-    btn.textContent = 'Entrar';
-    btn.disabled = false;
-
-    if (result.error) {
-      errorEl.textContent =
-        'E-mail ou senha incorretos. (' + result.error.message + ')';
-      return;
-    }
-
-    if (!result.data || !result.data.user) {
-      errorEl.textContent = 'O login não retornou um usuário válido.';
-      return;
-    }
-
-    currentUser = result.data.user;
-
-    showScreen('loading');
-
-    await initApp();
-
-  } catch (err) {
-    console.error('Erro no login:', err);
-
-    btn.textContent = 'Entrar';
-    btn.disabled = false;
-
-    errorEl.textContent =
-      'Não foi possível concluir o login. Verifique sua conexão e tente novamente.';
-
-    showScreen('login');
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  initApp();
 });
 
-/*
-  Inicialização automática:
-  se houver login salvo, entra no app.
-  se não houver, abre a tela de login.
-*/
-(async function boot() {
-  try {
-    if (!sb) {
-      showScreen('login');
-
-      document.getElementById('loginError').textContent =
-        'Não foi possível carregar a conexão com o servidor.';
-
-      return;
-    }
-
-    const result = await withTimeout(
-      sb.auth.getSession(),
-      8000,
-      'Tempo esgotado ao verificar a sessão.'
-    );
-
-    const session = result.data?.session;
-
-    if (session?.user) {
-      currentUser = session.user;
-
-      await initApp();
-    } else {
+if (sb) {
+  sb.auth.onAuthStateChange((_event, session) => {
+    if (!session && currentUser) {
+      currentUser = null;
       showScreen('login');
     }
-
-  } catch (err) {
-    console.error('Erro na inicialização:', err);
-
-    showScreen('login');
-
-    document.getElementById('loginError').textContent =
-      'Não foi possível conectar ao servidor agora. Tente entrar novamente.';
-  }
-})();
+  });
+}
 </script>
-<script>
-/* ============================================================
-   COBRANÇAS AUTOMÁTICAS E CONFIRMAÇÃO DE RECEBIMENTO
-   Método Vini Seta
-============================================================ */
 
-/*
-  Cria automaticamente uma cobrança no mês atual para cada aluno:
-  - Ativo;
-  - Com mensalidade maior do que zero;
-  - Que ainda não possui cobrança naquele mês.
-*/
-function criarCobrancasAutomaticas() {
-  if (!Array.isArray(data.students)) data.students = [];
-  if (!Array.isArray(data.dues)) data.dues = [];
-
-  const hoje = new Date();
-  const mesAtual = monthKey(iso(hoje));
-
-  data.students
-    .filter(aluno =>
-      aluno.status === 'Ativo' &&
-      Number(aluno.price || 0) > 0
-    )
-    .forEach(aluno => {
-      const cobrancaJaExiste = data.dues.some(cobranca =>
-        cobranca.studentId === aluno.id &&
-        cobranca.month === mesAtual
-      );
-
-      if (cobrancaJaExiste) return;
-
-      const diaVencimento = Math.min(
-        Math.max(Number(aluno.dueDay || 10), 1),
-        28
-      );
-
-      data.dues.push({
-        id: uid(),
-        studentId: aluno.id,
-        month: mesAtual,
-        amount: Number(aluno.price || 0),
-        dueDate: `${mesAtual}-${String(diaVencimento).padStart(2, '0')}`,
-        status: 'Pendente',
-        createdAutomatically: true,
-        createdAt: new Date().toISOString()
-      });
-    });
-}
-
-/*
-  Substitui a função original de salvar.
-  Antes de salvar, ela verifica e cria as cobranças necessárias.
-*/
-function save() {
-  criarCobrancasAutomaticas();
-
-  persistLocalCache();
-  renderAll();
-  setSyncStatus('saving');
-
-  clearTimeout(saveTimer);
-
-  saveTimer = setTimeout(syncToCloud, 700);
-}
-
-/*
-  Substitui a tela inicial.
-  Exibe todos os alunos com cobrança pendente no mês atual,
-  ordenados pela data de vencimento e com botão "Recebido".
-*/
-function renderDashboard() {
-  criarCobrancasAutomaticas();
-
-  const hoje = iso(new Date());
-
-  document.getElementById('dashStudents').textContent =
-    data.students.filter(aluno => aluno.status === 'Ativo').length;
-
-  document.getElementById('dashToday').textContent =
-    data.appointments.filter(atendimento =>
-      atendimento.date === hoje &&
-      atendimento.status !== 'Cancelado'
-    ).length;
-
-  const mesAtual = monthKey(hoje);
-
-  const valorPendente = data.dues
-    .filter(cobranca =>
-      cobranca.month === mesAtual &&
-      cobranca.status !== 'Pago'
-    )
-    .reduce((total, cobranca) =>
-      total + Number(cobranca.amount || 0), 0
-    );
-
-  document.getElementById('dashPending').textContent =
-    money(valorPendente);
-
-  const atendimentos = data.appointments
-    .filter(atendimento =>
-      atendimento.date === hoje &&
-      atendimento.status !== 'Cancelado'
-    )
-    .sort((a, b) =>
-      (a.time || '').localeCompare(b.time || '')
-    );
-
-  document.getElementById('todayList').innerHTML = atendimentos.length
-    ? atendimentos.map(atendimento => `
-      <div class="item">
-        <div>
-          <strong>
-            ${esc(atendimento.time || '--:--')} ·
-            ${esc(atendimento.title)}
-          </strong>
-
-          <div class="sub">
-            ${esc(atendimento.type)} ·
-            ${esc(atendimento.status)}
-          </div>
-        </div>
-
-        <button
-          class="btn secondary small"
-          onclick="openModal('appointment','','${atendimento.id}')"
-        >
-          Editar
-        </button>
-      </div>
-    `).join('')
-    : `<div class="empty">Nenhum atendimento agendado para hoje.</div>`;
-
-  const cobrancasPendentes = data.dues
-    .filter(cobranca =>
-      cobranca.month === mesAtual &&
-      cobranca.status !== 'Pago'
-    )
-    .sort((a, b) =>
-      a.dueDate.localeCompare(b.dueDate)
-    );
-
-  document.getElementById('pendingList').innerHTML =
-    cobrancasPendentes.length
-      ? cobrancasPendentes.map(cobranca => `
-        <div class="item">
-          <div>
-            <strong>${esc(studentName(cobranca.studentId))}</strong>
-
-            <div class="sub">
-              Vence em ${fmtDate(cobranca.dueDate)}
-            </div>
-
-            <span class="tag warn">Pendente</span>
-          </div>
-
-          <div style="text-align:right">
-            <b>${money(cobranca.amount)}</b>
-
-            <div style="margin-top:7px">
-              <button
-                class="btn small"
-                onclick="markDue('${cobranca.id}')"
-              >
-                Recebido
-              </button>
-            </div>
-          </div>
-        </div>
-      `).join('')
-      : `
-        <div class="empty">
-          Nenhuma cobrança pendente neste mês.
-        </div>
-      `;
-}
-
-/*
-  Confirma o recebimento da mensalidade.
-
-  Ao clicar em "Recebido":
-  - muda a cobrança para Pago;
-  - registra a data de hoje;
-  - cria uma entrada profissional;
-  - impede lançamento duplicado;
-  - ao reabrir, remove somente a entrada vinculada àquela cobrança.
-*/
-function markDue(id) {
-  const cobranca = data.dues.find(item => item.id === id);
-
-  if (!cobranca) {
-    alert('Cobrança não encontrada.');
-    return;
-  }
-
-  const nomeAluno = studentName(cobranca.studentId);
-
-  /*
-    Se a cobrança já estiver paga, reabre e remove
-    apenas a receita vinculada a ela.
-  */
-  if (cobranca.status === 'Pago') {
-    const confirmarReabertura = confirm(
-      'Deseja reabrir esta cobrança?
-
-' +
-      'Aluno: ' + nomeAluno + '
-' +
-      'Valor: ' + money(cobranca.amount) + '
-
-' +
-      'A receita vinculada será removida do financeiro profissional.'
-    );
-
-    if (!confirmarReabertura) {
-      return;
-    }
-
-    cobranca.status = 'Pendente';
-    cobranca.receivedAt = null;
-
-    data.transactions = data.transactions.filter(
-      transacao => transacao.linkedDue !== cobranca.id
-    );
-
-    save();
-
-    alert('Cobrança reaberta e receita vinculada removida.');
-    return;
-  }
-
-  const confirmarRecebimento = confirm(
-    'Confirmar recebimento?
-
-' +
-    'Aluno: ' + nomeAluno + '
-' +
-    'Valor: ' + money(cobranca.amount) + '
-' +
-    'Vencimento: ' + fmtDate(cobranca.dueDate) + '
-
-' +
-    'O valor será lançado como receita profissional na data de hoje.'
-  );
-
-  if (!confirmarRecebimento) {
-    return;
-  }
-
-  const dataRecebimento = iso(new Date());
-
-  /*
-    Atualiza a cobrança antes de criar o lançamento.
-  */
-  cobranca.status = 'Pago';
-  cobranca.receivedAt = dataRecebimento;
-
-  /*
-    Procura lançamento existente para evitar duplicação.
-  */
-  const indiceEntradaExistente = data.transactions.findIndex(
-    transacao => transacao.linkedDue === cobranca.id
-  );
-
-  const entrada = {
-    id: indiceEntradaExistente >= 0
-      ? data.transactions[indiceEntradaExistente].id
-      : uid(),
-    scope: 'profissional',
-    kind: 'Entrada',
-    description: 'Mensalidade — ' + nomeAluno,
-    category: 'Mensalidade',
-    amount: Number(cobranca.amount || 0),
-    date: dataRecebimento,
-    status: 'Pago',
-    linkedDue: cobranca.id,
-    notes:
-      'Pagamento confirmado em ' +
-      fmtDate(dataRecebimento) +
-      '. Vencimento original: ' +
-      fmtDate(cobranca.dueDate) + '.'
-  };
-
-  /*
-    Cria a receita ou corrige uma receita existente,
-    caso ela tenha sido criada em teste anterior.
-  */
-  if (indiceEntradaExistente >= 0) {
-    data.transactions[indiceEntradaExistente] = entrada;
-  } else {
-    data.transactions.push(entrada);
-  }
-
-<<<<<<< HEAD
-  /*
-    Abre Financeiro e Resumo no mês em que o pagamento entrou.
-  */
-  const partes = dataRecebimento.split('-').map(Number);
-=======
-  /*
-    Abre Financeiro e Resumo no mês em que o dinheiro
-    realmente foi recebido, para o lançamento aparecer imediatamente.
-  */
-  const partesDataRecebimento = dataRecebimento.split('-').map(Number);
-
-  proMonthDate = new Date(
-    partesDataRecebimento[0],
-    partesDataRecebimento[1] - 1,
-    1
-  );
-
-  repMonthDate = new Date(
-    partesDataRecebimento[0],
-    partesDataRecebimento[1] - 1,
-    1
-  );
-
-  save();
->>>>>>> 58b1127f0552b372eab62c50ebfa331a7f4976ec
-
-  proMonthDate = new Date(partes[0], partes[1] - 1, 1);
-  repMonthDate = new Date(partes[0], partes[1] - 1, 1);
-
-  /*
-    Atualiza imediatamente a tela, o cache e a nuvem.
-  */
-  persistLocalCache();
-  renderAll();
-
-  clearTimeout(saveTimer);
-  setSyncStatus('saving');
-  saveTimer = setTimeout(syncToCloud, 700);
-
-  alert(
-    'Pagamento registrado com sucesso.
-
-' +
-    money(cobranca.amount) +
-    ' foi incluído nas Receitas do Financeiro profissional.'
-  );
-}
-
-/*
-  Substitui a página Financeiro profissional.
-  Mostra as cobranças e permite usar:
-  - Recebido;
-  - Reabrir cobrança.
-*/
-function renderPro() {
-  criarCobrancasAutomaticas();
-
-  document.getElementById('proMonth').textContent =
-    monthName(proMonthDate);
-
-  const mesSelecionado = monthKey(proMonthDate);
-
-  const transacoes = data.transactions.filter(transacao =>
-    transacao.scope === 'profissional' &&
-    monthKey(transacao.date) === mesSelecionado
-  );
-
-  const receitas = transacoes
-    .filter(transacao =>
-      transacao.kind === 'Entrada' &&
-      transacao.status === 'Pago'
-    )
-    .reduce((total, transacao) =>
-      total + Number(transacao.amount || 0), 0
-    );
-
-  const despesas = transacoes
-    .filter(transacao =>
-      transacao.kind === 'Saída' &&
-      transacao.status === 'Pago'
-    )
-    .reduce((total, transacao) =>
-      total + Number(transacao.amount || 0), 0
-    );
-
-  document.getElementById('proIncome').textContent =
-    money(receitas);
-
-  document.getElementById('proExpense').textContent =
-    money(despesas);
-
-  document.getElementById('proNet').textContent =
-    money(receitas - despesas);
-
-  const cobrancas = data.dues
-    .filter(cobranca =>
-      cobranca.month === mesSelecionado
-    )
-    .sort((a, b) =>
-      a.dueDate.localeCompare(b.dueDate)
-    );
-
-  document.getElementById('duesList').innerHTML = cobrancas.length
-    ? cobrancas.map(cobranca => `
-      <div class="item">
-        <div>
-          <strong>${esc(studentName(cobranca.studentId))}</strong>
-
-          <div class="sub">
-            Vencimento ${fmtDate(cobranca.dueDate)} ·
-            ${money(cobranca.amount)}
-          </div>
-
-          ${
-            cobranca.status === 'Pago' && cobranca.receivedAt
-              ? `
-                <div class="sub">
-                  Recebido em ${fmtDate(cobranca.receivedAt)}
-                </div>
-              `
-              : ''
-          }
-
-          <span class="tag ${
-            cobranca.status === 'Pago' ? 'ok' : 'warn'
-          }">
-            ${esc(cobranca.status)}
-          </span>
-        </div>
-
-        <button
-          class="btn small"
-          onclick="markDue('${cobranca.id}')"
-        >
-          ${
-            cobranca.status === 'Pago'
-              ? 'Reabrir cobrança'
-              : 'Recebido'
-          }
-        </button>
-      </div>
-    `).join('')
-    : `
-      <div class="empty">
-        Nenhuma cobrança neste mês.
-      </div>
-    `;
-
-  document.getElementById('proTransactions').innerHTML =
-    renderTxList(transacoes);
-}
-
-/*
-  Ao abrir a página, faz uma verificação inicial.
-  Isso ajuda a criar cobranças de alunos que já tinham
-  mensalidade cadastrada antes desta atualização.
-*/
-setTimeout(() => {
-  try {
-    if (
-      typeof data !== 'undefined' &&
-      data &&
-      Array.isArray(data.students)
-    ) {
-      criarCobrancasAutomaticas();
-      persistLocalCache();
-      renderAll();
-
-      if (typeof currentUser !== 'undefined' && currentUser) {
-        clearTimeout(saveTimer);
-        saveTimer = setTimeout(syncToCloud, 700);
-      }
-    }
-  } catch (erro) {
-    console.error(
-      'Não foi possível iniciar cobranças automáticas:',
-      erro
-    );
-  }
-}, 1500);
-</script>
 </body>
 </html>
