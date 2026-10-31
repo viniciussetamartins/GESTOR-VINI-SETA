@@ -2576,17 +2576,25 @@ function markDue(id) {
   const nomeAluno = studentName(cobranca.studentId);
 
   /*
-    Caso esteja paga, permite reabrir.
+    Se a cobrança já estiver paga, reabre e remove
+    apenas a receita vinculada a ela.
   */
   if (cobranca.status === 'Pago') {
     const confirmarReabertura = confirm(
-      'Deseja reabrir esta cobrança?\n\n' +
-      'Aluno: ' + nomeAluno + '\n' +
-      'Valor: ' + money(cobranca.amount) + '\n\n' +
-      'A entrada financeira relacionada será removida.'
+      'Deseja reabrir esta cobrança?
+
+' +
+      'Aluno: ' + nomeAluno + '
+' +
+      'Valor: ' + money(cobranca.amount) + '
+
+' +
+      'A receita vinculada será removida do financeiro profissional.'
     );
 
-    if (!confirmarReabertura) return;
+    if (!confirmarReabertura) {
+      return;
+    }
 
     cobranca.status = 'Pendente';
     cobranca.receivedAt = null;
@@ -2597,59 +2605,78 @@ function markDue(id) {
 
     save();
 
-    alert(
-      'Cobrança reaberta.\n\n' +
-      'A entrada vinculada foi removida do financeiro profissional.'
-    );
-
+    alert('Cobrança reaberta e receita vinculada removida.');
     return;
   }
 
-  /*
-    Confirma o recebimento usando a data real de hoje.
-  */
   const confirmarRecebimento = confirm(
-    'Confirmar recebimento?\n\n' +
-    'Aluno: ' + nomeAluno + '\n' +
-    'Valor: ' + money(cobranca.amount) + '\n' +
-    'Vencimento: ' + fmtDate(cobranca.dueDate) + '\n\n' +
-    'O valor será lançado como entrada no Financeiro profissional com a data de hoje.'
+    'Confirmar recebimento?
+
+' +
+    'Aluno: ' + nomeAluno + '
+' +
+    'Valor: ' + money(cobranca.amount) + '
+' +
+    'Vencimento: ' + fmtDate(cobranca.dueDate) + '
+
+' +
+    'O valor será lançado como receita profissional na data de hoje.'
   );
 
-  if (!confirmarRecebimento) return;
+  if (!confirmarRecebimento) {
+    return;
+  }
 
   const dataRecebimento = iso(new Date());
 
+  /*
+    Atualiza a cobrança antes de criar o lançamento.
+  */
   cobranca.status = 'Pago';
   cobranca.receivedAt = dataRecebimento;
 
   /*
-    Segurança contra duplicação:
-    procura se já há uma transação relacionada a esta cobrança.
+    Procura lançamento existente para evitar duplicação.
   */
-  const entradaJaExiste = data.transactions.some(
+  const indiceEntradaExistente = data.transactions.findIndex(
     transacao => transacao.linkedDue === cobranca.id
   );
 
-  if (!entradaJaExiste) {
-    data.transactions.push({
-      id: uid(),
-      scope: 'profissional',
-      kind: 'Entrada',
-      description: 'Mensalidade — ' + nomeAluno,
-      category: 'Mensalidade',
-      amount: Number(cobranca.amount || 0),
-      date: dataRecebimento,
-      status: 'Pago',
-      linkedDue: cobranca.id,
-      notes:
-        'Mensalidade recebida em ' +
-        fmtDate(dataRecebimento) +
-        '. Vencimento original: ' +
-        fmtDate(cobranca.dueDate) + '.'
-    });
+  const entrada = {
+    id: indiceEntradaExistente >= 0
+      ? data.transactions[indiceEntradaExistente].id
+      : uid(),
+    scope: 'profissional',
+    kind: 'Entrada',
+    description: 'Mensalidade — ' + nomeAluno,
+    category: 'Mensalidade',
+    amount: Number(cobranca.amount || 0),
+    date: dataRecebimento,
+    status: 'Pago',
+    linkedDue: cobranca.id,
+    notes:
+      'Pagamento confirmado em ' +
+      fmtDate(dataRecebimento) +
+      '. Vencimento original: ' +
+      fmtDate(cobranca.dueDate) + '.'
+  };
+
+  /*
+    Cria a receita ou corrige uma receita existente,
+    caso ela tenha sido criada em teste anterior.
+  */
+  if (indiceEntradaExistente >= 0) {
+    data.transactions[indiceEntradaExistente] = entrada;
+  } else {
+    data.transactions.push(entrada);
   }
 
+<<<<<<< HEAD
+  /*
+    Abre Financeiro e Resumo no mês em que o pagamento entrou.
+  */
+  const partes = dataRecebimento.split('-').map(Number);
+=======
   /*
     Abre Financeiro e Resumo no mês em que o dinheiro
     realmente foi recebido, para o lançamento aparecer imediatamente.
@@ -2669,11 +2696,27 @@ function markDue(id) {
   );
 
   save();
+>>>>>>> 58b1127f0552b372eab62c50ebfa331a7f4976ec
+
+  proMonthDate = new Date(partes[0], partes[1] - 1, 1);
+  repMonthDate = new Date(partes[0], partes[1] - 1, 1);
+
+  /*
+    Atualiza imediatamente a tela, o cache e a nuvem.
+  */
+  persistLocalCache();
+  renderAll();
+
+  clearTimeout(saveTimer);
+  setSyncStatus('saving');
+  saveTimer = setTimeout(syncToCloud, 700);
 
   alert(
-    'Pagamento registrado com sucesso.\n\n' +
+    'Pagamento registrado com sucesso.
+
+' +
     money(cobranca.amount) +
-    ' foi lançado como entrada no Financeiro profissional.'
+    ' foi incluído nas Receitas do Financeiro profissional.'
   );
 }
 
