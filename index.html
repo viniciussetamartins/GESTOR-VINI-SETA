@@ -1376,7 +1376,11 @@ function openModal(type, scope = '', id = '') {
             </select>
           </div>
 
-          <div class="field">
+          <div
+            class="field"
+            id="frequencyField"
+            style="${s.modality === 'Consultoria online' ? 'display:none' : ''}"
+          >
             <label>Frequência por semana</label>
             <select name="frequency">
               ${opts(['1','2','3','4','5','6','7'], s.frequency || '3')}
@@ -1454,9 +1458,21 @@ function openModal(type, scope = '', id = '') {
             </select>
           </div>
 
-          <div class="field full">
-            <label>Dias e horários habituais</label>
-            <input name="schedule" value="${esc(s.schedule || '')}" placeholder="Ex.: seg/qua/sex — 8h">
+          <div
+            class="field full"
+            id="routineFields"
+            style="${s.modality === 'Consultoria online' ? 'display:none' : ''}"
+          >
+            <label>Rotina fixa de treinos</label>
+
+            <div class="notice" style="margin:0 0 10px">
+              Marque os dias em que este aluno treina e informe o horário.
+              Os treinos aparecerão automaticamente na Agenda do Gestor enquanto o aluno estiver ativo e regularizado.
+            </div>
+
+            <div class="list">
+              ${routineRows(s)}
+            </div>
           </div>
 
           <div class="field full">
@@ -1480,6 +1496,7 @@ function openModal(type, scope = '', id = '') {
 
       f.price = Number(f.price || 0);
       f.frequency = Number(f.frequency || 0);
+      f.routine = collectRoutine();
 
       const isConsultancy = f.modality === 'Consultoria online';
 
@@ -2697,6 +2714,517 @@ function renderDashboard() {
       </div>
     `).join('')
     : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
+}
+</script>
+
+<script>
+/* ============================================================
+   AGENDA RECORRENTE — ALUNOS PRESENCIAIS E HÍBRIDOS
+============================================================ */
+
+/*
+  Dias da semana:
+  0 = domingo
+  1 = segunda
+  2 = terça
+  3 = quarta
+  4 = quinta
+  5 = sexta
+  6 = sábado
+*/
+const ROUTINE_DAYS = [
+  { value: 1, label: 'Segunda-feira' },
+  { value: 2, label: 'Terça-feira' },
+  { value: 3, label: 'Quarta-feira' },
+  { value: 4, label: 'Quinta-feira' },
+  { value: 5, label: 'Sexta-feira' },
+  { value: 6, label: 'Sábado' },
+  { value: 0, label: 'Domingo' }
+];
+
+function normalizedRoutine(student) {
+  if (!Array.isArray(student?.routine)) return [];
+
+  return student.routine
+    .map(item => ({
+      day: Number(item.day),
+      time: String(item.time || '')
+    }))
+    .filter(item =>
+      Number.isInteger(item.day) &&
+      item.day >= 0 &&
+      item.day <= 6 &&
+      item.time
+    );
+}
+
+/*
+  Monta as linhas de seleção de dias e horários dentro
+  do cadastro/edição do aluno.
+*/
+function routineRows(student) {
+  const routine = normalizedRoutine(student);
+
+  return ROUTINE_DAYS.map(day => {
+    const saved = routine.find(item => item.day === day.value);
+    const checked = saved ? 'checked' : '';
+    const time = saved?.time || '08:00';
+
+    return `
+      <div
+        style="
+          display:grid;
+          grid-template-columns:22px minmax(115px,1fr) minmax(100px,140px);
+          align-items:center;
+          gap:9px;
+          background:var(--panel2);
+          padding:9px 10px;
+          border-radius:9px;
+        "
+      >
+        <input
+          type="checkbox"
+          name="routineDay"
+          value="${day.value}"
+          ${checked}
+          style="width:18px;height:18px"
+        >
+
+        <span style="font-size:13px">${day.label}</span>
+
+        <input
+          type="time"
+          name="routineTime_${day.value}"
+          value="${time}"
+          aria-label="Horário de ${day.label}"
+        >
+      </div>
+    `;
+  }).join('');
+}
+
+/*
+  Lê os dias marcados no formulário e transforma em uma rotina
+  que será salva junto ao aluno.
+*/
+function collectRoutine() {
+  const modality = document.querySelector('#recordForm [name="modality"]')?.value;
+
+  if (modality === 'Consultoria online') {
+    return [];
+  }
+
+  return [...document.querySelectorAll('#recordForm input[name="routineDay"]:checked')]
+    .map(input => {
+      const day = Number(input.value);
+
+      return {
+        day,
+        time:
+          document.querySelector(
+            `#recordForm [name="routineTime_${day}"]`
+          )?.value || '08:00'
+      };
+    })
+    .sort((a, b) => a.day - b.day);
+}
+
+/*
+  Substitui a função anterior para também ocultar frequência
+  e rotina de horários quando for Consultoria online.
+*/
+function toggleConsultancyFields() {
+  const modality =
+    document.querySelector('#recordForm [name="modality"]')?.value;
+
+  const isOnline = modality === 'Consultoria online';
+
+  const monthlyFee = document.getElementById('monthlyFeeField');
+  const consultancyFields = document.getElementById('consultancyFields');
+  const frequencyField = document.getElementById('frequencyField');
+  const routineFields = document.getElementById('routineFields');
+
+  if (monthlyFee) {
+    monthlyFee.style.display = isOnline ? 'none' : '';
+  }
+
+  if (consultancyFields) {
+    consultancyFields.style.display = isOnline ? '' : 'none';
+  }
+
+  if (frequencyField) {
+    frequencyField.style.display = isOnline ? 'none' : '';
+  }
+
+  if (routineFields) {
+    routineFields.style.display = isOnline ? 'none' : '';
+  }
+}
+
+/*
+  Verifica se a rotina deve aparecer em determinada data.
+
+  Regras:
+  - aluno precisa estar Ativo;
+  - apenas Presencial ou Híbrido;
+  - cobrança mais recente vencida e pendente permite agenda
+    por mais 30 dias;
+  - após 30 dias em atraso, os horários ficam suspensos;
+  - ao marcar a mensalidade como recebida, voltam automaticamente.
+*/
+function routineIsActiveOn(student, dateString) {
+  if (!student || student.status !== 'Ativo') return false;
+
+  if (
+    student.modality !== 'Presencial' &&
+    student.modality !== 'Híbrido'
+  ) {
+    return false;
+  }
+
+  const routine = normalizedRoutine(student);
+
+  if (!routine.length) return false;
+
+  const duesUntilDate = data.dues
+    .filter(d =>
+      d.studentId === student.id &&
+      !d.consultancyCycleId &&
+      d.dueDate &&
+      d.dueDate <= dateString
+    )
+    .sort((a, b) => b.dueDate.localeCompare(a.dueDate));
+
+  /*
+    Se ainda não houver cobrança gerada, mantém a rotina do aluno
+    ativo. Assim um aluno recém-cadastrado já aparece na agenda.
+  */
+  if (!duesUntilDate.length) return true;
+
+  const latestDue = duesUntilDate[0];
+
+  if (latestDue.status === 'Pago') return true;
+
+  const dueDate = new Date(`${latestDue.dueDate}T12:00:00`);
+  dueDate.setDate(dueDate.getDate() + 30);
+
+  const limitDate = iso(dueDate);
+
+  return dateString <= limitDate;
+}
+
+/*
+  Cria atendimentos virtuais para a data visualizada.
+  Eles não enchem o banco de dados: são calculados automaticamente.
+*/
+function recurringAppointmentsForDate(dateString) {
+  const selectedDate = new Date(`${dateString}T12:00:00`);
+  const weekday = selectedDate.getDay();
+
+  return data.students
+    .filter(student => routineIsActiveOn(student, dateString))
+    .flatMap(student =>
+      normalizedRoutine(student)
+        .filter(item => item.day === weekday)
+        .map(item => ({
+          id: `routine-${student.id}-${dateString}-${item.time}`,
+          title: `Treino — ${student.name}`,
+          studentId: student.id,
+          type: 'Treino presencial',
+          date: dateString,
+          time: item.time,
+          duration: 60,
+          status: 'Agendado',
+          notes: 'Horário fixo automático',
+          recurring: true
+        }))
+    );
+}
+
+/*
+  Junta os atendimentos cadastrados manualmente com os horários fixos.
+  Se já existir um atendimento manual para o mesmo aluno e horário,
+  não duplica a rotina automática.
+*/
+function appointmentsForDate(dateString) {
+  const manual = data.appointments.filter(
+    appointment => appointment.date === dateString
+  );
+
+  const recurring = recurringAppointmentsForDate(dateString).filter(routine =>
+    !manual.some(appointment =>
+      appointment.studentId === routine.studentId &&
+      appointment.time === routine.time &&
+      appointment.status !== 'Cancelado'
+    )
+  );
+
+  return [...manual, ...recurring]
+    .sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+}
+
+/* ============================================================
+   TELA INICIAL — agenda de hoje inclui rotinas automáticas
+============================================================ */
+
+function renderDashboard() {
+  const today = iso(new Date());
+
+  document.getElementById('dashStudents').textContent =
+    data.students.filter(s => s.status === 'Ativo').length;
+
+  const todayAppointments = appointmentsForDate(today).filter(
+    appointment => appointment.status !== 'Cancelado'
+  );
+
+  document.getElementById('dashToday').textContent =
+    todayAppointments.length;
+
+  const m = monthKey(today);
+
+  const pending = data.dues
+    .filter(d => d.month === m && d.status !== 'Pago')
+    .reduce((s, d) => s + Number(d.amount || 0), 0);
+
+  document.getElementById('dashPending').textContent = money(pending);
+
+  document.getElementById('todayList').innerHTML =
+    todayAppointments.length
+      ? todayAppointments.map(appointment => `
+        <div class="item">
+          <div>
+            <strong>
+              ${esc(appointment.time || '--:--')} ·
+              ${esc(appointment.title)}
+            </strong>
+
+            <div class="sub">
+              ${esc(appointment.type)} ·
+              ${appointment.recurring
+                ? 'Rotina fixa'
+                : esc(appointment.status)}
+            </div>
+          </div>
+
+          ${
+            appointment.recurring
+              ? `<span class="tag ok">Automático</span>`
+              : `
+                <button
+                  class="btn secondary small"
+                  onclick="openModal('appointment','','${appointment.id}')"
+                >
+                  Editar
+                </button>
+              `
+          }
+        </div>
+      `).join('')
+      : `<div class="empty">Nenhum atendimento agendado para hoje.</div>`;
+
+  const dues = data.dues
+    .filter(d => d.month === m && d.status !== 'Pago')
+    .slice(0, 5);
+
+  document.getElementById('pendingList').innerHTML = dues.length
+    ? dues.map(d => `
+      <div class="item">
+        <div>
+          <strong>${esc(studentName(d.studentId))}</strong>
+          <div class="sub">Vence ${fmtDate(d.dueDate)}</div>
+        </div>
+
+        <div style="text-align:right">
+          <b style="display:block;margin-bottom:7px">${money(d.amount)}</b>
+
+          <button class="btn small" onclick="markDue('${d.id}')">
+            Recebido
+          </button>
+        </div>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
+}
+
+/* ============================================================
+   AGENDA — inclui rotinas fixas automáticas
+============================================================ */
+
+function renderAgenda() {
+  const date = document.getElementById('agendaDate').value || iso(new Date());
+  const filter = document.getElementById('agendaFilter').value;
+
+  const appointments = appointmentsForDate(date)
+    .filter(appointment =>
+      filter === 'all' || appointment.type === filter
+    );
+
+  document.getElementById('agendaList').innerHTML =
+    appointments.length
+      ? appointments.map(appointment => `
+        <div class="item">
+          <div>
+            <strong>
+              ${esc(appointment.time || '--:--')} ·
+              ${esc(appointment.title)}
+            </strong>
+
+            <div class="sub">
+              ${esc(appointment.type)} ·
+              ${appointment.duration || 60} min
+              ${appointment.studentId
+                ? '· ' + esc(studentName(appointment.studentId))
+                : ''}
+            </div>
+
+            ${
+              appointment.notes
+                ? `<div class="sub">${esc(appointment.notes)}</div>`
+                : ''
+            }
+
+            <span class="tag ${
+              appointment.recurring
+                ? 'ok'
+                : appointment.status === 'Concluído'
+                  ? 'ok'
+                  : appointment.status === 'Cancelado'
+                    ? 'red'
+                    : 'warn'
+            }">
+              ${
+                appointment.recurring
+                  ? 'Rotina fixa'
+                  : esc(appointment.status)
+              }
+            </span>
+          </div>
+
+          ${
+            appointment.recurring
+              ? `<span class="tag ok">Automático</span>`
+              : `
+                <button
+                  class="btn secondary small"
+                  onclick="openModal('appointment','','${appointment.id}')"
+                >
+                  Editar
+                </button>
+              `
+          }
+        </div>
+      `).join('')
+      : `<div class="empty">Nada encontrado nessa data.</div>`;
+}
+
+/* ============================================================
+   LISTA DE ALUNOS — oculta frequência/horário da consultoria
+============================================================ */
+
+function routineSummary(student) {
+  const routine = normalizedRoutine(student);
+
+  if (!routine.length) {
+    return 'Horários não informados';
+  }
+
+  const labels = {
+    0: 'Dom',
+    1: 'Seg',
+    2: 'Ter',
+    3: 'Qua',
+    4: 'Qui',
+    5: 'Sex',
+    6: 'Sáb'
+  };
+
+  return routine
+    .map(item => `${labels[item.day]} ${item.time}`)
+    .join(' · ');
+}
+
+function renderStudents() {
+  const q =
+    (document.getElementById('studentSearch').value || '').toLowerCase();
+
+  const status =
+    document.getElementById('studentStatus').value || 'ativos';
+
+  const students = data.students
+    .filter(student =>
+      student.name.toLowerCase().includes(q) ||
+      String(student.phone || '').includes(q)
+    )
+    .filter(student =>
+      status === 'todos'
+        ? true
+        : status === 'ativos'
+          ? student.status === 'Ativo'
+          : student.status !== 'Ativo'
+    );
+
+  document.getElementById('studentsList').innerHTML =
+    students.length
+      ? students.map(student => {
+        const isOnline = student.modality === 'Consultoria online';
+
+        return `
+          <div class="item">
+            <div>
+              <strong>${esc(student.name)}</strong>
+
+              <div class="sub">
+                ${
+                  isOnline
+                    ? esc(student.modality)
+                    : `${esc(student.modality)} · ${student.frequency || 0}x por semana`
+                }
+              </div>
+
+              ${
+                !isOnline
+                  ? `
+                    <div class="sub">
+                      ${esc(routineSummary(student))}
+                    </div>
+                  `
+                  : ''
+              }
+
+              <div class="sub">
+                ${
+                  isOnline
+                    ? `
+                      ${esc(student.consultancyPlan || 'Plano não informado')} ·
+                      ${money(student.consultancyTotal)} ·
+                      ${
+                        student.consultancyBilling === 'Parcelado mensalmente'
+                          ? `${student.consultancyInstallments || 1}x de ${money(
+                              Number(student.consultancyTotal || 0) /
+                              Number(student.consultancyInstallments || 1)
+                            )}`
+                          : 'À vista'
+                      }
+                    `
+                    : `${money(student.price)} por mês · vence dia ${student.dueDay || 10}`
+                }
+              </div>
+
+              <span class="tag ${student.status === 'Ativo' ? 'ok' : 'warn'}">
+                ${esc(student.status)}
+              </span>
+            </div>
+
+            <button
+              class="btn secondary small"
+              onclick="openModal('student','','${student.id}')"
+            >
+              Editar
+            </button>
+          </div>
+        `;
+      }).join('')
+      : `<div class="empty">Nenhum aluno encontrado.</div>`;
 }
 </script>
 
