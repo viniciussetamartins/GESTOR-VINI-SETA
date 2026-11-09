@@ -2379,5 +2379,128 @@ document.getElementById('loginForm').addEventListener('submit', async e => {
 })();
 </script>
 
+<script>
+/* ============================================================
+   AJUSTE: BOTÃO RECEBIDO EM CONTAS A RECEBER
+   Atualiza mensalidade, receita profissional e resumo.
+============================================================ */
+
+function markDue(id) {
+  const d = data.dues.find(x => x.id === id);
+
+  if (!d) return;
+
+  const aluno = studentName(d.studentId);
+
+  if (d.status === 'Pago') {
+    const confirmar = confirm(
+      `Reabrir a cobrança de ${aluno}?\n\nA receita vinculada a essa mensalidade será removida.`
+    );
+
+    if (!confirmar) return;
+
+    d.status = 'Pendente';
+    d.receivedAt = '';
+
+    data.transactions = data.transactions.filter(
+      t => t.linkedDue !== id
+    );
+
+  } else {
+    const confirmar = confirm(
+      `Confirmar recebimento?\n\nAluno: ${aluno}\nValor: ${money(d.amount)}\n\nO valor será incluído nas receitas recebidas do Financeiro profissional.`
+    );
+
+    if (!confirmar) return;
+
+    d.status = 'Pago';
+    d.receivedAt = iso(new Date());
+
+    const jaExisteLancamento = data.transactions.some(
+      t => t.linkedDue === id
+    );
+
+    if (!jaExisteLancamento) {
+      data.transactions.push({
+        id: uid(),
+        scope: 'profissional',
+        kind: 'Entrada',
+        description: 'Mensalidade — ' + aluno,
+        category: 'Mensalidade',
+        amount: Number(d.amount || 0),
+        date: d.receivedAt,
+        status: 'Pago',
+        linkedDue: id,
+        createdAt: new Date().toISOString()
+      });
+    }
+  }
+
+  save();
+}
+
+function renderDashboard() {
+  const today = iso(new Date());
+
+  document.getElementById('dashStudents').textContent =
+    data.students.filter(s => s.status === 'Ativo').length;
+
+  document.getElementById('dashToday').textContent =
+    data.appointments.filter(a =>
+      a.date === today && a.status !== 'Cancelado'
+    ).length;
+
+  const m = monthKey(today);
+
+  const pending = data.dues
+    .filter(d => d.month === m && d.status !== 'Pago')
+    .reduce((s, d) => s + Number(d.amount || 0), 0);
+
+  document.getElementById('dashPending').textContent = money(pending);
+
+  const appointments = data.appointments
+    .filter(a => a.date === today && a.status !== 'Cancelado')
+    .sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+
+  document.getElementById('todayList').innerHTML = appointments.length
+    ? appointments.map(a => `
+      <div class="item">
+        <div>
+          <strong>${esc(a.time || '--:--')} · ${esc(a.title)}</strong>
+          <div class="sub">${esc(a.type)} · ${esc(a.status)}</div>
+        </div>
+
+        <button class="btn secondary small" onclick="openModal('appointment','','${a.id}')">
+          Editar
+        </button>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhum atendimento agendado para hoje.</div>`;
+
+  const dues = data.dues
+    .filter(d => d.month === m && d.status !== 'Pago')
+    .slice(0, 5);
+
+  document.getElementById('pendingList').innerHTML = dues.length
+    ? dues.map(d => `
+      <div class="item">
+        <div>
+          <strong>${esc(studentName(d.studentId))}</strong>
+          <div class="sub">Vence ${fmtDate(d.dueDate)}</div>
+        </div>
+
+        <div style="text-align:right">
+          <b style="display:block;margin-bottom:7px">${money(d.amount)}</b>
+
+          <button class="btn small" onclick="markDue('${d.id}')">
+            Recebido
+          </button>
+        </div>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
+}
+</script>
+
 </body>
 </html>
