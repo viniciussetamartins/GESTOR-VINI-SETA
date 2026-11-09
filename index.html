@@ -3862,5 +3862,662 @@ function renderReports() {
 }
 </script>
 
+<script>
+/* ============================================================
+   IMPORTAÇÃO ÚNICA — ALUNOS, AGENDA E COBRANÇAS
+   Lista organizada em 09/11/2026.
+============================================================ */
+
+function importacaoListaAlunosNovembro2026() {
+  if (!currentUser) {
+    alert('Entre no Gestor antes de importar a lista.');
+    return;
+  }
+
+  const confirmar = confirm(
+    'Importar os 14 alunos, horários recorrentes e cobranças combinadas?\n\n' +
+    'Esta ação não altera Rafael Porto, Guilherme ou Eric.'
+  );
+
+  if (!confirmar) return;
+
+  const IMPORT_TAG = 'importacao-alunos-2026-11';
+  const DATA_IMPORTACAO = '2026-11-09';
+
+  const normalizeName = value =>
+    String(value || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ' ');
+
+  const findStudentByName = name =>
+    data.students.find(student =>
+      normalizeName(student.name) === normalizeName(name)
+    );
+
+  function addStudent(studentData) {
+    const existing = findStudentByName(studentData.name);
+
+    if (existing) {
+      return existing;
+    }
+
+    const student = {
+      id: uid(),
+      phone: '',
+      email: '',
+      modality: 'Presencial',
+      frequency: 3,
+      price: 0,
+      dueDay: 10,
+      startDate: DATA_IMPORTACAO,
+      status: 'Ativo',
+      routine: [],
+      notes: '',
+      createdAt: new Date().toISOString(),
+      importTag: IMPORT_TAG,
+      ...studentData
+    };
+
+    data.students.push(student);
+
+    return student;
+  }
+
+  function hasDue(studentId, month, amount, label = '') {
+    return data.dues.some(due =>
+      due.studentId === studentId &&
+      due.month === month &&
+      Number(due.amount || 0) === Number(amount || 0) &&
+      String(due.label || '') === String(label || '')
+    );
+  }
+
+  function addDue({
+    studentId,
+    month,
+    amount,
+    dueDate,
+    status = 'Pendente',
+    label = '',
+    receivedAt = ''
+  }) {
+    if (hasDue(studentId, month, amount, label)) {
+      return data.dues.find(due =>
+        due.studentId === studentId &&
+        due.month === month &&
+        Number(due.amount || 0) === Number(amount || 0) &&
+        String(due.label || '') === String(label || '')
+      );
+    }
+
+    const due = {
+      id: uid(),
+      studentId,
+      month,
+      amount: Number(amount || 0),
+      dueDate,
+      status,
+      label,
+      receivedAt,
+      importTag: IMPORT_TAG
+    };
+
+    data.dues.push(due);
+
+    return due;
+  }
+
+  function addPaymentTransaction({
+    studentId,
+    amount,
+    date = DATA_IMPORTACAO,
+    description,
+    notes = '',
+    linkedDue = ''
+  }) {
+    const alreadyExists = data.transactions.some(transaction =>
+      transaction.importTag === IMPORT_TAG &&
+      transaction.importStudentId === studentId &&
+      Number(transaction.amount || 0) === Number(amount || 0) &&
+      transaction.description === description
+    );
+
+    if (alreadyExists) return;
+
+    data.transactions.push({
+      id: uid(),
+      scope: 'profissional',
+      kind: 'Entrada',
+      description,
+      category: 'Mensalidade',
+      amount: Number(amount || 0),
+      date,
+      status: 'Pago',
+      notes,
+      linkedDue,
+      importTag: IMPORT_TAG,
+      importStudentId: studentId,
+      createdAt: new Date().toISOString()
+    });
+  }
+
+  const alunos = {
+    marcelo: addStudent({
+      name: 'Marcelo',
+      frequency: 3,
+      price: 360,
+      dueDay: 10,
+      routine: [
+        { day: 1, time: '06:00' },
+        { day: 3, time: '06:00' },
+        { day: 5, time: '06:00' }
+      ],
+      skipAutoDues: true,
+      notes:
+        'Plano trimestral pago à vista em outubro de 2026. ' +
+        'Período pago: outubro, novembro e dezembro de 2026. ' +
+        'Renovar o plano em janeiro de 2027. Valor de referência mensal: R$ 360,00.'
+    }),
+
+    eliza: addStudent({
+      name: 'Eliza',
+      frequency: 3,
+      price: 360,
+      dueDay: 28,
+      routine: [
+        { day: 1, time: '07:00' },
+        { day: 2, time: '07:00' },
+        { day: 3, time: '07:00' }
+      ],
+      skipAutoDues: true,
+      notes:
+        'Cobrança variável. No fim do mês, calcular aulas realizadas e aplicar desconto quando necessário. ' +
+        'Valor de referência: R$ 360,00. Não gerar mensalidade automática.'
+    }),
+
+    lurdes: addStudent({
+      name: 'Lurdes',
+      frequency: 2,
+      price: 240,
+      dueDay: 10,
+      routine: [
+        { day: 2, time: '08:00' },
+        { day: 4, time: '08:00' }
+      ],
+      skipAutoDues: true,
+      notes:
+        'Plano trimestral de R$ 720,00, dividido em 3 parcelas de R$ 240,00. ' +
+        'Parcelas: novembro/2026, dezembro/2026 e janeiro/2027. ' +
+        'Não gerar mensalidade automática fora dessas parcelas.'
+    }),
+
+    naura: addStudent({
+      name: 'Naura',
+      frequency: 3,
+      price: 420,
+      dueDay: 10,
+      routine: [
+        { day: 1, time: '09:00' },
+        { day: 3, time: '09:00' },
+        { day: 5, time: '09:00' }
+      ]
+    }),
+
+    leo: addStudent({
+      name: 'Léo',
+      frequency: 2,
+      price: 360,
+      dueDay: 10,
+      routine: [
+        { day: 2, time: '10:00' },
+        { day: 4, time: '10:00' }
+      ]
+    }),
+
+    anaLucia: addStudent({
+      name: 'Ana Lucia',
+      frequency: 2,
+      price: 280,
+      dueDay: 10,
+      routine: [
+        { day: 2, time: '11:00' },
+        { day: 4, time: '11:00' }
+      ]
+    }),
+
+    joana: addStudent({
+      name: 'Joana',
+      frequency: 3,
+      price: 360,
+      dueDay: 20,
+      routine: [
+        { day: 1, time: '16:00' },
+        { day: 3, time: '16:00' },
+        { day: 5, time: '16:00' }
+      ]
+    }),
+
+    sergio: addStudent({
+      name: 'sérgio',
+      frequency: 3,
+      price: 360,
+      dueDay: 10,
+      routine: [
+        { day: 2, time: '09:00' },
+        { day: 3, time: '08:00' },
+        { day: 5, time: '08:00' }
+      ],
+      notes: 'Treina junto com Dona lúcia.'
+    }),
+
+    donaLucia: addStudent({
+      name: 'Dona lúcia',
+      frequency: 3,
+      price: 360,
+      dueDay: 10,
+      routine: [
+        { day: 2, time: '09:00' },
+        { day: 3, time: '08:00' },
+        { day: 5, time: '08:00' }
+      ],
+      notes: 'Treina junto com sérgio.'
+    }),
+
+    rejane: addStudent({
+      name: 'Rejane',
+      frequency: 3,
+      price: 560,
+      dueDay: 10,
+      routine: [
+        { day: 1, time: '13:30' },
+        { day: 2, time: '13:30' },
+        { day: 5, time: '13:30' }
+      ],
+      notes:
+        'Mensalidade de R$ 560,00. Neste mês, R$ 400,00 foram pagos pelo marido e faltam R$ 160,00.'
+    }),
+
+    kaun: addStudent({
+      name: 'kaun',
+      frequency: 3,
+      price: 360,
+      dueDay: 10,
+      routine: [
+        { day: 1, time: '14:30' },
+        { day: 3, time: '14:30' },
+        { day: 5, time: '14:30' }
+      ]
+    }),
+
+    neura: addStudent({
+      name: 'Neura',
+      frequency: 1,
+      price: 160,
+      dueDay: 10,
+      routine: [
+        { day: 3, time: '12:00' }
+      ]
+    }),
+
+    andria: addStudent({
+      name: 'Andria',
+      frequency: 0,
+      price: 360,
+      dueDay: 10,
+      routine: [],
+      notes:
+        'Horários variáveis. A aluna informa semanalmente os horários livres por causa de viagens.'
+    }),
+
+    wilnei: addStudent({
+      name: 'Wilnei',
+      frequency: 2,
+      price: 400,
+      dueDay: 10,
+      routine: [
+        { day: 1, time: '12:00' },
+        { day: 5, time: '12:00' }
+      ]
+    })
+  };
+
+  /*
+    COBRANÇAS DE NOVEMBRO DE 2026
+  */
+
+  const nov = '2026-11';
+  const dez = '2026-12';
+  const jan = '2027-01';
+
+  const nauraDue = addDue({
+    studentId: alunos.naura.id,
+    month: nov,
+    amount: 420,
+    dueDate: '2026-11-10',
+    status: 'Pago',
+    receivedAt: DATA_IMPORTACAO
+  });
+
+  const leoDue = addDue({
+    studentId: alunos.leo.id,
+    month: nov,
+    amount: 360,
+    dueDate: '2026-11-10',
+    status: 'Pago',
+    receivedAt: DATA_IMPORTACAO
+  });
+
+  addDue({
+    studentId: alunos.anaLucia.id,
+    month: nov,
+    amount: 280,
+    dueDate: '2026-11-10'
+  });
+
+  addDue({
+    studentId: alunos.joana.id,
+    month: nov,
+    amount: 360,
+    dueDate: '2026-11-20'
+  });
+
+  addDue({
+    studentId: alunos.sergio.id,
+    month: nov,
+    amount: 360,
+    dueDate: '2026-11-10'
+  });
+
+  addDue({
+    studentId: alunos.donaLucia.id,
+    month: nov,
+    amount: 360,
+    dueDate: '2026-11-10'
+  });
+
+  const kaunDue = addDue({
+    studentId: alunos.kaun.id,
+    month: nov,
+    amount: 360,
+    dueDate: '2026-11-10',
+    status: 'Pago',
+    receivedAt: DATA_IMPORTACAO
+  });
+
+  addDue({
+    studentId: alunos.neura.id,
+    month: nov,
+    amount: 160,
+    dueDate: '2026-11-10'
+  });
+
+  const andriaDue = addDue({
+    studentId: alunos.andria.id,
+    month: nov,
+    amount: 360,
+    dueDate: '2026-11-10',
+    status: 'Pago',
+    receivedAt: DATA_IMPORTACAO
+  });
+
+  addDue({
+    studentId: alunos.wilnei.id,
+    month: nov,
+    amount: 400,
+    dueDate: '2026-11-10'
+  });
+
+  /*
+    LURDES — PLANO DE R$ 720,00 EM 3 PARCELAS
+  */
+  addDue({
+    studentId: alunos.lurdes.id,
+    month: nov,
+    amount: 240,
+    dueDate: '2026-11-10',
+    label: 'Plano trimestral — parcela 1/3'
+  });
+
+  addDue({
+    studentId: alunos.lurdes.id,
+    month: dez,
+    amount: 240,
+    dueDate: '2026-12-10',
+    label: 'Plano trimestral — parcela 2/3'
+  });
+
+  addDue({
+    studentId: alunos.lurdes.id,
+    month: jan,
+    amount: 240,
+    dueDate: '2027-01-10',
+    label: 'Plano trimestral — parcela 3/3'
+  });
+
+  /*
+    REJANE — R$ 400,00 JÁ RECEBIDOS E R$ 160,00 PENDENTES
+  */
+  addDue({
+    studentId: alunos.rejane.id,
+    month: nov,
+    amount: 160,
+    dueDate: '2026-11-10',
+    label: 'Complemento da mensalidade — faltam R$ 160,00'
+  });
+
+  /*
+    TRANSAÇÕES DAS MENSALIDADES JÁ PAGAS
+  */
+  addPaymentTransaction({
+    studentId: alunos.naura.id,
+    amount: 420,
+    description: 'Mensalidade — Naura',
+    linkedDue: nauraDue.id
+  });
+
+  addPaymentTransaction({
+    studentId: alunos.leo.id,
+    amount: 360,
+    description: 'Mensalidade — Léo',
+    linkedDue: leoDue.id
+  });
+
+  addPaymentTransaction({
+    studentId: alunos.kaun.id,
+    amount: 360,
+    description: 'Mensalidade — kaun',
+    linkedDue: kaunDue.id
+  });
+
+  addPaymentTransaction({
+    studentId: alunos.andria.id,
+    amount: 360,
+    description: 'Mensalidade — Andria',
+    linkedDue: andriaDue.id
+  });
+
+  addPaymentTransaction({
+    studentId: alunos.eliza.id,
+    amount: 240,
+    description: 'Pagamento parcial — Eliza',
+    notes:
+      'Valor recebido em novembro. Cobrança final será ajustada no fim do mês conforme as aulas realizadas e descontos.'
+  });
+
+  addPaymentTransaction({
+    studentId: alunos.rejane.id,
+    amount: 400,
+    description: 'Pagamento parcial — Rejane',
+    notes:
+      'Parte da mensalidade de R$ 560,00 paga pelo marido. Restam R$ 160,00 pendentes.'
+  });
+
+  save();
+
+  alert(
+    'Importação concluída com sucesso.\\n\\n' +
+    'Foram cadastrados os alunos, horários recorrentes e cobranças informadas.\\n\\n' +
+    'Confira em Alunos, Agenda e Financeiro profissional.'
+  );
+}
+
+/* ============================================================
+   PROTEÇÃO PARA COBRANÇAS ESPECIAIS
+   Marcelo, Eliza e Lurdes não recebem mensalidade automática.
+============================================================ */
+
+function generateDues() {
+  const currentMonth = monthKey(proMonthDate);
+  let created = 0;
+  let consultancyCreated = 0;
+
+  data.students
+    .filter(student => student.status === 'Ativo')
+    .forEach(student => {
+      if (student.skipAutoDues) return;
+
+      const isConsultancy =
+        student.modality === 'Consultoria online';
+
+      if (isConsultancy) {
+        const total = Number(student.consultancyTotal || 0);
+
+        if (total <= 0 || !student.consultancyCycleId) return;
+
+        const alreadyGenerated = data.dues.some(due =>
+          due.studentId === student.id &&
+          due.consultancyCycleId === student.consultancyCycleId
+        );
+
+        if (alreadyGenerated) return;
+
+        const installments =
+          student.consultancyBilling === 'Parcelado mensalmente'
+            ? Math.max(1, Number(student.consultancyInstallments || 1))
+            : 1;
+
+        const installmentValue = Number(
+          (total / installments).toFixed(2)
+        );
+
+        const start = new Date(
+          `${student.startDate || iso(new Date())}T12:00:00`
+        );
+
+        const dueDay = Math.min(
+          28,
+          Math.max(1, Number(student.dueDay || 10))
+        );
+
+        for (let index = 0; index < installments; index++) {
+          const dueDate = new Date(
+            start.getFullYear(),
+            start.getMonth() + index,
+            dueDay,
+            12,
+            0,
+            0
+          );
+
+          const isLastInstallment =
+            index === installments - 1;
+
+          const amount = isLastInstallment
+            ? Number(
+                (
+                  total -
+                  installmentValue * (installments - 1)
+                ).toFixed(2)
+              )
+            : installmentValue;
+
+          const label = installments === 1
+            ? `Consultoria ${String(student.consultancyPlan || '').toLowerCase()} — à vista`
+            : `Consultoria ${String(student.consultancyPlan || '').toLowerCase()} — parcela ${index + 1}/${installments}`;
+
+          data.dues.push({
+            id: uid(),
+            studentId: student.id,
+            month: monthKey(dueDate),
+            amount,
+            dueDate: iso(dueDate),
+            status: 'Pendente',
+            label,
+            consultancyCycleId: student.consultancyCycleId
+          });
+
+          created++;
+          consultancyCreated++;
+        }
+
+        return;
+      }
+
+      if (Number(student.price || 0) <= 0) return;
+
+      const exists = data.dues.some(due =>
+        due.studentId === student.id &&
+        due.month === currentMonth &&
+        !due.consultancyCycleId
+      );
+
+      if (exists) return;
+
+      const day = String(student.dueDay || 10).padStart(2, '0');
+
+      data.dues.push({
+        id: uid(),
+        studentId: student.id,
+        month: currentMonth,
+        amount: Number(student.price),
+        dueDate: `${currentMonth}-${day}`,
+        status: 'Pendente'
+      });
+
+      created++;
+    });
+
+  save();
+
+  if (!created) {
+    alert('Não havia novas cobranças para gerar.');
+    return;
+  }
+
+  let message = `${created} cobrança(s) criada(s).`;
+
+  if (consultancyCreated) {
+    message +=
+      `\\n\\nConsultoria: ${consultancyCreated} cobrança(s) do plano foram geradas.`;
+  }
+
+  alert(message);
+}
+
+/* ============================================================
+   BOTÃO TEMPORÁRIO DE IMPORTAÇÃO
+============================================================ */
+
+(function addImportButton() {
+  const target = document.getElementById('syncMasterBtn');
+
+  if (!target || document.getElementById('importStudentsButton')) return;
+
+  const button = document.createElement('button');
+
+  button.id = 'importStudentsButton';
+  button.className = 'btn secondary';
+  button.type = 'button';
+  button.textContent = '⇩ Importar lista de alunos';
+
+  button.onclick = importacaoListaAlunosNovembro2026;
+
+  target.parentElement.insertBefore(button, target);
+})();
+</script>
+
 </body>
 </html>
