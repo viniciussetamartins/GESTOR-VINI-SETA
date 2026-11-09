@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#171717">
-<title>Método Vini Seta — Gestor</title>
+<title>Gestor Vini Seta</title>
 
 <style>
 :root{
@@ -57,10 +57,18 @@ button{cursor:pointer}
   height:45px;
   border-radius:12px;
   background:var(--red);
-  display:grid;
-  place-items:center;
-  font-weight:900;
-  letter-spacing:-1px;
+  overflow:hidden;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.logo img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
 .brand h1{
@@ -455,11 +463,18 @@ textarea{
   height:54px;
   border-radius:14px;
   background:var(--red);
-  display:grid;
-  place-items:center;
-  font-weight:900;
-  font-size:19px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   margin:0 auto 14px;
+}
+
+.authcard .logo img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
 .authcard h2{
@@ -559,7 +574,9 @@ textarea{
 
 <div id="screen-login" class="screen">
   <div class="authcard">
-    <div class="logo">VS</div>
+    <div class="logo">
+  <img src="./logo-vini-seta.jpeg" alt="Logo Vini Seta">
+</div>
 
     <h2>Método Vini Seta</h2>
     <p class="sub2">Acesso restrito ao administrador</p>
@@ -590,9 +607,11 @@ textarea{
 
     <header class="top">
       <div class="brand">
-        <div class="logo">VS</div>
+        <div class="logo">
+  <img src="./logo-vini-seta.jpeg" alt="Logo Vini Seta">
+</div>
         <div>
-          <h1>MÉTODO VINI SETA</h1>
+          <h1>GESTOR VINI SETA</h1>
           <p>Gestor pessoal e profissional</p>
         </div>
       </div>
