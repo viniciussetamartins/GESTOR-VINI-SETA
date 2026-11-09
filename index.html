@@ -4662,5 +4662,455 @@ function renderPro() {
 }
 </script>
 
+<script>
+/* ============================================================
+   REMARCAÇÃO DE AULAS RECORRENTES
+   Move somente uma aula específica sem alterar a rotina fixa.
+============================================================ */
+
+function ensureRoutineExceptions() {
+  if (!Array.isArray(data.routineExceptions)) {
+    data.routineExceptions = [];
+  }
+
+  return data.routineExceptions;
+}
+
+function routineExceptionFor(studentId, originalDate, originalTime) {
+  return ensureRoutineExceptions().find(exception =>
+    exception.studentId === studentId &&
+    exception.originalDate === originalDate &&
+    exception.originalTime === originalTime
+  );
+}
+
+/*
+  Substitui a montagem da agenda para:
+  - esconder a aula automática original quando ela foi remarcada;
+  - mostrar a aula manual criada na nova data.
+*/
+function appointmentsForDate(dateString) {
+  const manual = data.appointments.filter(
+    appointment => appointment.date === dateString
+  );
+
+  const exceptions = ensureRoutineExceptions();
+
+  const recurring = recurringAppointmentsForDate(dateString).filter(routine =>
+    !exceptions.some(exception =>
+      exception.studentId === routine.studentId &&
+      exception.originalDate === dateString &&
+      exception.originalTime === routine.time
+    ) &&
+    !manual.some(appointment =>
+      appointment.studentId === routine.studentId &&
+      appointment.time === routine.time &&
+      appointment.status !== 'Cancelado'
+    )
+  );
+
+  return [...manual, ...recurring]
+    .sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+}
+
+/*
+  Abre o formulário para mover somente a aula selecionada.
+*/
+function openRoutineReschedule(studentId, originalDate, originalTime) {
+  const student = data.students.find(item => item.id === studentId);
+
+  if (!student) {
+    alert('Aluno não encontrado.');
+    return;
+  }
+
+  const existing = routineExceptionFor(
+    studentId,
+    originalDate,
+    originalTime
+  );
+
+  if (existing) {
+    alert('Essa aula já foi remarcada.');
+    return;
+  }
+
+  const modal = document.getElementById('modal');
+  const body = document.getElementById('modalBody');
+
+  modal.classList.add('open');
+  modal.dataset.type = 'routine-reschedule';
+
+  document.getElementById('modalTitle').textContent = 'Remarcar aula';
+
+  body.innerHTML = `
+    <form id="recordForm">
+      <div class="notice" style="margin-top:0">
+        Você está remarcando somente esta aula. A rotina fixa do aluno
+        continuará normal nos outros dias e nas próximas semanas.
+      </div>
+
+      <div class="formgrid" style="margin-top:14px">
+        <div class="field full">
+          <label>Aluno</label>
+          <input value="${esc(student.name)}" disabled>
+        </div>
+
+        <div class="field">
+          <label>Data original</label>
+          <input value="${fmtDate(originalDate)}" disabled>
+        </div>
+
+        <div class="field">
+          <label>Horário original</label>
+          <input value="${esc(originalTime)}" disabled>
+        </div>
+
+        <div class="field">
+          <label>Nova data *</label>
+          <input
+            name="newDate"
+            type="date"
+            required
+            value="${originalDate}"
+          >
+        </div>
+
+        <div class="field">
+          <label>Novo horário *</label>
+          <input
+            name="newTime"
+            type="time"
+            required
+            value="${esc(originalTime)}"
+          >
+        </div>
+
+        <div class="field full">
+          <label>Observação</label>
+          <textarea name="notes" placeholder="Ex.: Aula remarcada a pedido da aluna."></textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn secondary"
+          onclick="closeModal()"
+        >
+          Cancelar
+        </button>
+
+        <button class="btn">
+          Confirmar remarcação
+        </button>
+      </div>
+    </form>
+  `;
+
+  document.getElementById('recordForm').onsubmit = event => {
+    event.preventDefault();
+
+    const form = Object.fromEntries(new FormData(event.target));
+    const newDate = form.newDate;
+    const newTime = form.newTime;
+
+    if (!newDate || !newTime) {
+      alert('Informe a nova data e o novo horário.');
+      return;
+    }
+
+    const rescheduleId = uid();
+
+    ensureRoutineExceptions().push({
+      id: rescheduleId,
+      studentId,
+      originalDate,
+      originalTime,
+      newDate,
+      newTime,
+      createdAt: new Date().toISOString()
+    });
+
+    data.appointments.push({
+      id: uid(),
+      title: `Treino — ${student.name}`,
+      studentId,
+      type: 'Treino presencial',
+      date: newDate,
+      time: newTime,
+      duration: 60,
+      status: 'Agendado',
+      notes:
+        `Aula remarcada de ${fmtDate(originalDate)} às ${originalTime}.` +
+        (form.notes ? ` ${form.notes}` : ''),
+      routineRescheduleId: rescheduleId,
+      originalRoutineDate: originalDate,
+      originalRoutineTime: originalTime,
+      createdAt: new Date().toISOString()
+    });
+
+    save();
+    closeModal();
+
+    alert(
+      `Aula de ${student.name} remarcada para ${fmtDate(newDate)} às ${newTime}.`
+    );
+  };
+}
+
+/*
+  Apaga a aula criada na nova data e restaura a aula automática original.
+*/
+function undoRoutineReschedule(rescheduleId) {
+  const exception = ensureRoutineExceptions().find(
+    item => item.id === rescheduleId
+  );
+
+  if (!exception) {
+    alert('Remarcação não encontrada.');
+    return;
+  }
+
+  const student = data.students.find(
+    item => item.id === exception.studentId
+  );
+
+  const confirmUndo = confirm(
+    `Desfazer a remarcação de ${student?.name || 'este aluno'}?\n\n` +
+    `A aula voltará para ${fmtDate(exception.originalDate)} às ${exception.originalTime}.`
+  );
+
+  if (!confirmUndo) return;
+
+  data.routineExceptions = ensureRoutineExceptions().filter(
+    item => item.id !== rescheduleId
+  );
+
+  data.appointments = data.appointments.filter(
+    appointment => appointment.routineRescheduleId !== rescheduleId
+  );
+
+  save();
+}
+
+/* ============================================================
+   VISÃO GERAL — botões de remarcar e desfazer
+============================================================ */
+
+function renderDashboard() {
+  const today = iso(new Date());
+
+  document.getElementById('dashStudents').textContent =
+    data.students.filter(student => student.status === 'Ativo').length;
+
+  const todayAppointments = appointmentsForDate(today).filter(
+    appointment => appointment.status !== 'Cancelado'
+  );
+
+  document.getElementById('dashToday').textContent =
+    todayAppointments.length;
+
+  const month = monthKey(today);
+
+  const pending = data.dues
+    .filter(due => due.month === month && due.status !== 'Pago')
+    .reduce((sum, due) => sum + Number(due.amount || 0), 0);
+
+  document.getElementById('dashPending').textContent = money(pending);
+
+  document.getElementById('todayList').innerHTML =
+    todayAppointments.length
+      ? todayAppointments.map(appointment => `
+        <div class="item">
+          <div>
+            <strong>
+              ${esc(appointment.time || '--:--')} ·
+              ${esc(appointment.title)}
+            </strong>
+
+            <div class="sub">
+              ${esc(appointment.type)} ·
+              ${
+                appointment.recurring
+                  ? 'Rotina fixa'
+                  : appointment.routineRescheduleId
+                    ? 'Aula remarcada'
+                    : esc(appointment.status)
+              }
+            </div>
+          </div>
+
+          <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end">
+            ${
+              appointment.recurring
+                ? `
+                  <button
+                    class="btn small"
+                    onclick="openRoutineReschedule(
+                      '${appointment.studentId}',
+                      '${appointment.date}',
+                      '${appointment.time}'
+                    )"
+                  >
+                    Remarcar
+                  </button>
+                `
+                : appointment.routineRescheduleId
+                  ? `
+                    <button
+                      class="btn secondary small"
+                      onclick="undoRoutineReschedule('${appointment.routineRescheduleId}')"
+                    >
+                      Desfazer
+                    </button>
+                  `
+                  : `
+                    <button
+                      class="btn secondary small"
+                      onclick="openModal('appointment','','${appointment.id}')"
+                    >
+                      Editar
+                    </button>
+                  `
+            }
+          </div>
+        </div>
+      `).join('')
+      : `<div class="empty">Nenhum atendimento agendado para hoje.</div>`;
+
+  const dues = data.dues
+    .filter(due => due.month === month && due.status !== 'Pago')
+    .slice(0, 5);
+
+  document.getElementById('pendingList').innerHTML = dues.length
+    ? dues.map(due => `
+      <div class="item">
+        <div>
+          <strong>${esc(studentName(due.studentId))}</strong>
+          <div class="sub">Vence ${fmtDate(due.dueDate)}</div>
+        </div>
+
+        <div style="text-align:right">
+          <b style="display:block;margin-bottom:7px">${money(due.amount)}</b>
+
+          <button class="btn small" onclick="markDue('${due.id}')">
+            Recebido
+          </button>
+        </div>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
+}
+
+/* ============================================================
+   AGENDA — botões de remarcar e desfazer
+============================================================ */
+
+function renderAgenda() {
+  const date =
+    document.getElementById('agendaDate').value || iso(new Date());
+
+  const filter = document.getElementById('agendaFilter').value;
+
+  const appointments = appointmentsForDate(date)
+    .filter(appointment =>
+      filter === 'all' || appointment.type === filter
+    );
+
+  document.getElementById('agendaList').innerHTML =
+    appointments.length
+      ? appointments.map(appointment => `
+        <div class="item">
+          <div>
+            <strong>
+              ${esc(appointment.time || '--:--')} ·
+              ${esc(appointment.title)}
+            </strong>
+
+            <div class="sub">
+              ${esc(appointment.type)} ·
+              ${appointment.duration || 60} min
+              ${
+                appointment.studentId
+                  ? '· ' + esc(studentName(appointment.studentId))
+                  : ''
+              }
+            </div>
+
+            ${
+              appointment.notes
+                ? `<div class="sub">${esc(appointment.notes)}</div>`
+                : ''
+            }
+
+            <span class="tag ${
+              appointment.recurring
+                ? 'ok'
+                : appointment.routineRescheduleId
+                  ? 'ok'
+                  : appointment.status === 'Concluído'
+                    ? 'ok'
+                    : appointment.status === 'Cancelado'
+                      ? 'red'
+                      : 'warn'
+            }">
+              ${
+                appointment.recurring
+                  ? 'Rotina fixa'
+                  : appointment.routineRescheduleId
+                    ? 'Remarcada'
+                    : esc(appointment.status)
+              }
+            </span>
+          </div>
+
+          <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end">
+            ${
+              appointment.recurring
+                ? `
+                  <button
+                    class="btn small"
+                    onclick="openRoutineReschedule(
+                      '${appointment.studentId}',
+                      '${appointment.date}',
+                      '${appointment.time}'
+                    )"
+                  >
+                    Remarcar
+                  </button>
+                `
+                : appointment.routineRescheduleId
+                  ? `
+                    <button
+                      class="btn secondary small"
+                      onclick="undoRoutineReschedule('${appointment.routineRescheduleId}')"
+                    >
+                      Desfazer
+                    </button>
+
+                    <button
+                      class="btn secondary small"
+                      onclick="openModal('appointment','','${appointment.id}')"
+                    >
+                      Editar
+                    </button>
+                  `
+                  : `
+                    <button
+                      class="btn secondary small"
+                      onclick="openModal('appointment','','${appointment.id}')"
+                    >
+                      Editar
+                    </button>
+                  `
+            }
+          </div>
+        </div>
+      `).join('')
+      : `<div class="empty">Nada encontrado nessa data.</div>`;
+}
+</script>
+
 </body>
 </html>
