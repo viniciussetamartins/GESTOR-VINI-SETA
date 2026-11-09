@@ -1319,6 +1319,22 @@ document.getElementById('modal').addEventListener('click', e => {
    MODAIS
 ============================================================ */
 
+function toggleConsultancyFields() {
+  const modality = document.querySelector('#recordForm [name="modality"]')?.value;
+  const isOnline = modality === 'Consultoria online';
+
+  const monthlyFee = document.getElementById('monthlyFeeField');
+  const consultancyFields = document.getElementById('consultancyFields');
+
+  if (monthlyFee) {
+    monthlyFee.style.display = isOnline ? 'none' : '';
+  }
+
+  if (consultancyFields) {
+    consultancyFields.style.display = isOnline ? '' : 'none';
+  }
+}
+
 function openModal(type, scope = '', id = '') {
   const modal = document.getElementById('modal');
   const body = document.getElementById('modalBody');
@@ -1355,7 +1371,7 @@ function openModal(type, scope = '', id = '') {
 
           <div class="field">
             <label>Modalidade</label>
-            <select name="modality">
+            <select name="modality" onchange="toggleConsultancyFields()">
               ${opts(['Presencial','Consultoria online','Híbrido','Aula avulsa'], s.modality || 'Presencial')}
             </select>
           </div>
@@ -1367,9 +1383,54 @@ function openModal(type, scope = '', id = '') {
             </select>
           </div>
 
-          <div class="field">
+          <div class="field" id="monthlyFeeField">
             <label>Mensalidade (R$)</label>
             <input name="price" type="number" min="0" step=".01" value="${s.price ?? ''}">
+          </div>
+
+          <div class="field full" id="consultancyFields" style="display:none">
+            <div class="formgrid" style="width:100%">
+              <div class="field">
+                <label>Plano de consultoria</label>
+                <select name="consultancyPlan">
+                  ${opts(['Trimestral','Semestral'], s.consultancyPlan || 'Trimestral')}
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Valor total do plano (R$)</label>
+                <input
+                  name="consultancyTotal"
+                  type="number"
+                  min="0"
+                  step=".01"
+                  value="${s.consultancyTotal ?? ''}"
+                  placeholder="Ex.: 750"
+                >
+              </div>
+
+              <div class="field">
+                <label>Forma de cobrança</label>
+                <select name="consultancyBilling">
+                  ${opts(
+                    ['À vista por plano','Parcelado mensalmente'],
+                    s.consultancyBilling || 'À vista por plano'
+                  )}
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Quantidade de parcelas</label>
+                <select name="consultancyInstallments">
+                  ${opts(['1','2','3','4','5','6'], s.consultancyInstallments || '1')}
+                </select>
+              </div>
+            </div>
+
+            <div class="notice" style="margin-top:12px">
+              O plano não será renovado automaticamente ao terminar.
+              Para renovar, edite o aluno, informe o novo plano ou valor e gere as novas cobranças.
+            </div>
           </div>
 
           <div class="field">
@@ -1418,7 +1479,42 @@ function openModal(type, scope = '', id = '') {
       let f = Object.fromEntries(new FormData(e.target));
 
       f.price = Number(f.price || 0);
-      f.frequency = Number(f.frequency);
+      f.frequency = Number(f.frequency || 0);
+
+      const isConsultancy = f.modality === 'Consultoria online';
+
+      if (isConsultancy) {
+        f.consultancyTotal = Number(f.consultancyTotal || 0);
+        f.consultancyInstallments =
+          f.consultancyBilling === 'Parcelado mensalmente'
+            ? Number(f.consultancyInstallments || 1)
+            : 1;
+
+        if (f.consultancyTotal <= 0) {
+          alert('Informe o valor total do plano de consultoria.');
+          return;
+        }
+
+        const planWasChanged =
+          !id ||
+          s.modality !== 'Consultoria online' ||
+          s.consultancyPlan !== f.consultancyPlan ||
+          Number(s.consultancyTotal || 0) !== f.consultancyTotal ||
+          s.consultancyBilling !== f.consultancyBilling ||
+          Number(s.consultancyInstallments || 1) !== f.consultancyInstallments ||
+          s.startDate !== f.startDate;
+
+        f.consultancyCycleId = planWasChanged
+          ? uid()
+          : (s.consultancyCycleId || uid());
+
+      } else {
+        f.consultancyTotal = 0;
+        f.consultancyInstallments = 1;
+        f.consultancyPlan = '';
+        f.consultancyBilling = '';
+        f.consultancyCycleId = '';
+      }
 
       if (id) {
         Object.assign(s, f);
@@ -1426,7 +1522,7 @@ function openModal(type, scope = '', id = '') {
         data.students.push({
           id:uid(),
           ...f,
-          createdAt:iso(now)
+          createdAt:iso(new Date())
         });
       }
 
@@ -1599,6 +1695,8 @@ function openModal(type, scope = '', id = '') {
       </form>
     `;
 
+    toggleConsultancyFields();
+
     document.getElementById('recordForm').onsubmit = e => {
       e.preventDefault();
 
@@ -1755,7 +1853,17 @@ function renderStudents() {
           </div>
 
           <div class="sub">
-            ${money(s.price)} por mês · vence dia ${s.dueDay || 10}
+            ${
+              s.modality === 'Consultoria online'
+                ? `${esc(s.consultancyPlan || 'Plano não informado')} · ${money(s.consultancyTotal)} · ${
+                    s.consultancyBilling === 'Parcelado mensalmente'
+                      ? `${s.consultancyInstallments || 1}x de ${money(
+                          Number(s.consultancyTotal || 0) / Number(s.consultancyInstallments || 1)
+                        )}`
+                      : 'À vista'
+                  }`
+                : `${money(s.price)} por mês · vence dia ${s.dueDay || 10}`
+            }
           </div>
 
           <span class="tag ${s.status === 'Ativo' ? 'ok' : 'warn'}">
@@ -1772,14 +1880,90 @@ function renderStudents() {
 }
 
 function generateDues() {
-  const m = monthKey(iso(proMonthDate));
+  const currentMonth = monthKey(proMonthDate);
   let created = 0;
+  let consultancyCreated = 0;
 
   data.students
-    .filter(s => s.status === 'Ativo' && Number(s.price) > 0)
+    .filter(s => s.status === 'Ativo')
     .forEach(s => {
+      const isConsultancy = s.modality === 'Consultoria online';
+
+      /*
+        CONSULTORIA ONLINE:
+        gera uma cobrança única à vista ou todas as parcelas mensais.
+        Não gera renovação automática após o fim do plano.
+      */
+      if (isConsultancy) {
+        const total = Number(s.consultancyTotal || 0);
+
+        if (total <= 0 || !s.consultancyCycleId) return;
+
+        const alreadyGenerated = data.dues.some(d =>
+          d.studentId === s.id &&
+          d.consultancyCycleId === s.consultancyCycleId
+        );
+
+        if (alreadyGenerated) return;
+
+        const installments =
+          s.consultancyBilling === 'Parcelado mensalmente'
+            ? Math.max(1, Number(s.consultancyInstallments || 1))
+            : 1;
+
+        const installmentValue = Number((total / installments).toFixed(2));
+        const start = new Date(`${s.startDate || iso(new Date())}T12:00:00`);
+        const dueDay = Math.min(28, Math.max(1, Number(s.dueDay || 10)));
+
+        for (let index = 0; index < installments; index++) {
+          const dueDate = new Date(
+            start.getFullYear(),
+            start.getMonth() + index,
+            dueDay,
+            12,
+            0,
+            0
+          );
+
+          const isLastInstallment = index === installments - 1;
+
+          const amount = isLastInstallment
+            ? Number((total - installmentValue * (installments - 1)).toFixed(2))
+            : installmentValue;
+
+          const label =
+            installments === 1
+              ? `Consultoria ${String(s.consultancyPlan || '').toLowerCase()} — à vista`
+              : `Consultoria ${String(s.consultancyPlan || '').toLowerCase()} — parcela ${index + 1}/${installments}`;
+
+          data.dues.push({
+            id:uid(),
+            studentId:s.id,
+            month:monthKey(dueDate),
+            amount,
+            dueDate:iso(dueDate),
+            status:'Pendente',
+            label,
+            consultancyCycleId:s.consultancyCycleId
+          });
+
+          created++;
+          consultancyCreated++;
+        }
+
+        return;
+      }
+
+      /*
+        ALUNOS PRESENCIAIS, HÍBRIDOS E AULA AVULSA:
+        continua gerando mensalidade normal, como já funcionava.
+      */
+      if (Number(s.price) <= 0) return;
+
       const exists = data.dues.some(d =>
-        d.studentId === s.id && d.month === m
+        d.studentId === s.id &&
+        d.month === currentMonth &&
+        !d.consultancyCycleId
       );
 
       if (!exists) {
@@ -1788,9 +1972,9 @@ function generateDues() {
         data.dues.push({
           id:uid(),
           studentId:s.id,
-          month:m,
+          month:currentMonth,
           amount:Number(s.price),
-          dueDate:`${m}-${day}`,
+          dueDate:`${currentMonth}-${day}`,
           status:'Pendente'
         });
 
@@ -1800,11 +1984,18 @@ function generateDues() {
 
   save();
 
-  alert(
-    created
-      ? `${created} cobrança(s) criada(s).`
-      : 'Não havia novas cobranças para criar neste mês.'
-  );
+  if (!created) {
+    alert('Não havia novas cobranças para gerar.');
+    return;
+  }
+
+  let message = `${created} cobrança(s) criada(s).`;
+
+  if (consultancyCreated) {
+    message += `\n\nConsultoria: ${consultancyCreated} cobrança(s) do plano foram geradas.`;
+  }
+
+  alert(message);
 }
 
 function markDue(id) {
@@ -1868,6 +2059,7 @@ function renderPro() {
           <strong>${esc(studentName(d.studentId))}</strong>
           <div class="sub">
             Vencimento ${fmtDate(d.dueDate)} · ${money(d.amount)}
+            ${d.label ? `· ${esc(d.label)}` : ''}
           </div>
 
           <span class="tag ${d.status === 'Pago' ? 'ok' : 'warn'}">
