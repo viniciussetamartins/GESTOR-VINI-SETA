@@ -658,7 +658,14 @@ textarea{
             <div class="redline"></div>
             <div class="label">Atendimentos hoje</div>
             <div class="value" id="dashToday">0</div>
-            <div class="hint">na agenda</div>
+            <div class="hint">previstos para hoje</div>
+          </div>
+
+          <div class="card">
+            <div class="redline"></div>
+            <div class="label">Atendimentos concluídos</div>
+            <div class="value" id="dashCompleted">0</div>
+            <div class="hint">realizados hoje</div>
           </div>
 
           <div class="card">
@@ -674,8 +681,8 @@ textarea{
           <div class="box">
             <div class="section-head" style="margin-top:0">
               <div>
-                <h2 style="font-size:17px">Agenda de hoje</h2>
-                <p>Seus próximos atendimentos</p>
+                <h2 style="font-size:17px">Atendimentos do dia</h2>
+                <p>Acompanhe os atendimentos de hoje</p>
               </div>
 
               <button class="btn secondary small" onclick="showView('agenda')">
@@ -3207,8 +3214,23 @@ function renderDashboard() {
     appointment => appointment.status !== 'Cancelado'
   );
 
+  const completedRoutineToday = ensureRoutineExceptions().filter(
+    exception =>
+      exception.originalDate === today &&
+      exception.action === 'completed'
+  ).length;
+
+  const completedManualToday = data.appointments.filter(
+    appointment =>
+      appointment.date === today &&
+      appointment.status === 'Concluído'
+  ).length;
+
   document.getElementById('dashToday').textContent =
-    todayAppointments.length;
+    todayAppointments.length + completedRoutineToday + completedManualToday;
+
+  document.getElementById('dashCompleted').textContent =
+    completedRoutineToday + completedManualToday;
 
   const m = monthKey(today);
 
@@ -5322,7 +5344,7 @@ function renderDashboard() {
           </div>
         </div>
       `).join('')
-      : `<div class="empty">Nenhuma aula pendente para hoje.</div>`;
+      : `<div class="empty">Você concluiu todos os atendimentos do dia.</div>`;
 
   const dues = data.dues
     .filter(due => due.month === month && due.status !== 'Pago')
