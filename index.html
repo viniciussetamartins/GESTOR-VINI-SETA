@@ -1054,7 +1054,13 @@ const iso = d => {
   return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
 };
 
-const monthKey = d => String(d).slice(0, 7);
+const monthKey = d => {
+  if (d instanceof Date) {
+    return iso(d).slice(0, 7);
+  }
+
+  return String(d).slice(0, 7);
+};
 
 const money = n =>
   Number(n || 0).toLocaleString('pt-BR', {
