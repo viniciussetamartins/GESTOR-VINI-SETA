@@ -1082,7 +1082,8 @@ function blank() {
     students: [],
     appointments: [],
     dues: [],
-    transactions: []
+    transactions: [],
+    fixedTransactions: []
   };
 }
 
@@ -1305,6 +1306,48 @@ function showView(name) {
   if (name === 'relatorios') renderReports();
 
   window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function toggleTransactionTypeFields() {
+  const type =
+    document.querySelector('#recordForm [name="transactionType"]')?.value ||
+    'Único';
+
+  const fixedFields = document.getElementById('fixedTransactionFields');
+  const installmentFields = document.getElementById('installmentTransactionFields');
+  const amountLabel = document.getElementById('amountLabel');
+
+  if (fixedFields) {
+    fixedFields.style.display =
+      type === 'Fixo mensal' ? '' : 'none';
+  }
+
+  if (installmentFields) {
+    installmentFields.style.display =
+      type === 'Parcelado' ? '' : 'none';
+  }
+
+  if (amountLabel) {
+    amountLabel.textContent =
+      type === 'Parcelado'
+        ? 'Valor total da compra (R$) *'
+        : type === 'Fixo mensal'
+          ? 'Valor mensal (R$) *'
+          : 'Valor (R$) *';
+  }
+}
+
+function toggleFixedEndDate() {
+  const endMode =
+    document.querySelector('#recordForm [name="fixedEndMode"]')?.value ||
+    'never';
+
+  const endDateField = document.getElementById('fixedEndDateField');
+
+  if (endDateField) {
+    endDateField.style.display =
+      endMode === 'date' ? '' : 'none';
+  }
 }
 
 function closeModal() {
@@ -1682,13 +1725,68 @@ function openModal(type, scope = '', id = '') {
           </div>
 
           <div class="field">
-            <label>Valor (R$) *</label>
+            <label>Tipo de lançamento</label>
+            <select name="transactionType" onchange="toggleTransactionTypeFields()">
+              <option value="Único">Parcela única / lançamento único</option>
+              <option value="Fixo mensal">Conta fixa mensal</option>
+              <option value="Parcelado">Compra parcelada</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label id="amountLabel">Valor (R$) *</label>
             <input name="amount" required type="number" min=".01" step=".01">
           </div>
 
           <div class="field">
-            <label>Data</label>
+            <label>Data / primeiro vencimento</label>
             <input name="date" type="date" value="${iso(now)}">
+          </div>
+
+          <div class="field full" id="fixedTransactionFields" style="display:none">
+            <div class="formgrid" style="width:100%">
+              <div class="field">
+                <label>Prazo da conta fixa</label>
+                <select name="fixedEndMode" onchange="toggleFixedEndDate()">
+                  <option value="never">Não tem data para terminar</option>
+                  <option value="date">Tem data para terminar</option>
+                </select>
+              </div>
+
+              <div class="field" id="fixedEndDateField" style="display:none">
+                <label>Último vencimento</label>
+                <input name="fixedEndDate" type="date">
+              </div>
+            </div>
+
+            <div class="notice" style="margin-top:12px">
+              A conta aparecerá automaticamente em cada mês, até ser encerrada
+              ou até a data final informada.
+            </div>
+          </div>
+
+          <div class="field full" id="installmentTransactionFields" style="display:none">
+            <div class="formgrid" style="width:100%">
+              <div class="field">
+                <label>Quantidade de parcelas</label>
+                <select name="installments">
+                  ${opts(
+                    ['2','3','4','5','6','7','8','9','10','11','12','18','24','36','48','60'],
+                    '2'
+                  )}
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Primeiro vencimento</label>
+                <input name="firstDueDate" type="date" value="${iso(now)}">
+              </div>
+            </div>
+
+            <div class="notice" style="margin-top:12px">
+              Informe o valor total da compra. O Gestor calculará o valor de
+              cada parcela automaticamente.
+            </div>
           </div>
 
           <div class="field">
@@ -1717,13 +1815,126 @@ function openModal(type, scope = '', id = '') {
     document.getElementById('recordForm').onsubmit = e => {
       e.preventDefault();
 
-      let f = Object.fromEntries(new FormData(e.target));
-      f.amount = Number(f.amount);
+      const f = Object.fromEntries(new FormData(e.target));
+      const type = f.transactionType || 'Único';
+      const amount = Number(f.amount || 0);
 
-      data.transactions.push({
-        id:uid(),
-        ...f
-      });
+      if (amount <= 0) {
+        alert('Informe um valor maior que zero.');
+        return;
+      }
+
+      /*
+        PARCELA ÚNICA / LANÇAMENTO ÚNICO
+      */
+      if (type === 'Único') {
+        data.transactions.push({
+          id: uid(),
+          scope: f.scope,
+          kind: f.kind,
+          description: f.description,
+          category: f.category,
+          amount,
+          date: f.date,
+          status: f.status,
+          notes: f.notes || '',
+          transactionType: 'Único',
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      /*
+        CONTA FIXA MENSAL
+        Salva somente a regra. Os lançamentos mensais automáticos
+        serão mostrados na próxima etapa.
+      */
+      if (type === 'Fixo mensal') {
+        const endDate =
+          f.fixedEndMode === 'date'
+            ? f.fixedEndDate
+            : '';
+
+        if (f.fixedEndMode === 'date' && !endDate) {
+          alert('Informe a data do último vencimento.');
+          return;
+        }
+
+        if (endDate && endDate < f.date) {
+          alert(
+            'O último vencimento não pode ser anterior ao primeiro vencimento.'
+          );
+          return;
+        }
+
+        if (!Array.isArray(data.fixedTransactions)) {
+          data.fixedTransactions = [];
+        }
+
+        data.fixedTransactions.push({
+          id: uid(),
+          scope: f.scope,
+          kind: f.kind,
+          description: f.description,
+          category: f.category,
+          amount,
+          startDate: f.date,
+          endDate,
+          notes: f.notes || '',
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      /*
+        COMPRA PARCELADA
+        O campo de valor representa o TOTAL da compra.
+      */
+      if (type === 'Parcelado') {
+        const installments = Math.max(2, Number(f.installments || 2));
+        const firstDueDate = f.firstDueDate || f.date;
+        const firstDate = new Date(`${firstDueDate}T12:00:00`);
+
+        if (Number.isNaN(firstDate.getTime())) {
+          alert('Informe a data do primeiro vencimento.');
+          return;
+        }
+
+        const totalCents = Math.round(amount * 100);
+        const baseCents = Math.floor(totalCents / installments);
+        const purchaseId = uid();
+
+        for (let index = 0; index < installments; index++) {
+          const dueDate = new Date(
+            firstDate.getFullYear(),
+            firstDate.getMonth() + index,
+            firstDate.getDate(),
+            12,
+            0,
+            0
+          );
+
+          const installmentCents =
+            index === installments - 1
+              ? totalCents - baseCents * (installments - 1)
+              : baseCents;
+
+          data.transactions.push({
+            id: uid(),
+            scope: f.scope,
+            kind: f.kind,
+            description: `${f.description} — parcela ${index + 1}/${installments}`,
+            category: f.category,
+            amount: installmentCents / 100,
+            date: iso(dueDate),
+            status: index === 0 ? f.status : 'Pendente',
+            notes: f.notes || '',
+            transactionType: 'Parcelado',
+            installmentGroupId: purchaseId,
+            installmentNumber: index + 1,
+            installments,
+            createdAt: new Date().toISOString()
+          });
+        }
+      }
 
       save();
       closeModal();
@@ -3225,6 +3436,429 @@ function renderStudents() {
         `;
       }).join('')
       : `<div class="empty">Nenhum aluno encontrado.</div>`;
+}
+</script>
+
+<script>
+/* ============================================================
+   CONTAS FIXAS E PAGAMENTO DE LANÇAMENTOS
+============================================================ */
+
+function monthDateForFixedRule(rule, month) {
+  const startDate = new Date(`${rule.startDate}T12:00:00`);
+  const [year, monthNumber] = month.split('-').map(Number);
+
+  const lastDayOfMonth = new Date(year, monthNumber, 0).getDate();
+  const day = Math.min(startDate.getDate(), lastDayOfMonth);
+
+  return `${month}-${String(day).padStart(2, '0')}`;
+}
+
+function fixedRuleAppliesToMonth(rule, month) {
+  if (!rule || !rule.startDate) return false;
+
+  const dueDate = monthDateForFixedRule(rule, month);
+
+  if (dueDate < rule.startDate) return false;
+
+  if (rule.endDate && dueDate > rule.endDate) return false;
+
+  return true;
+}
+
+/*
+  Retorna as contas fixas do mês atual da tela.
+  Elas são virtuais enquanto não forem pagas:
+  só entram em data.transactions quando você marcar como pago.
+*/
+function fixedVirtualTransactions(scope, month) {
+  if (!Array.isArray(data.fixedTransactions)) {
+    data.fixedTransactions = [];
+  }
+
+  return data.fixedTransactions
+    .filter(rule =>
+      rule.scope === scope &&
+      fixedRuleAppliesToMonth(rule, month)
+    )
+    .map(rule => {
+      const alreadyRegistered = data.transactions.find(transaction =>
+        transaction.fixedRuleId === rule.id &&
+        transaction.fixedMonth === month
+      );
+
+      if (alreadyRegistered) {
+        return alreadyRegistered;
+      }
+
+      return {
+        id: `fixed-${rule.id}-${month}`,
+        scope: rule.scope,
+        kind: rule.kind,
+        description: rule.description,
+        category: rule.category,
+        amount: Number(rule.amount || 0),
+        date: monthDateForFixedRule(rule, month),
+        status: 'Pendente',
+        notes: rule.notes || '',
+        transactionType: 'Fixo mensal',
+        fixedRuleId: rule.id,
+        fixedMonth: month,
+        virtualFixed: true
+      };
+    });
+}
+
+function transactionsForMonth(scope, month) {
+  const registered = data.transactions.filter(transaction =>
+    transaction.scope === scope &&
+    monthKey(transaction.date) === month
+  );
+
+  const fixed = fixedVirtualTransactions(scope, month).filter(transaction =>
+    !registered.some(existing =>
+      existing.fixedRuleId === transaction.fixedRuleId &&
+      existing.fixedMonth === transaction.fixedMonth
+    )
+  );
+
+  return [...registered, ...fixed]
+    .sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+}
+
+/*
+  Marca uma compra, lançamento único ou conta fixa como pago.
+  Para conta fixa virtual, cria o registro somente daquele mês.
+*/
+function toggleTransactionPayment(id) {
+  if (String(id).startsWith('fixed-')) {
+    const textId = String(id);
+    const month = textId.slice(-7);
+    const ruleId = textId.slice(6, -8);
+
+    const rule = (data.fixedTransactions || []).find(
+      item => item.id === ruleId
+    );
+
+    if (!rule) return;
+
+    data.transactions.push({
+      id: uid(),
+      scope: rule.scope,
+      kind: rule.kind,
+      description: rule.description,
+      category: rule.category,
+      amount: Number(rule.amount || 0),
+      date: monthDateForFixedRule(rule, month),
+      status: 'Pago',
+      notes: rule.notes || '',
+      transactionType: 'Fixo mensal',
+      fixedRuleId: rule.id,
+      fixedMonth: month,
+      paidAt: iso(new Date()),
+      createdAt: new Date().toISOString()
+    });
+
+    save();
+    return;
+  }
+
+  const transaction = data.transactions.find(item => item.id === id);
+
+  if (!transaction) return;
+
+  transaction.status =
+    transaction.status === 'Pago'
+      ? 'Pendente'
+      : 'Pago';
+
+  transaction.paidAt =
+    transaction.status === 'Pago'
+      ? iso(new Date())
+      : '';
+
+  save();
+}
+
+/*
+  Encerra somente os próximos meses da conta fixa.
+  O mês atual e os pagamentos antigos continuam preservados.
+*/
+function endFixedTransaction(ruleId) {
+  const rule = (data.fixedTransactions || []).find(
+    item => item.id === ruleId
+  );
+
+  if (!rule) return;
+
+  const confirmEnd = confirm(
+    `Encerrar a conta fixa "${rule.description}"?\n\n` +
+    'Ela não aparecerá nos próximos meses. Os pagamentos já registrados serão mantidos.'
+  );
+
+  if (!confirmEnd) return;
+
+  const today = new Date();
+  const lastDayOfCurrentMonth = new Date(
+    today.getFullYear(),
+    today.getMonth() + 1,
+    0,
+    12,
+    0,
+    0
+  );
+
+  rule.endDate = iso(lastDayOfCurrentMonth);
+
+  save();
+}
+
+function renderTxList(tx) {
+  if (!tx.length) {
+    return `<div class="empty">Nenhum lançamento neste mês.</div>`;
+  }
+
+  return tx
+    .slice()
+    .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+    .map(transaction => `
+      <div class="item">
+        <div>
+          <strong>${esc(transaction.description)}</strong>
+
+          <div class="sub">
+            ${fmtDate(transaction.date)} ·
+            ${esc(transaction.category)} ·
+            ${esc(transaction.status)}
+            ${
+              transaction.transactionType === 'Fixo mensal'
+                ? ' · Conta fixa'
+                : transaction.transactionType === 'Parcelado'
+                  ? ' · Parcelado'
+                  : ''
+            }
+          </div>
+
+          ${
+            transaction.notes
+              ? `<div class="sub">${esc(transaction.notes)}</div>`
+              : ''
+          }
+
+          <span class="tag ${
+            transaction.status === 'Pago' ? 'ok' : 'warn'
+          }">
+            ${esc(transaction.status)}
+          </span>
+        </div>
+
+        <div style="text-align:right">
+          <b style="color:${
+            transaction.kind === 'Entrada'
+              ? 'var(--green)'
+              : '#ff9da5'
+          }">
+            ${transaction.kind === 'Entrada' ? '+' : '−'}
+            ${money(transaction.amount)}
+          </b>
+
+          <div style="margin-top:7px;display:flex;gap:5px;justify-content:flex-end;flex-wrap:wrap">
+            <button
+              class="btn small"
+              onclick="toggleTransactionPayment('${transaction.id}')"
+            >
+              ${transaction.status === 'Pago' ? 'Reabrir' : 'Marcar pago'}
+            </button>
+
+            ${
+              transaction.transactionType === 'Fixo mensal'
+                ? `
+                  <button
+                    class="btn secondary small"
+                    onclick="endFixedTransaction('${transaction.fixedRuleId}')"
+                  >
+                    Encerrar conta
+                  </button>
+                `
+                : `
+                  <button
+                    class="btn secondary small"
+                    onclick="removeTransaction('${transaction.id}')"
+                  >
+                    Excluir
+                  </button>
+                `
+            }
+          </div>
+        </div>
+      </div>
+    `).join('');
+}
+
+/* ============================================================
+   FINANCEIRO PROFISSIONAL — inclui contas fixas
+============================================================ */
+
+function renderPro() {
+  document.getElementById('proMonth').textContent = monthName(proMonthDate);
+
+  const month = monthKey(proMonthDate);
+
+  const tx = transactionsForMonth('profissional', month);
+
+  const income = tx
+    .filter(transaction =>
+      transaction.kind === 'Entrada' &&
+      transaction.status === 'Pago'
+    )
+    .reduce(
+      (sum, transaction) => sum + Number(transaction.amount || 0),
+      0
+    );
+
+  const expense = tx
+    .filter(transaction =>
+      transaction.kind === 'Saída' &&
+      transaction.status === 'Pago'
+    )
+    .reduce(
+      (sum, transaction) => sum + Number(transaction.amount || 0),
+      0
+    );
+
+  document.getElementById('proIncome').textContent = money(income);
+  document.getElementById('proExpense').textContent = money(expense);
+  document.getElementById('proNet').textContent = money(income - expense);
+
+  const dues = data.dues
+    .filter(due => due.month === month)
+    .sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+
+  document.getElementById('duesList').innerHTML = dues.length
+    ? dues.map(due => `
+      <div class="item">
+        <div>
+          <strong>${esc(studentName(due.studentId))}</strong>
+
+          <div class="sub">
+            Vencimento ${fmtDate(due.dueDate)} · ${money(due.amount)}
+            ${due.label ? `· ${esc(due.label)}` : ''}
+          </div>
+
+          <span class="tag ${due.status === 'Pago' ? 'ok' : 'warn'}">
+            ${due.status}
+          </span>
+        </div>
+
+        <button class="btn small" onclick="markDue('${due.id}')">
+          ${due.status === 'Pago' ? 'Reabrir' : 'Marcar pago'}
+        </button>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhuma cobrança neste mês.</div>`;
+
+  document.getElementById('proTransactions').innerHTML = renderTxList(tx);
+}
+
+/* ============================================================
+   FINANÇAS PESSOAIS — inclui contas fixas
+============================================================ */
+
+function renderPersonal() {
+  document.getElementById('perMonth').textContent = monthName(perMonthDate);
+
+  const month = monthKey(perMonthDate);
+
+  const tx = transactionsForMonth('pessoal', month);
+
+  const income = tx
+    .filter(transaction =>
+      transaction.kind === 'Entrada' &&
+      transaction.status === 'Pago'
+    )
+    .reduce(
+      (sum, transaction) => sum + Number(transaction.amount || 0),
+      0
+    );
+
+  const expense = tx
+    .filter(transaction =>
+      transaction.kind === 'Saída' &&
+      transaction.status === 'Pago'
+    )
+    .reduce(
+      (sum, transaction) => sum + Number(transaction.amount || 0),
+      0
+    );
+
+  document.getElementById('perIncome').textContent = money(income);
+  document.getElementById('perExpense').textContent = money(expense);
+  document.getElementById('perNet').textContent = money(income - expense);
+
+  document.getElementById('perTransactions').innerHTML = renderTxList(tx);
+}
+
+/* ============================================================
+   RESUMO FINANCEIRO — inclui contas fixas
+============================================================ */
+
+function renderReports() {
+  document.getElementById('repMonth').textContent = monthName(repMonthDate);
+
+  const month = monthKey(repMonthDate);
+
+  const pro = transactionsForMonth('profissional', month)
+    .filter(transaction => transaction.status === 'Pago');
+
+  const per = transactionsForMonth('pessoal', month)
+    .filter(transaction => transaction.status === 'Pago');
+
+  const proIncome = pro
+    .filter(transaction => transaction.kind === 'Entrada')
+    .reduce(
+      (sum, transaction) => sum + Number(transaction.amount || 0),
+      0
+    );
+
+  const proExpense = pro
+    .filter(transaction => transaction.kind === 'Saída')
+    .reduce(
+      (sum, transaction) => sum + Number(transaction.amount || 0),
+      0
+    );
+
+  const perIncome = per
+    .filter(transaction => transaction.kind === 'Entrada')
+    .reduce(
+      (sum, transaction) => sum + Number(transaction.amount || 0),
+      0
+    );
+
+  const perExpense = per
+    .filter(transaction => transaction.kind === 'Saída')
+    .reduce(
+      (sum, transaction) => sum + Number(transaction.amount || 0),
+      0
+    );
+
+  const open = data.dues
+    .filter(due => due.month === month && due.status !== 'Pago')
+    .reduce((sum, due) => sum + Number(due.amount || 0), 0);
+
+  const values = [
+    ['repProIn', proIncome],
+    ['repProOut', proExpense],
+    ['repProNet', proIncome - proExpense],
+    ['repOpen', open],
+    ['repPerIn', perIncome],
+    ['repPerOut', perExpense],
+    ['repPerNet', perIncome - perExpense],
+    ['repTotal', proIncome - proExpense + perIncome - perExpense]
+  ];
+
+  values.forEach(([elementId, value]) => {
+    document.getElementById(elementId).textContent = money(value);
+  });
 }
 </script>
 
