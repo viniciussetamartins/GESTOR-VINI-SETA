@@ -5131,5 +5131,223 @@ function renderAgenda() {
 }
 </script>
 
+<script>
+/* ============================================================
+   AGENDA DE HOJE — CONCLUIR E CANCELAR AULAS
+============================================================ */
+
+function setTodayAppointmentStatus(
+  appointmentId,
+  studentId,
+  originalDate,
+  originalTime,
+  status
+) {
+  const statusLabel =
+    status === 'Concluído' ? 'concluir' : 'cancelar';
+
+  const confirmed = confirm(
+    `Deseja ${statusLabel} esta aula?`
+  );
+
+  if (!confirmed) return;
+
+  /*
+    Aula manual ou aula que já foi remarcada:
+    atualiza o status do próprio agendamento.
+  */
+  if (appointmentId) {
+    const appointment = data.appointments.find(
+      item => item.id === appointmentId
+    );
+
+    if (!appointment) {
+      alert('Agendamento não encontrado.');
+      return;
+    }
+
+    appointment.status = status;
+    appointment.updatedAt = new Date().toISOString();
+
+    save();
+    return;
+  }
+
+  /*
+    Aula de rotina fixa:
+    cria uma exceção somente para esse dia.
+    Assim, ela não volta a aparecer na agenda de hoje,
+    mas a rotina das próximas semanas segue normal.
+  */
+  if (!studentId || !originalDate || !originalTime) {
+    alert('Não foi possível identificar esta aula.');
+    return;
+  }
+
+  const existing = routineExceptionFor(
+    studentId,
+    originalDate,
+    originalTime
+  );
+
+  if (existing) {
+    alert('Esta aula já possui uma alteração registrada.');
+    return;
+  }
+
+  ensureRoutineExceptions().push({
+    id: uid(),
+    studentId,
+    originalDate,
+    originalTime,
+    action: status === 'Concluído' ? 'completed' : 'cancelled',
+    createdAt: new Date().toISOString()
+  });
+
+  save();
+}
+
+/* ============================================================
+   VISÃO GERAL — AGENDA DE HOJE COM AÇÕES
+============================================================ */
+
+function renderDashboard() {
+  const today = iso(new Date());
+
+  document.getElementById('dashStudents').textContent =
+    data.students.filter(student => student.status === 'Ativo').length;
+
+  /*
+    Aulas concluídas e canceladas não ficam mais visíveis
+    na Agenda de hoje. Elas continuam registradas nos dados.
+  */
+  const todayAppointments = appointmentsForDate(today).filter(
+    appointment =>
+      appointment.status !== 'Cancelado' &&
+      appointment.status !== 'Concluído'
+  );
+
+  document.getElementById('dashToday').textContent =
+    todayAppointments.length;
+
+  const month = monthKey(today);
+
+  const pending = data.dues
+    .filter(due => due.month === month && due.status !== 'Pago')
+    .reduce((sum, due) => sum + Number(due.amount || 0), 0);
+
+  document.getElementById('dashPending').textContent = money(pending);
+
+  document.getElementById('todayList').innerHTML =
+    todayAppointments.length
+      ? todayAppointments.map(appointment => `
+        <div class="item">
+          <div>
+            <strong>
+              ${esc(appointment.time || '--:--')} ·
+              ${esc(appointment.title)}
+            </strong>
+
+            <div class="sub">
+              ${esc(appointment.type)} ·
+              ${
+                appointment.recurring
+                  ? 'Rotina fixa'
+                  : appointment.routineRescheduleId
+                    ? 'Aula remarcada'
+                    : esc(appointment.status)
+              }
+            </div>
+          </div>
+
+          <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end">
+            <button
+              class="btn small"
+              onclick="setTodayAppointmentStatus(
+                '${appointment.id || ''}',
+                '${appointment.studentId || ''}',
+                '${appointment.recurring ? appointment.date : ''}',
+                '${appointment.recurring ? appointment.time : ''}',
+                'Concluído'
+              )"
+            >
+              Concluir
+            </button>
+
+            <button
+              class="btn secondary small"
+              onclick="setTodayAppointmentStatus(
+                '${appointment.id || ''}',
+                '${appointment.studentId || ''}',
+                '${appointment.recurring ? appointment.date : ''}',
+                '${appointment.recurring ? appointment.time : ''}',
+                'Cancelado'
+              )"
+            >
+              Cancelar
+            </button>
+
+            ${
+              appointment.recurring
+                ? `
+                  <button
+                    class="btn secondary small"
+                    onclick="openRoutineReschedule(
+                      '${appointment.studentId}',
+                      '${appointment.date}',
+                      '${appointment.time}'
+                    )"
+                  >
+                    Remarcar
+                  </button>
+                `
+                : appointment.routineRescheduleId
+                  ? `
+                    <button
+                      class="btn secondary small"
+                      onclick="undoRoutineReschedule('${appointment.routineRescheduleId}')"
+                    >
+                      Desfazer remarcação
+                    </button>
+                  `
+                  : `
+                    <button
+                      class="btn secondary small"
+                      onclick="openModal('appointment','','${appointment.id}')"
+                    >
+                      Editar
+                    </button>
+                  `
+            }
+          </div>
+        </div>
+      `).join('')
+      : `<div class="empty">Nenhuma aula pendente para hoje.</div>`;
+
+  const dues = data.dues
+    .filter(due => due.month === month && due.status !== 'Pago')
+    .slice(0, 5);
+
+  document.getElementById('pendingList').innerHTML = dues.length
+    ? dues.map(due => `
+      <div class="item">
+        <div>
+          <strong>${esc(studentName(due.studentId))}</strong>
+          <div class="sub">Vence ${fmtDate(due.dueDate)}</div>
+        </div>
+
+        <div style="text-align:right">
+          <b style="display:block;margin-bottom:7px">${money(due.amount)}</b>
+
+          <button class="btn small" onclick="markDue('${due.id}')">
+            Recebido
+          </button>
+        </div>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
+}
+</script>
+
 </body>
 </html>
