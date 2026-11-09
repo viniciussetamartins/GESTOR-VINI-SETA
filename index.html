@@ -4519,5 +4519,148 @@ function generateDues() {
 })();
 </script>
 
+<script>
+/* ============================================================
+   FINANCEIRO PROFISSIONAL — CARTÃO DE PAGAMENTOS PENDENTES
+============================================================ */
+
+(function addProfessionalPendingCardStyle() {
+  if (document.getElementById('professionalPendingCardStyle')) return;
+
+  const style = document.createElement('style');
+
+  style.id = 'professionalPendingCardStyle';
+
+  style.textContent = `
+    .pro-financial-cards{
+      grid-template-columns:repeat(4,minmax(0,1fr));
+    }
+
+    @media(max-width:700px){
+      .pro-financial-cards{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+
+    @media(max-width:440px){
+      .pro-financial-cards{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+})();
+
+function ensureProfessionalPendingCard() {
+  const proNet = document.getElementById('proNet');
+
+  if (!proNet) return null;
+
+  const cards = proNet.closest('.cards');
+
+  if (!cards) return null;
+
+  cards.classList.add('pro-financial-cards');
+
+  let card = document.getElementById('proPendingCard');
+
+  if (!card) {
+    card = document.createElement('div');
+
+    card.id = 'proPendingCard';
+    card.className = 'card';
+
+    card.innerHTML = `
+      <div class="label">Pagamentos pendentes</div>
+      <div class="value" id="proPending">R$ 0</div>
+      <div class="hint">a receber no mês</div>
+    `;
+
+    cards.appendChild(card);
+  }
+
+  return document.getElementById('proPending');
+}
+
+/* Substitui somente a exibição do Financeiro profissional. */
+function renderPro() {
+  document.getElementById('proMonth').textContent = monthName(proMonthDate);
+
+  const month = monthKey(proMonthDate);
+
+  const tx = transactionsForMonth('profissional', month);
+
+  const income = tx
+    .filter(transaction =>
+      transaction.kind === 'Entrada' &&
+      transaction.status === 'Pago'
+    )
+    .reduce(
+      (sum, transaction) => sum + Number(transaction.amount || 0),
+      0
+    );
+
+  const expense = tx
+    .filter(transaction =>
+      transaction.kind === 'Saída' &&
+      transaction.status === 'Pago'
+    )
+    .reduce(
+      (sum, transaction) => sum + Number(transaction.amount || 0),
+      0
+    );
+
+  const pending = data.dues
+    .filter(due =>
+      due.month === month &&
+      due.status !== 'Pago'
+    )
+    .reduce(
+      (sum, due) => sum + Number(due.amount || 0),
+      0
+    );
+
+  document.getElementById('proIncome').textContent = money(income);
+  document.getElementById('proExpense').textContent = money(expense);
+  document.getElementById('proNet').textContent = money(income - expense);
+
+  const pendingElement = ensureProfessionalPendingCard();
+
+  if (pendingElement) {
+    pendingElement.textContent = money(pending);
+  }
+
+  const dues = data.dues
+    .filter(due => due.month === month)
+    .sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+
+  document.getElementById('duesList').innerHTML = dues.length
+    ? dues.map(due => `
+      <div class="item">
+        <div>
+          <strong>${esc(studentName(due.studentId))}</strong>
+
+          <div class="sub">
+            Vencimento ${fmtDate(due.dueDate)} · ${money(due.amount)}
+            ${due.label ? `· ${esc(due.label)}` : ''}
+          </div>
+
+          <span class="tag ${due.status === 'Pago' ? 'ok' : 'warn'}">
+            ${due.status}
+          </span>
+        </div>
+
+        <button class="btn small" onclick="markDue('${due.id}')">
+          ${due.status === 'Pago' ? 'Reabrir' : 'Marcar pago'}
+        </button>
+      </div>
+    `).join('')
+    : `<div class="empty">Nenhuma cobrança neste mês.</div>`;
+
+  document.getElementById('proTransactions').innerHTML = renderTxList(tx);
+}
+</script>
+
 </body>
 </html>
