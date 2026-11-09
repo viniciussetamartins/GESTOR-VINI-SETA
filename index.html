@@ -5349,5 +5349,78 @@ function renderDashboard() {
 }
 </script>
 
+<script>
+/* Correção: concluir/cancelar aulas da rotina fixa */
+function setTodayAppointmentStatus(
+  appointmentId,
+  studentId,
+  originalDate,
+  originalTime,
+  status
+) {
+  const statusLabel =
+    status === 'Concluído' ? 'concluir' : 'cancelar';
+
+  const confirmed = confirm(
+    `Deseja ${statusLabel} esta aula?`
+  );
+
+  if (!confirmed) return;
+
+  /*
+    Quando possui data e horário original, é uma aula da rotina fixa.
+    Mesmo que ela tenha um id visual na agenda, ela não é um
+    agendamento manual salvo em data.appointments.
+  */
+  if (studentId && originalDate && originalTime) {
+    const existing = routineExceptionFor(
+      studentId,
+      originalDate,
+      originalTime
+    );
+
+    if (existing) {
+      alert('Esta aula já possui uma alteração registrada.');
+      return;
+    }
+
+    ensureRoutineExceptions().push({
+      id: uid(),
+      studentId,
+      originalDate,
+      originalTime,
+      action: status === 'Concluído' ? 'completed' : 'cancelled',
+      createdAt: new Date().toISOString()
+    });
+
+    save();
+    return;
+  }
+
+  /*
+    Aula manual ou aula previamente remarcada:
+    altera o status do agendamento salvo.
+  */
+  if (!appointmentId) {
+    alert('Não foi possível identificar esta aula.');
+    return;
+  }
+
+  const appointment = data.appointments.find(
+    item => item.id === appointmentId
+  );
+
+  if (!appointment) {
+    alert('Agendamento não encontrado.');
+    return;
+  }
+
+  appointment.status = status;
+  appointment.updatedAt = new Date().toISOString();
+
+  save();
+}
+</script>
+
 </body>
 </html>
