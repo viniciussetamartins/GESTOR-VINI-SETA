@@ -334,6 +334,25 @@ textarea{
   margin-bottom:12px;
 }
 
+.agenda-day-nav{
+  display:flex;
+  align-items:center;
+  flex:1 1 230px;
+  gap:8px;
+}
+
+.agenda-day-nav .btn{
+  min-width:44px;
+  min-height:44px;
+  font-size:20px;
+}
+
+.agenda-day-nav time{
+  flex:1;
+  text-align:center;
+  font-weight:700;
+}
+
 .toolbar input{
   flex:1;
   min-width:150px;
@@ -691,7 +710,11 @@ textarea{
         </div>
 
         <div class="toolbar">
-          <input type="date" id="agendaDate" aria-label="Data da agenda">
+          <div class="agenda-day-nav" role="group" aria-label="Data da agenda">
+            <button class="btn secondary" type="button" aria-label="Dia anterior" onclick="shiftAgendaDay(-1)">‹</button>
+            <time id="agendaDayLabel" aria-live="polite"></time>
+            <button class="btn secondary" type="button" aria-label="Próximo dia" onclick="shiftAgendaDay(1)">›</button>
+          </div>
 
           <select id="agendaFilter">
             <option value="all">Todos os tipos</option>
@@ -1042,6 +1065,8 @@ const iso = d => {
 
   return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
 };
+
+let agendaDate = iso(now);
 
 const monthKey = d => {
   if (d instanceof Date) {
@@ -1617,7 +1642,7 @@ function openModal(type, scope = '', id = '') {
 
           <div class="field">
             <label>Data *</label>
-            <input name="date" type="date" required value="${a.date || iso(now)}">
+            <input name="date" type="date" required value="${a.date || (document.getElementById('view-agenda').classList.contains('active') ? agendaDate : iso(new Date()))}">
           </div>
 
           <div class="field">
@@ -1948,7 +1973,7 @@ function renderAll() {
 }
 
 function renderAgenda() {
-  const date = document.getElementById('agendaDate').value || iso(now);
+  const date = agendaDate;
   const filter = document.getElementById('agendaFilter').value;
 
   const arr = data.appointments
@@ -2615,9 +2640,7 @@ async function initApp() {
       month:'long'
     });
 
-  document.getElementById('agendaDate').value = iso(now);
-
-  document.getElementById('agendaDate').addEventListener('change', renderAgenda);
+  agendaDate = iso(new Date());
   document.getElementById('agendaFilter').addEventListener('change', renderAgenda);
   document.getElementById('studentSearch').addEventListener('input', renderStudents);
   document.getElementById('studentStatus').addEventListener('change', renderStudents);
@@ -2949,58 +2972,6 @@ function toggleConsultancyFields() {
 }
 
 /*
-  Verifica se a rotina deve aparecer em determinada data.
-
-  Regras:
-  - aluno precisa estar Ativo;
-  - apenas Presencial ou Híbrido;
-  - cobrança mais recente vencida e pendente permite agenda
-    por mais 30 dias;
-  - após 30 dias em atraso, os horários ficam suspensos;
-  - ao marcar a mensalidade como recebida, voltam automaticamente.
-*/
-function routineIsActiveOn(student, dateString) {
-  if (!student || student.status !== 'Ativo') return false;
-
-  if (
-    student.modality !== 'Presencial' &&
-    student.modality !== 'Híbrido'
-  ) {
-    return false;
-  }
-
-  const routine = normalizedRoutine(student);
-
-  if (!routine.length) return false;
-
-  const duesUntilDate = data.dues
-    .filter(d =>
-      d.studentId === student.id &&
-      !d.consultancyCycleId &&
-      d.dueDate &&
-      d.dueDate <= dateString
-    )
-    .sort((a, b) => b.dueDate.localeCompare(a.dueDate));
-
-  /*
-    Se ainda não houver cobrança gerada, mantém a rotina do aluno
-    ativo. Assim um aluno recém-cadastrado já aparece na agenda.
-  */
-  if (!duesUntilDate.length) return true;
-
-  const latestDue = duesUntilDate[0];
-
-  if (latestDue.status === 'Pago') return true;
-
-  const dueDate = new Date(`${latestDue.dueDate}T12:00:00`);
-  dueDate.setDate(dueDate.getDate() + 30);
-
-  const limitDate = iso(dueDate);
-
-  return dateString <= limitDate;
-}
-
-/*
   Cria atendimentos virtuais para a data visualizada.
   Eles não enchem o banco de dados: são calculados automaticamente.
 */
@@ -3009,7 +2980,10 @@ function recurringAppointmentsForDate(dateString) {
   const weekday = selectedDate.getDay();
 
   return data.students
-    .filter(student => routineIsActiveOn(student, dateString))
+    .filter(student =>
+      student.status === 'Ativo' &&
+      (student.modality === 'Presencial' || student.modality === 'Híbrido')
+    )
     .flatMap(student =>
       normalizedRoutine(student)
         .filter(item => item.day === weekday)
@@ -3059,7 +3033,7 @@ function appointmentsForDate(dateString) {
 ============================================================ */
 
 function renderAgenda() {
-  const date = document.getElementById('agendaDate').value || iso(new Date());
+  const date = agendaDate;
   const filter = document.getElementById('agendaFilter').value;
 
   const appointments = appointmentsForDate(date)
@@ -4699,9 +4673,23 @@ function undoRoutineReschedule(rescheduleId) {
    AGENDA — botões de remarcar e desfazer
 ============================================================ */
 
+function shiftAgendaDay(delta) {
+  const date = new Date(`${agendaDate}T12:00:00`);
+  date.setDate(date.getDate() + delta);
+  agendaDate = iso(date);
+  renderAgenda();
+}
+
 function renderAgenda() {
-  const date =
-    document.getElementById('agendaDate').value || iso(new Date());
+  const date = agendaDate;
+  const dateLabel = document.getElementById('agendaDayLabel');
+  dateLabel.dateTime = date;
+  dateLabel.textContent = new Date(`${date}T12:00:00`).toLocaleDateString('pt-BR', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
 
   const filter = document.getElementById('agendaFilter').value;
 
