@@ -172,10 +172,15 @@ button{cursor:pointer}
   margin:-15px -15px 13px;
 }
 
-.grid2{
-  display:grid;
-  grid-template-columns:1.2fr .8fr;
-  gap:12px;
+.cards.today-cards{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.today-cards .card .value{
+  font-size:clamp(30px,8vw,44px);
+}
+
+.today-box{
   margin-top:13px;
 }
 
@@ -551,7 +556,7 @@ textarea{
 @media(max-width:440px){
   .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
   .cards .card:last-child{grid-column:1/-1}
-  .grid2{grid-template-columns:1fr}
+  .today-cards .card:last-child{grid-column:auto}
   .formgrid{grid-template-columns:1fr}
   .field.full{grid-column:auto}
   .brand h1{font-size:15px}
@@ -633,27 +638,17 @@ textarea{
 
     <main>
 
-      <section id="view-inicio" class="view active">
+      <section id="view-inicio" class="view active" aria-label="Início">
 
         <div class="section-head">
-          <div>
-            <h2>Visão geral</h2>
-            <p id="todayLabel"></p>
-          </div>
+          <p id="todayLabel"></p>
 
           <button class="btn" onclick="openModal('appointment')">
             ＋ Atendimento
           </button>
         </div>
 
-        <div class="cards">
-          <div class="card">
-            <div class="redline"></div>
-            <div class="label">Alunos ativos</div>
-            <div class="value" id="dashStudents">0</div>
-            <div class="hint">cadastros ativos</div>
-          </div>
-
+        <div class="cards today-cards">
           <div class="card">
             <div class="redline"></div>
             <div class="label">Atendimentos hoje</div>
@@ -667,50 +662,18 @@ textarea{
             <div class="value" id="dashCompleted">0</div>
             <div class="hint">realizados hoje</div>
           </div>
-
-          <div class="card">
-            <div class="redline"></div>
-            <div class="label">Pagamentos pendentes</div>
-            <div class="value" id="dashPending">R$ 0</div>
-            <div class="hint">mensalidades deste mês</div>
-          </div>
         </div>
 
-        <div class="grid2">
+        <div class="box today-box">
+          <div class="section-head" style="margin-top:0">
+            <h2 style="font-size:17px">Atendimentos do dia</h2>
 
-          <div class="box">
-            <div class="section-head" style="margin-top:0">
-              <div>
-                <h2 style="font-size:17px">Atendimentos do dia</h2>
-                <p>Acompanhe os atendimentos de hoje</p>
-              </div>
-
-              <button class="btn secondary small" onclick="showView('agenda')">
-                Ver agenda
-              </button>
-            </div>
-
-            <div id="todayList" class="list"></div>
+            <button class="btn secondary small" onclick="showView('agenda')">
+              Ver agenda
+            </button>
           </div>
 
-          <div class="box">
-            <div class="section-head" style="margin-top:0">
-              <div>
-                <h2 style="font-size:17px">Contas a receber</h2>
-                <p>Mensalidades em aberto</p>
-              </div>
-
-              <button class="btn secondary small" onclick="showView('profissional')">
-                Ver financeiro
-              </button>
-            </div>
-
-            <div id="pendingList" class="list"></div>
-          </div>
-        </div>
-
-        <div class="notice">
-          Seus dados ficam salvos na nuvem quando houver conexão. Em caso de falha, o Gestor abre usando os dados guardados neste aparelho.
+          <div id="todayList" class="list"></div>
         </div>
       </section>
 
@@ -1981,62 +1944,6 @@ function renderAll() {
   renderReports();
 }
 
-function renderDashboard() {
-  const today = iso(now);
-
-  document.getElementById('dashStudents').textContent =
-    data.students.filter(s => s.status === 'Ativo').length;
-
-  document.getElementById('dashToday').textContent =
-    data.appointments.filter(a =>
-      a.date === today && a.status !== 'Cancelado'
-    ).length;
-
-  const m = monthKey(today);
-
-  const pending = data.dues
-    .filter(d => d.month === m && d.status !== 'Pago')
-    .reduce((s, d) => s + Number(d.amount || 0), 0);
-
-  document.getElementById('dashPending').textContent = money(pending);
-
-  const appointments = data.appointments
-    .filter(a => a.date === today && a.status !== 'Cancelado')
-    .sort((a,b) => (a.time || '').localeCompare(b.time || ''));
-
-  document.getElementById('todayList').innerHTML = appointments.length
-    ? appointments.map(a => `
-      <div class="item">
-        <div>
-          <strong>${esc(a.time || '--:--')} · ${esc(a.title)}</strong>
-          <div class="sub">${esc(a.type)} · ${esc(a.status)}</div>
-        </div>
-
-        <button class="btn secondary small" onclick="openModal('appointment','','${a.id}')">
-          Editar
-        </button>
-      </div>
-    `).join('')
-    : `<div class="empty">Nenhum atendimento agendado para hoje.</div>`;
-
-  const dues = data.dues
-    .filter(d => d.month === m && d.status !== 'Pago')
-    .slice(0, 5);
-
-  document.getElementById('pendingList').innerHTML = dues.length
-    ? dues.map(d => `
-      <div class="item">
-        <div>
-          <strong>${esc(studentName(d.studentId))}</strong>
-          <div class="sub">Vence ${fmtDate(d.dueDate)}</div>
-        </div>
-
-        <b>${money(d.amount)}</b>
-      </div>
-    `).join('')
-    : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
-}
-
 function renderAgenda() {
   const date = document.getElementById('agendaDate').value || iso(now);
   const filter = document.getElementById('agendaFilter').value;
@@ -2891,67 +2798,7 @@ function markDue(id) {
   save();
 }
 
-function renderDashboard() {
-  const today = iso(new Date());
 
-  document.getElementById('dashStudents').textContent =
-    data.students.filter(s => s.status === 'Ativo').length;
-
-  document.getElementById('dashToday').textContent =
-    data.appointments.filter(a =>
-      a.date === today && a.status !== 'Cancelado'
-    ).length;
-
-  const m = monthKey(today);
-
-  const pending = data.dues
-    .filter(d => d.month === m && d.status !== 'Pago')
-    .reduce((s, d) => s + Number(d.amount || 0), 0);
-
-  document.getElementById('dashPending').textContent = money(pending);
-
-  const appointments = data.appointments
-    .filter(a => a.date === today && a.status !== 'Cancelado')
-    .sort((a, b) => (a.time || '').localeCompare(b.time || ''));
-
-  document.getElementById('todayList').innerHTML = appointments.length
-    ? appointments.map(a => `
-      <div class="item">
-        <div>
-          <strong>${esc(a.time || '--:--')} · ${esc(a.title)}</strong>
-          <div class="sub">${esc(a.type)} · ${esc(a.status)}</div>
-        </div>
-
-        <button class="btn secondary small" onclick="openModal('appointment','','${a.id}')">
-          Editar
-        </button>
-      </div>
-    `).join('')
-    : `<div class="empty">Nenhum atendimento agendado para hoje.</div>`;
-
-  const dues = data.dues
-    .filter(d => d.month === m && d.status !== 'Pago')
-    .slice(0, 5);
-
-  document.getElementById('pendingList').innerHTML = dues.length
-    ? dues.map(d => `
-      <div class="item">
-        <div>
-          <strong>${esc(studentName(d.studentId))}</strong>
-          <div class="sub">Vence ${fmtDate(d.dueDate)}</div>
-        </div>
-
-        <div style="text-align:right">
-          <b style="display:block;margin-bottom:7px">${money(d.amount)}</b>
-
-          <button class="btn small" onclick="markDue('${d.id}')">
-            Recebido
-          </button>
-        </div>
-      </div>
-    `).join('')
-    : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
-}
 </script>
 
 <script>
@@ -3203,100 +3050,6 @@ function appointmentsForDate(dateString) {
 /* ============================================================
    TELA INICIAL — agenda de hoje inclui rotinas automáticas
 ============================================================ */
-
-function renderDashboard() {
-  const today = iso(new Date());
-
-  document.getElementById('dashStudents').textContent =
-    data.students.filter(s => s.status === 'Ativo').length;
-
-  const todayAppointments = appointmentsForDate(today).filter(
-    appointment => appointment.status !== 'Cancelado'
-  );
-
-  const completedRoutineToday = ensureRoutineExceptions().filter(
-    exception =>
-      exception.originalDate === today &&
-      exception.action === 'completed'
-  ).length;
-
-  const completedManualToday = data.appointments.filter(
-    appointment =>
-      appointment.date === today &&
-      appointment.status === 'Concluído'
-  ).length;
-
-  document.getElementById('dashToday').textContent =
-    todayAppointments.length + completedRoutineToday + completedManualToday;
-
-  document.getElementById('dashCompleted').textContent =
-    completedRoutineToday + completedManualToday;
-
-  const m = monthKey(today);
-
-  const pending = data.dues
-    .filter(d => d.month === m && d.status !== 'Pago')
-    .reduce((s, d) => s + Number(d.amount || 0), 0);
-
-  document.getElementById('dashPending').textContent = money(pending);
-
-  document.getElementById('todayList').innerHTML =
-    todayAppointments.length
-      ? todayAppointments.map(appointment => `
-        <div class="item">
-          <div>
-            <strong>
-              ${esc(appointment.time || '--:--')} ·
-              ${esc(appointment.title)}
-            </strong>
-
-            <div class="sub">
-              ${esc(appointment.type)} ·
-              ${appointment.recurring
-                ? 'Rotina fixa'
-                : esc(appointment.status)}
-            </div>
-          </div>
-
-          ${
-            appointment.recurring
-              ? `<span class="tag ok">Automático</span>`
-              : `
-                <button
-                  class="btn secondary small"
-                  onclick="openModal('appointment','','${appointment.id}')"
-                >
-                  Editar
-                </button>
-              `
-          }
-        </div>
-      `).join('')
-      : `<div class="empty">Nenhum atendimento agendado para hoje.</div>`;
-
-  const dues = data.dues
-    .filter(d => d.month === m && d.status !== 'Pago')
-    .slice(0, 5);
-
-  document.getElementById('pendingList').innerHTML = dues.length
-    ? dues.map(d => `
-      <div class="item">
-        <div>
-          <strong>${esc(studentName(d.studentId))}</strong>
-          <div class="sub">Vence ${fmtDate(d.dueDate)}</div>
-        </div>
-
-        <div style="text-align:right">
-          <b style="display:block;margin-bottom:7px">${money(d.amount)}</b>
-
-          <button class="btn small" onclick="markDue('${d.id}')">
-            Recebido
-          </button>
-        </div>
-      </div>
-    `).join('')
-    : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
-}
 
 /* ============================================================
    AGENDA — inclui rotinas fixas automáticas
@@ -4939,111 +4692,6 @@ function undoRoutineReschedule(rescheduleId) {
    VISÃO GERAL — botões de remarcar e desfazer
 ============================================================ */
 
-function renderDashboard() {
-  const today = iso(new Date());
-
-  document.getElementById('dashStudents').textContent =
-    data.students.filter(student => student.status === 'Ativo').length;
-
-  const todayAppointments = appointmentsForDate(today).filter(
-    appointment => appointment.status !== 'Cancelado'
-  );
-
-  document.getElementById('dashToday').textContent =
-    todayAppointments.length;
-
-  const month = monthKey(today);
-
-  const pending = data.dues
-    .filter(due => due.month === month && due.status !== 'Pago')
-    .reduce((sum, due) => sum + Number(due.amount || 0), 0);
-
-  document.getElementById('dashPending').textContent = money(pending);
-
-  document.getElementById('todayList').innerHTML =
-    todayAppointments.length
-      ? todayAppointments.map(appointment => `
-        <div class="item">
-          <div>
-            <strong>
-              ${esc(appointment.time || '--:--')} ·
-              ${esc(appointment.title)}
-            </strong>
-
-            <div class="sub">
-              ${esc(appointment.type)} ·
-              ${
-                appointment.recurring
-                  ? 'Rotina fixa'
-                  : appointment.routineRescheduleId
-                    ? 'Aula remarcada'
-                    : esc(appointment.status)
-              }
-            </div>
-          </div>
-
-          <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end">
-            ${
-              appointment.recurring
-                ? `
-                  <button
-                    class="btn small"
-                    onclick="openRoutineReschedule(
-                      '${appointment.studentId}',
-                      '${appointment.date}',
-                      '${appointment.time}'
-                    )"
-                  >
-                    Remarcar
-                  </button>
-                `
-                : appointment.routineRescheduleId
-                  ? `
-                    <button
-                      class="btn secondary small"
-                      onclick="undoRoutineReschedule('${appointment.routineRescheduleId}')"
-                    >
-                      Desfazer
-                    </button>
-                  `
-                  : `
-                    <button
-                      class="btn secondary small"
-                      onclick="openModal('appointment','','${appointment.id}')"
-                    >
-                      Editar
-                    </button>
-                  `
-            }
-          </div>
-        </div>
-      `).join('')
-      : `<div class="empty">Nenhum atendimento agendado para hoje.</div>`;
-
-  const dues = data.dues
-    .filter(due => due.month === month && due.status !== 'Pago')
-    .slice(0, 5);
-
-  document.getElementById('pendingList').innerHTML = dues.length
-    ? dues.map(due => `
-      <div class="item">
-        <div>
-          <strong>${esc(studentName(due.studentId))}</strong>
-          <div class="sub">Vence ${fmtDate(due.dueDate)}</div>
-        </div>
-
-        <div style="text-align:right">
-          <b style="display:block;margin-bottom:7px">${money(due.amount)}</b>
-
-          <button class="btn small" onclick="markDue('${due.id}')">
-            Recebido
-          </button>
-        </div>
-      </div>
-    `).join('')
-    : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
-}
-
 /* ============================================================
    AGENDA — botões de remarcar e desfazer
 ============================================================ */
@@ -5236,9 +4884,6 @@ function setTodayAppointmentStatus(
 function renderDashboard() {
   const today = iso(new Date());
 
-  document.getElementById('dashStudents').textContent =
-    data.students.filter(student => student.status === 'Ativo').length;
-
   /*
     Aulas concluídas e canceladas não ficam mais visíveis
     na Agenda de hoje. Elas continuam registradas nos dados.
@@ -5266,14 +4911,6 @@ function renderDashboard() {
 
   document.getElementById('dashCompleted').textContent =
     completedRoutineToday + completedAppointmentsToday;
-
-  const month = monthKey(today);
-
-  const pending = data.dues
-    .filter(due => due.month === month && due.status !== 'Pago')
-    .reduce((sum, due) => sum + Number(due.amount || 0), 0);
-
-  document.getElementById('dashPending').textContent = money(pending);
 
   document.getElementById('todayList').innerHTML =
     todayAppointments.length
@@ -5360,29 +4997,6 @@ function renderDashboard() {
         </div>
       `).join('')
       : `<div class="empty">Você concluiu todos os atendimentos do dia.</div>`;
-
-  const dues = data.dues
-    .filter(due => due.month === month && due.status !== 'Pago')
-    .slice(0, 5);
-
-  document.getElementById('pendingList').innerHTML = dues.length
-    ? dues.map(due => `
-      <div class="item">
-        <div>
-          <strong>${esc(studentName(due.studentId))}</strong>
-          <div class="sub">Vence ${fmtDate(due.dueDate)}</div>
-        </div>
-
-        <div style="text-align:right">
-          <b style="display:block;margin-bottom:7px">${money(due.amount)}</b>
-
-          <button class="btn small" onclick="markDue('${due.id}')">
-            Recebido
-          </button>
-        </div>
-      </div>
-    `).join('')
-    : `<div class="empty">Nenhuma cobrança pendente neste mês.</div>`;
 }
 </script>
 
