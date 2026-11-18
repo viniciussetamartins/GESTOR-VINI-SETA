@@ -5252,6 +5252,21 @@ function renderDashboard() {
   document.getElementById('dashToday').textContent =
     todayAppointments.length;
 
+  const completedRoutineToday = ensureRoutineExceptions().filter(
+    exception =>
+      exception.originalDate === today &&
+      exception.action === 'completed'
+  ).length;
+
+  const completedAppointmentsToday = data.appointments.filter(
+    appointment =>
+      appointment.date === today &&
+      appointment.status === 'Concluído'
+  ).length;
+
+  document.getElementById('dashCompleted').textContent =
+    completedRoutineToday + completedAppointmentsToday;
+
   const month = monthKey(today);
 
   const pending = data.dues
