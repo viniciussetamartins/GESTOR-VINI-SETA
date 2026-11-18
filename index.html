@@ -802,6 +802,12 @@ textarea{
         </div>
 
         <div class="section-head">
+          <h2 style="font-size:17px">Contas a receber</h2>
+        </div>
+
+        <div id="proReceivables" class="list"></div>
+
+        <div class="section-head">
           <div>
             <h2 style="font-size:17px">Mensalidades</h2>
             <p>Marque o pagamento ou gere cobranças</p>
@@ -4382,15 +4388,14 @@ function renderPro() {
       0
     );
 
-  const pending = data.dues
-    .filter(due =>
-      due.month === month &&
-      due.status !== 'Pago'
-    )
-    .reduce(
-      (sum, due) => sum + Number(due.amount || 0),
-      0
-    );
+  const dues = data.dues
+    .filter(due => due.month === month)
+    .sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+  const receivables = dues.filter(due => due.status !== 'Pago');
+  const pending = receivables.reduce(
+    (sum, due) => sum + Number(due.amount || 0),
+    0
+  );
 
   document.getElementById('proIncome').textContent = money(income);
   document.getElementById('proExpense').textContent = money(expense);
@@ -4402,12 +4407,7 @@ function renderPro() {
     pendingElement.textContent = money(pending);
   }
 
-  const dues = data.dues
-    .filter(due => due.month === month)
-    .sort((a, b) => a.dueDate.localeCompare(b.dueDate));
-
-  document.getElementById('duesList').innerHTML = dues.length
-    ? dues.map(due => `
+  const dueRow = (due, actionLabel) => `
       <div class="item">
         <div>
           <strong>${esc(studentName(due.studentId))}</strong>
@@ -4423,10 +4423,17 @@ function renderPro() {
         </div>
 
         <button class="btn small" onclick="markDue('${due.id}')">
-          ${due.status === 'Pago' ? 'Reabrir' : 'Marcar pago'}
+          ${actionLabel}
         </button>
       </div>
-    `).join('')
+    `;
+
+  document.getElementById('proReceivables').innerHTML = receivables.length
+    ? receivables.map(due => dueRow(due, 'Recebido')).join('')
+    : `<div class="empty">Nenhuma conta a receber neste mês.</div>`;
+
+  document.getElementById('duesList').innerHTML = dues.length
+    ? dues.map(due => dueRow(due, due.status === 'Pago' ? 'Reabrir' : 'Marcar pago')).join('')
     : `<div class="empty">Nenhuma cobrança neste mês.</div>`;
 
   document.getElementById('proTransactions').innerHTML = renderTxList(tx);
