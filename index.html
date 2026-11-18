@@ -651,9 +651,9 @@ textarea{
         <div class="cards today-cards">
           <div class="card">
             <div class="redline"></div>
-            <div class="label">Atendimentos hoje</div>
+            <div class="label">Atendimentos previstos</div>
             <div class="value" id="dashToday">0</div>
-            <div class="hint">previstos para hoje</div>
+            <div class="hint">total de hoje</div>
           </div>
 
           <div class="card">
@@ -1658,6 +1658,9 @@ function openModal(type, scope = '', id = '') {
       f.duration = Number(f.duration || 60);
 
       if (id) {
+        if (a.date && a.date !== f.date) {
+          a.previousSlots = [...(a.previousSlots || []), { date: a.date, time: a.time }];
+        }
         Object.assign(a, f);
       } else {
         data.appointments.push({
@@ -4881,26 +4884,52 @@ function setTodayAppointmentStatus(
    VISÃO GERAL — AGENDA DE HOJE COM AÇÕES
 ============================================================ */
 
+function countPlannedAppointments(date, appointments, exceptions) {
+  const plannedManual = data.appointments.filter(appointment =>
+    appointment.date === date ||
+    appointment.previousSlots?.some(slot => slot.date === date)
+  );
+
+  const uncoveredRoutine = appointments.filter(appointment =>
+    appointment.recurring &&
+    !plannedManual.some(manual =>
+      manual.studentId === appointment.studentId &&
+      (
+        (manual.date === date && manual.time === appointment.time) ||
+        manual.previousSlots?.some(slot => slot.date === date && slot.time === appointment.time)
+      )
+    )
+  );
+
+  const originalRoutineSlots = exceptions.filter(exception =>
+    !exception.id || !plannedManual.some(manual => manual.routineRescheduleId === exception.id)
+  );
+
+  return plannedManual.length + uncoveredRoutine.length + originalRoutineSlots.length;
+}
+
 function renderDashboard() {
   const today = iso(new Date());
+  const appointments = appointmentsForDate(today);
+  const routineExceptions = ensureRoutineExceptions().filter(
+    exception => exception.originalDate === today
+  );
 
   /*
     Aulas concluídas e canceladas não ficam mais visíveis
     na Agenda de hoje. Elas continuam registradas nos dados.
   */
-  const todayAppointments = appointmentsForDate(today).filter(
+  const todayAppointments = appointments.filter(
     appointment =>
       appointment.status !== 'Cancelado' &&
       appointment.status !== 'Concluído'
   );
 
   document.getElementById('dashToday').textContent =
-    todayAppointments.length;
+    countPlannedAppointments(today, appointments, routineExceptions);
 
-  const completedRoutineToday = ensureRoutineExceptions().filter(
-    exception =>
-      exception.originalDate === today &&
-      exception.action === 'completed'
+  const completedRoutineToday = routineExceptions.filter(
+    exception => exception.action === 'completed'
   ).length;
 
   const completedAppointmentsToday = data.appointments.filter(
@@ -4996,7 +5025,7 @@ function renderDashboard() {
           </div>
         </div>
       `).join('')
-      : `<div class="empty">Você concluiu todos os atendimentos do dia.</div>`;
+      : `<div class="empty">Nenhum atendimento restante hoje.</div>`;
 }
 </script>
 
